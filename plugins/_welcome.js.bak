@@ -51,7 +51,7 @@ try {
   nombre = numero
 }
 const username = `@${nombre}`*/
-const username1 = `@${userId.split('@')[0]}`
+const username = `@${userId.split('@')[0]}`
 
   const nacionalidad = detectarPais(numero)
 
@@ -73,7 +73,7 @@ const username1 = `@${userId.split('@')[0]}`
 ౨ৎ  ︵ֺ︵ֺ︵︵ֺ︵︵୭୭୭︵ֺ︵︵ֺ︵︵ֺ︵ֺ︵ ౨ৎ
 
 𝅄 ── ׁ ୭୧ ۪ ઈ ׄ  *🄱ɪᴇɴᴠᴇɴɪᴅᴏ* : ᡣ𐭩
-𝅄 ︵୭୧┈꒰ ${username1}  ꒱︵
+𝅄 ︵୭୧┈꒰ ${username}  ꒱︵
 
 > ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
 > ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupMetadata.participants.length + 1}
