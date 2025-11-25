@@ -184,7 +184,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      }) */
+      })  */
     }
 
     if (chat.welcome && (
