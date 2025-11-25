@@ -38,14 +38,13 @@ const detectarPais = (numero) => {
   for (const code of keysOrdenadas) {
     if (numero.startsWith(code)) return codigos[code]
   }
-  return "Desconocido"
+  return "Desconocido 🥗"
 }
 
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-
-  const nombre = await conn.getName(userId).catch(() => numero)
+  const nombre = await (conn.getName ? conn.getName(userId) : numero).catch?.(() => numero) || numero
   const username = `@${nombre}`
 
   const nacionalidad = detectarPais(numero)
@@ -86,7 +85,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-  const nombre = await conn.getName(userId).catch(() => numero)
+  const nombre = await (conn.getName ? conn.getName(userId) : numero).catch?.(() => numero) || numero
   const username = `@${nombre}`
 
   const nacionalidad = detectarPais(numero)
@@ -178,13 +177,13 @@ handler.before = async function (m, { conn, groupMetadata }) {
       }, { quoted: fkontak })
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-
-      /*
+      
+      
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      })  */
+      }) 
     }
 
     if (chat.welcome && (
@@ -229,12 +228,12 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 
-      /*
+      
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      }) */
+      }) 
     }
 
   } catch (e) {
