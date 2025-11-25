@@ -43,8 +43,11 @@ const detectarPais = (numero) => {
 
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
-  const username = `@${userId.split('@')[0]}`
   const numero = userId.split('@')[0]
+
+  const nombre = await conn.getName(userId).catch(() => numero)
+  const username = `@${nombre}`
+
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
@@ -61,21 +64,20 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
     .replace(/{grupo}/g, `*${groupMetadata.subject}*`)
     .replace(/{desc}/g, desc)
 
-  const caption = `
-🌸✨ ¡Bienvenid@ ${username}! ✨🌸
+  const caption = `✿┆. 🥗 ۪۪۪۪۪۪  ⃦፝֟     !𝐖 𝐄 𝐋 𝐂 𝐎 𝐌 𝐄¡ㅤ⃦፝֟  ۪۪۪۪۪۪ 🥙 .┆✿
+౨ৎ  ︵ֺ︵ֺ︵︵ֺ︵︵୭୭୭︵ֺ︵︵ֺ︵︵ֺ︵ֺ︵ ౨ৎ
 
-🍃 Es un gusto tenerte con nosotros 💚  
-🏡 Siéntete como en casa UwU  
+𝅄 ── ׁ ୭୧ ۪ ઈ ׄ  *🄱ɪᴇɴᴠᴇɴɪᴅᴏ* : ᡣ𐭩
+𝅄 ︵୭୧┈꒰ ${username}  ꒱︵
 
-🌿 *Estado Actual*  
-• *Grupo:* ${groupMetadata.subject}
-• *Miembros:* ${groupMetadata.participants.length + 1}  
-• *País:* ${nacionalidad}  
-• *Hora:* ${hora}  
-• *Fecha:* ${fechaTexto}  
+> ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
+> ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupMetadata.participants.length + 1}
+> ⋅˚₊‧🎋‧₊˚ ⋅ *🄿ais:* ${nacionalidad}
+> ⋅˚₊‧🌾‧₊˚ ⋅ *🄷ora:* ${hora}
+> ⋅˚₊‧🍁‧₊˚ ⋅ *🄵echa:* ${fechaTexto}
 
-📝 *Descripción:*  
-${finalMsg}
+• *Descripción:*
+• .˚🌊 𓈒𓏸 *\`\`\`${finalMsg}\`\`\`* 𖥻
 `
 
   return { pp, caption, username }
@@ -83,8 +85,10 @@ ${finalMsg}
 
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
 
-  const username = `@${userId.split('@')[0]}`
   const numero = userId.split('@')[0]
+  const nombre = await conn.getName(userId).catch(() => numero)
+  const username = `@${nombre}`
+
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
@@ -100,17 +104,19 @@ const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
     .replace(/{grupo}/g, `*${groupMetadata.subject}*`)
     .replace(/{desc}/g, desc)
 
-  const caption = `
-🌸💫 El viento cambia caminos...  
-${username} ha salido del grupo *${groupMetadata.subject}* 💐
+  const caption = `✿┆. 🥗 ۪۪۪۪۪۪  ⃦፝֟     !𝐖 𝐄 𝐋 𝐂 𝐎 𝐌 𝐄¡ㅤ⃦፝֟  ۪۪۪۪۪۪ 🥙 .┆✿
+౨ৎ  ︵ֺ︵ֺ︵︵ֺ︵︵୭୭୭︵ֺ︵︵ֺ︵︵ֺ︵ֺ︵ ౨ৎ
 
-💭 ${finalMsg}
+𝅄 ── ׁ ୭୧ ۪ ઈ ׄ  *🄰ᴅɪᴏs* : ᡣ𐭩
+𝅄 ︵୭୧┈꒰ ${username}  ꒱︵
 
-📉 *Estado Actual:*  
-• *Miembros:* ${groupMetadata.participants.length - 1}  
-• *País:* ${nacionalidad}  
-• *Hora:* ${hora}  
-• *Fecha:* ${fechaTexto}
+> ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
+> ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupMetadata.participants.length + 1}
+> ⋅˚₊‧🎋‧₊˚ ⋅ *🄿ais:* ${nacionalidad}
+> ⋅˚₊‧🌾‧₊˚ ⋅ *🄷ora:* ${hora}
+> ⋅˚₊‧🍁‧₊˚ ⋅ *🄵echa:* ${fechaTexto}
+
+• .˚🌊 𓈒𓏸 *${finalMsg}* 𖥻
 `
 
   return { pp, caption, username }
@@ -159,7 +165,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
                   {
                     name: "cta_url",
                     buttonParamsJson: JSON.stringify({
-                      display_text: "❐ 𝗖𝗔𝗡𝗔𝗟 ⼢",
+                      display_text: "⌒᷼✿ 𝗖 𝗔 𝗡 𝗔 𝗟 ⿻",
                       url: channel,
                       merchant_url: channel
                     })
@@ -172,6 +178,13 @@ handler.before = async function (m, { conn, groupMetadata }) {
       }, { quoted: fkontak })
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+
+      /*
+      await conn.sendMessage(m.chat, {
+        audio: { url: "https://qu.ax/GMQnD.m4a" },
+        mimetype: "audio/mpeg",
+        ptt: true
+      }) */
     }
 
     if (chat.welcome && (
@@ -202,7 +215,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
                   {
                     name: "cta_url",
                     buttonParamsJson: JSON.stringify({
-                      display_text: "❐ 𝗖𝗔𝗡𝗔𝗟 ⼢",
+                      display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
                       url: channel,
                       merchant_url: channel
                     })
@@ -215,6 +228,13 @@ handler.before = async function (m, { conn, groupMetadata }) {
       }, { quoted: fkontak })
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+
+      /*
+      await conn.sendMessage(m.chat, {
+        audio: { url: "https://qu.ax/GMQnD.m4a" },
+        mimetype: "audio/mpeg",
+        ptt: true
+      }) */
     }
 
   } catch (e) {
