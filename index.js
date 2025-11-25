@@ -36,7 +36,7 @@ console.log(chalk.magentaBright('\n🚀 Iniciando...'))
 say('-漫 KANEKI - BOT AI·舞', {
 font: 'block',
 align: 'center',
-gradient: ['white', 'green']
+gradient: ['white', 'red']
 })
 say('˙˚ʚ₍ ᐢ. ̫ .ᐢ ₎ɞ˚ ᴍᴀᴅᴇ ᴡɪᴛʜ ʟᴏᴠᴇ ʙʏ sʜᴀᴅᴏᴡ.xʏᴢ 🌿', {
 font: 'console',
