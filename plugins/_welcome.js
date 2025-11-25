@@ -48,7 +48,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
-    .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+    .catch(() => 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg')
 
   const fecha = new Date()
   const fechaTexto = fecha.toLocaleDateString("es-ES", { timeZone: "America/Lima" })
@@ -78,9 +78,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 ${finalMsg}
 `
 
-  const imgWelcome = `https://api.siputzx.my.id/api/canvas/welcomev5?username=${encodeURIComponent(numero)}&guildName=${encodeURIComponent(groupMetadata.subject)}&memberCount=${groupMetadata.participants.length + 1}&avatar=${encodeURIComponent(pp)}&background=${encodeURIComponent("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg")}&quality=90`
-
-  return { pp: imgWelcome, caption, username }
+  return { pp, caption, username }
 }
 
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
@@ -90,7 +88,7 @@ const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
-    .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+    .catch(() => 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg')
 
   const fecha = new Date()
   const fechaTexto = fecha.toLocaleDateString("es-ES", { timeZone: "America/Lima" })
@@ -115,9 +113,7 @@ ${username} ha salido del grupo *${groupMetadata.subject}* 💐
 • *Fecha:* ${fechaTexto}
 `
 
-  const imgGoodbye = `https://api.siputzx.my.id/api/canvas/goodbyev5?username=${encodeURIComponent(numero)}&guildName=${encodeURIComponent(groupMetadata.subject)}&memberCount=${groupMetadata.participants.length - 1}&avatar=${encodeURIComponent(pp)}&background=${encodeURIComponent("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg")}&quality=90`
-
-  return { pp: imgGoodbye, caption, username }
+  return { pp, caption, username }
 }
 
 let handler = m => m
@@ -128,10 +124,6 @@ handler.before = async function (m, { conn, groupMetadata }) {
   const chat = global.db.data.chats[m.chat]
   const userId = m.messageStubParameters[0]
 
-  // Defaults
-  const dev = global.dev || "⚜ Kaneki IA"
-  const channel = global.channel || "https://whatsapp.com/channel/..."
-
   let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
     .then(res => res.arrayBuffer()).catch(() => null)
 
@@ -141,7 +133,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
   }
 
   try {
-    // WELCOME
+  
     if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 
       const { pp, caption } = await generarBienvenida({ conn, userId, groupMetadata, chat })
@@ -182,7 +174,6 @@ handler.before = async function (m, { conn, groupMetadata }) {
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
     }
 
-    // GOODBYE
     if (chat.welcome && (
       m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
       m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE
