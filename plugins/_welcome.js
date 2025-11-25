@@ -44,8 +44,13 @@ const detectarPais = (numero) => {
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-  const nombre = await (conn.getName ? conn.getName(userId) : numero).catch?.(() => numero) || numero
-  const username = `@${nombre}`
+let nombre
+try {
+  nombre = await (conn.getName ? conn.getName(userId) : numero)
+} catch {
+  nombre = numero
+}
+const username = `@${nombre}`
 
   const nacionalidad = detectarPais(numero)
 
