@@ -1,6 +1,6 @@
 import fs from 'fs'
 import fetch from 'node-fetch'
-import { WAMessageStubType } from '@whiskeysockets/baileys'
+import { WAMessageStubType, generateWAMessageContent, generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 
 const detectarPais = (numero) => {
   const codigos = {
@@ -35,7 +35,6 @@ const detectarPais = (numero) => {
   }
 
   const keysOrdenadas = Object.keys(codigos).sort((a, b) => b.length - a.length)
-
   for (const code of keysOrdenadas) {
     if (numero.startsWith(code)) return codigos[code]
   }
@@ -48,15 +47,15 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
   const numero = userId.split('@')[0]
   const nacionalidad = detectarPais(numero)
 
-  const pp = await conn.profilePictureUrl(userId, 'image').catch(() =>
-    'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg'
-  )
+  const pp = await conn.profilePictureUrl(userId, 'image')
+    .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
   const fecha = new Date()
   const fechaTexto = fecha.toLocaleDateString("es-ES", { timeZone: "America/Lima" })
   const hora = fecha.toLocaleTimeString("es-PE", { timeZone: "America/Lima", hour: "numeric", minute: "numeric" })
 
   const desc = groupMetadata.desc?.toString() || '*Sin descripción*'
+
   const finalMsg = (chat.sWelcome || 'Edita con *setwelcome*')
     .replace(/{usuario}/g, username)
     .replace(/{grupo}/g, `*${groupMetadata.subject}*`)
@@ -68,7 +67,8 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 🍃 Es un gusto tenerte con nosotros 💚  
 🏡 Siéntete como en casa UwU  
 
-🌿 *Información del Grupo*  
+🌿 *Estado Actual*  
+• *Grupo:* ${groupMetadata.subject}
 • *Miembros:* ${groupMetadata.participants.length + 1}  
 • *País:* ${nacionalidad}  
 • *Hora:* ${hora}  
@@ -78,17 +78,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 ${finalMsg}
 `
 
-  const imgWelcome = `https://api.siputzx.my.id/api/canvas/welcomev5?username=${
-    encodeURIComponent(numero)
-  }&guildName=${
-    encodeURIComponent(groupMetadata.subject)
-  }&memberCount=${
-    groupMetadata.participants.length + 1
-  }&avatar=${
-    encodeURIComponent(pp)
-  }&background=${
-    encodeURIComponent("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg")
-  }&quality=90`
+  const imgWelcome = `https://api.siputzx.my.id/api/canvas/welcomev5?username=${encodeURIComponent(numero)}&guildName=${encodeURIComponent(groupMetadata.subject)}&memberCount=${groupMetadata.participants.length + 1}&avatar=${encodeURIComponent(pp)}&background=${encodeURIComponent("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg")}&quality=90`
 
   return { pp: imgWelcome, caption, username }
 }
@@ -99,9 +89,8 @@ const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
   const numero = userId.split('@')[0]
   const nacionalidad = detectarPais(numero)
 
-  const pp = await conn.profilePictureUrl(userId, 'image').catch(() =>
-    'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg'
-  )
+  const pp = await conn.profilePictureUrl(userId, 'image')
+    .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
   const fecha = new Date()
   const fechaTexto = fecha.toLocaleDateString("es-ES", { timeZone: "America/Lima" })
@@ -126,17 +115,7 @@ ${username} ha salido del grupo *${groupMetadata.subject}* 💐
 • *Fecha:* ${fechaTexto}
 `
 
-  const imgGoodbye = `https://api.siputzx.my.id/api/canvas/goodbyev5?username=${
-    encodeURIComponent(numero)
-  }&guildName=${
-    encodeURIComponent(groupMetadata.subject)
-  }&memberCount=${
-    groupMetadata.participants.length - 1
-  }&avatar=${
-    encodeURIComponent(pp)
-  }&background=${
-    encodeURIComponent("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg")
-  }&quality=90`
+  const imgGoodbye = `https://api.siputzx.my.id/api/canvas/goodbyev5?username=${encodeURIComponent(numero)}&guildName=${encodeURIComponent(groupMetadata.subject)}&memberCount=${groupMetadata.participants.length - 1}&avatar=${encodeURIComponent(pp)}&background=${encodeURIComponent("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763585864348_780365.jpeg")}&quality=90`
 
   return { pp: imgGoodbye, caption, username }
 }
@@ -144,10 +123,14 @@ ${username} ha salido del grupo *${groupMetadata.subject}* 💐
 let handler = m => m
 
 handler.before = async function (m, { conn, groupMetadata }) {
-
   if (!m.messageStubType || !m.isGroup) return !0
+
   const chat = global.db.data.chats[m.chat]
   const userId = m.messageStubParameters[0]
+
+  // Defaults
+  const dev = global.dev || "⚜ Kaneki IA"
+  const channel = global.channel || "https://whatsapp.com/channel/..."
 
   let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
     .then(res => res.arrayBuffer()).catch(() => null)
@@ -157,55 +140,98 @@ handler.before = async function (m, { conn, groupMetadata }) {
     message: { locationMessage: { name: '🌲✨  𝐊𝐀𝐍𝐄𝐊𝐈 - 𝐈𝐀  ✨🌲', jpegThumbnail: Buffer.from(thumb || []) } }
   }
 
-  if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+  try {
+    // WELCOME
+    if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 
-    const { pp, caption } = await generarBienvenida({ conn, userId, groupMetadata, chat })
+      const { pp, caption } = await generarBienvenida({ conn, userId, groupMetadata, chat })
 
-    const productMessage = {
-      product: {
-        productImage: { url: pp },
-        productId: '99999123456',
-        title: " ˗ˏˋ♡ˎˊ˗ ❏ ¡𝐖 𝐄 𝐋 𝐂 𝐎 𝐌 𝐄! ᯤ ˗ˏˋ♡ˎˊ˗",
-        description: "",
-        currencyCode: "USD",
-        priceAmount1000: "100000",
-        retailerId: 1677,
-        url: "https://github.com/shadox-xyz",
-        productImageCount: 1
-      },
-      businessOwnerJid: userId,
-      footer: caption,
-      mentions: [userId]
+      const { imageMessage } = await generateWAMessageContent(
+        { image: { url: pp } },
+        { upload: conn.waUploadToServer }
+      )
+
+      const msg = generateWAMessageFromContent(m.chat, {
+        viewOnceMessage: {
+          message: {
+            interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+              body: { text: caption },
+              footer: { text: dev },
+              header: {
+                title: groupMetadata.subject,
+                hasMediaAttachment: true,
+                imageMessage
+              },
+              nativeFlowMessage: {
+                buttons: [
+                  {
+                    name: "cta_url",
+                    buttonParamsJson: JSON.stringify({
+                      display_text: "❐ 𝗖𝗔𝗡𝗔𝗟 ⼢",
+                      url: channel,
+                      merchant_url: channel
+                    })
+                  }
+                ]
+              }
+            })
+          }
+        }
+      }, { quoted: fkontak })
+
+      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
     }
 
-    await conn.sendMessage(m.chat, productMessage, { quoted: fkontak })
-  }
+    // GOODBYE
+    if (chat.welcome && (
+      m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
+      m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE
+    )) {
 
-  if (chat.welcome && (
-    m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
-    m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE
-  )) {
+      const { pp, caption } = await generarDespedida({ conn, userId, groupMetadata, chat })
 
-    const { pp, caption } = await generarDespedida({ conn, userId, groupMetadata, chat })
+      const { imageMessage } = await generateWAMessageContent(
+        { image: { url: pp } },
+        { upload: conn.waUploadToServer }
+      )
 
-    const productMessage = {
-      product: {
-        productImage: { url: pp },
-        productId: '99999123456',
-        title: " ˗ˏˋ♡ˎˊ˗ ❏ ¡𝐖 𝐄 𝐋 𝐂 𝐎 𝐌 𝐄! ᯤ ˗ˏˋ♡ˎˊ˗",
-        description: "",
-        currencyCode: "USD",
-        priceAmount1000: "100000",
-        retailerId: 1677,
-        url: "https://github.com/shadox-xyz",
-        productImageCount: 1
-      },
-      businessOwnerJid: userId,
-      footer: caption,
-      mentions: [userId]
+      const msg = generateWAMessageFromContent(m.chat, {
+        viewOnceMessage: {
+          message: {
+            interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+              body: { text: caption },
+              footer: { text: dev },
+              header: {
+                title: groupMetadata.subject,
+                hasMediaAttachment: true,
+                imageMessage
+              },
+              nativeFlowMessage: {
+                buttons: [
+                  {
+                    name: "cta_url",
+                    buttonParamsJson: JSON.stringify({
+                      display_text: "❐ 𝗖𝗔𝗡𝗔𝗟 ⼢",
+                      url: channel,
+                      merchant_url: channel
+                    })
+                  }
+                ]
+              }
+            })
+          }
+        }
+      }, { quoted: fkontak })
+
+      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
     }
 
-    await conn.sendMessage(m.chat, productMessage, { quoted: fkontak })
+  } catch (e) {
+    console.error(e)
+    await conn.sendMessage(m.chat, {
+      text: `✘ Error al enviar el welcome: ${e.message}`,
+      mentions: [m.sender]
+    })
   }
 }
 
