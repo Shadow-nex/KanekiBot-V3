@@ -1,7 +1,8 @@
-// - codigo creado x ShadowCore 🎋
-// - https://github.com/Yuji-XDev
+// - codigo creado x Shadow.xyz 🎋
+// - https://github.com/shadox-xyz
 // - https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U
 // - no quitar creditos xD
+
 import acrcloud from 'acrcloud'
 import ytsearch from 'yt-search'
 import baileys from '@whiskeysockets/baileys'
@@ -13,6 +14,14 @@ const acr = new acrcloud({
   access_key: 'c33c767d683f78bd17d4bd4991955d81',
   access_secret: 'bvgaIAEtADBTbLwiPGYlxupWqkNGIjT7J9Ag2vIu'
 })
+
+function formatSize(bytes) {
+  if (bytes === 0 || isNaN(bytes)) return '0 B'
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
 
 let handler = async (m, { conn, usedPrefix, command }) => {
   try {
@@ -33,6 +42,9 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     const buffer = await q.download?.()
     if (!buffer) throw '❌ No se pudo descargar el archivo. Intenta nuevamente.'
 
+   
+    const clipSize = formatSize(Buffer.byteLength(buffer))
+
     const result = await acr.identify(buffer)
     const { status, metadata } = result
 
@@ -41,13 +53,30 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     const music = metadata.music?.[0]
     if (!music) throw 'No se encontró información de la canción.'
 
+   
+    const genres =
+      music.genres ||
+      music.genre ||
+      music.metadata?.genres ||
+      [] 
+
+    const genresText =
+      Array.isArray(genres)
+        ? genres.map(v => v.name).join(', ')
+        : typeof genres === 'string'
+          ? genres
+          : 'Desconocido'
+
     const title = music.title || 'Desconocido'
     const artist = music.artists?.map(v => v.name).join(', ') || 'Desconocido'
     const album = music.album?.name || 'Desconocido'
     const release = music.release_date || 'Desconocida'
 
+    
     const yt = await ytsearch(`${title} ${artist}`)
     const video = yt.videos.length > 0 ? yt.videos[0] : null
+
+    const published = video ? (video.uploadedAt || video.ago || release) : release
 
     if (video) {
       const { imageMessage } = await generateWAMessageContent(
@@ -61,20 +90,20 @@ let handler = async (m, { conn, usedPrefix, command }) => {
             interactiveMessage: proto.Message.InteractiveMessage.fromObject({
               body: proto.Message.InteractiveMessage.Body.fromObject({
                 text: `☯ 𝙆𝘼𝙉𝙀𝙆𝙄 𝘽𝙊𝙏 𝙈𝘿 ☯  
-“ᴇʟ sɪʟᴇɴᴄɪᴏ ᴛᴀᴍʙɪᴇ́ɴ ᴄᴀɴᴛᴀ, ᴘᴇʀᴏ sᴏʟᴏ ʟᴏ ᴇsᴄᴜᴄʜᴀ ᴇʟ ᴅᴏʟᴏʀ.” 🕯️  
 
 🍋 *Título:* ${title}  
 🎋 *Artista:* ${artist}  
 💿 *Álbum:* ${album}  
 📆 *Lanzamiento:* ${release}  
+🌿 *Género:* ${genresText}
+📦 *Tamaño del clip:* ${clipSize}
 
-⚔️ *Buscando:* ${video.title}  
+⚔️ *YouTube:* ${video.title}  
 ⏱ *Duración:* ${video.timestamp}  
 🔥 *Vistas:* ${video.views.toLocaleString()}  
+🌿 *Publicado:* ${published}
 📺 *Canal:* ${video.author.name}  
-🔗 *Enlace:* ${video.url}  
-
-🩸 “ᴇɴ ʟᴀ ᴏsᴄᴜʀɪᴅᴀᴅ, ʟᴀ ᴍᴜ́sɪᴄᴀ ᴇs ʟᴀ ᴜ́ɴɪᴄᴀ ʟᴜᴢ.” ☯`
+🔗 *Enlace:* ${video.url}`
               }),
               footer: proto.Message.InteractiveMessage.Footer.fromObject({
                 text: dev
@@ -111,9 +140,6 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
       await m.react('✔️')
-    } else {
-      //await conn.reply(m.chat, `✔️ Detectado:\n\n🎵 ${title}\n👤 ${artist}`, m)
-      //await m.react('❌')
     }
 
   } catch (e) {
