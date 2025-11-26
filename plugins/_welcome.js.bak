@@ -239,12 +239,12 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 
-      /*
+      
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      }) */
+      }) 
     }
 
   } catch (e) {

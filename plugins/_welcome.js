@@ -44,14 +44,7 @@ const detectarPais = (numero) => {
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-/*let nombre
-try {
-  nombre = await (conn.getName ? conn.getName(userId) : numero)
-} catch {
-  nombre = numero
-}
-const username = `@${nombre}`*/
-const username1 = `@${userId.split('@')[0]}`
+  const username = `@${userId.split('@')[0]}`
 
   const nacionalidad = detectarPais(numero)
 
@@ -73,7 +66,7 @@ const username1 = `@${userId.split('@')[0]}`
 ౨ৎ  ︵ֺ︵ֺ︵︵ֺ︵︵୭୭୭︵ֺ︵︵ֺ︵︵ֺ︵ֺ︵ ౨ৎ
 
 𝅄 ── ׁ ୭୧ ۪ ઈ ׄ  *🄱ɪᴇɴᴠᴇɴɪᴅᴏ* : ᡣ𐭩
-𝅄 ︵୭୧┈꒰ ${username1}  ꒱︵
+𝅄 ︵୭୧┈꒰ ${username}  ꒱︵
 
 > ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
 > ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupMetadata.participants.length + 1}
@@ -85,7 +78,7 @@ const username1 = `@${userId.split('@')[0]}`
 • .˚🌊 𓈒𓏸 *\`\`\`${finalMsg}\`\`\`* 𖥻
 `
 
-  return { pp, caption, username1 }
+  return { pp, caption, username }
 }
 
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
