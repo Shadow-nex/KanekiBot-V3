@@ -236,13 +236,13 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
         },
         { quoted: fkontak }
       )
-
+/*
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      })
+      })*/
     }
 
     if (chat.welcome &&
