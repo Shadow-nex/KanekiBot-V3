@@ -89,21 +89,25 @@ let handler = async (m, { conn, usedPrefix, command }) => {
           message: {
             interactiveMessage: proto.Message.InteractiveMessage.fromObject({
               body: proto.Message.InteractiveMessage.Body.fromObject({
-                text: `☯ 𝙆𝘼𝙉𝙀𝙆𝙄 𝘽𝙊𝙏 𝙈𝘿 ☯  
+                text: `✦ 𝗞𝗔𝗡𝗘𝗞𝗜 𝗕𝗢𝗧 𝗠𝗗 — Información de la Canción ✦
 
-🍋 *Título:* ${title}  
-🎋 *Artista:* ${artist}  
-💿 *Álbum:* ${album}  
-📆 *Lanzamiento:* ${release}  
-🌿 *Género:* ${genresText}
-📦 *Tamaño del clip:* ${clipSize}
+🎶 𝗗𝗮𝘁𝗼𝘀 𝗱𝗲 𝗹𝗮 𝗽𝗶𝗲𝘇𝗮
+• 📝 Título: ${title}
+• 🎙️ Artista: ${artist}
+• 💽 Álbum: ${album}
+• 📅 Lanzamiento: ${release}
+• 🎼 Género: ${genresText}
+• 📁 Tamaño del clip: ${clipSize}
 
-⚔️ *YouTube:* ${video.title}  
-⏱ *Duración:* ${video.timestamp}  
-🔥 *Vistas:* ${video.views.toLocaleString()}  
-🌿 *Publicado:* ${published}
-📺 *Canal:* ${video.author.name}  
-🔗 *Enlace:* ${video.url}`
+──────────────────────
+
+🎥 𝗜𝗻𝗳𝗼𝗿𝗺𝗮𝗰𝗶𝗼𝗻 𝗱𝗲𝗹 𝘃𝗶𝗱𝗲𝗼 (YouTube)
+• 🎬 Título: ${video.title}
+• ⏳ Duración: ${video.timestamp}
+• 👀 Vistas: ${video.views.toLocaleString()}
+• 🗓️ Publicado: ${published}
+• 📡 Canal: ${video.author.name}
+• 🔗 Enlace: ${video.url}`
               }),
               footer: proto.Message.InteractiveMessage.Footer.fromObject({
                 text: dev
