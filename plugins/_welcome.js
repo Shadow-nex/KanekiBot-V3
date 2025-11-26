@@ -48,13 +48,7 @@ const detectarPais = (numero) => {
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-   let nombre
-   try {
-     nombre = await (conn.getName ? conn.getName(userId) : numero)
-   } catch {
-     nombre = numero
-   }
-   const username = `@${nombre}`
+  const username = `@${userId.split('@')[0]}`
 
   const nacionalidad = detectarPais(numero)
 
@@ -85,7 +79,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 > ⋅˚₊‧🍁‧₊˚ ⋅ *🄵echa:* ${fechaTexto}
 
 • *Descripción:*
-• .˚🌊 𓈒𓏸 *\`\`\`${finalMsg}\`\`\`* 𖥻
+• .˚🌊 𓈒𓏸 *${finalMsg}* 𖥻
 `
 
   return { pp, caption, username }
@@ -94,14 +88,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-   let nombre
-   try {
-     nombre = await (conn.getName ? conn.getName(userId) : numero)
-   } catch {
-     nombre = numero
-   }
-   const username = `@${nombre}`
-
+  const username = `@${userId.split('@')[0]}`
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
@@ -241,7 +228,6 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 
-      
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
