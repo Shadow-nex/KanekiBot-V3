@@ -42,9 +42,10 @@ const detectarPais = (numero) => {
 }
 
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
-
-  const numero = userId.split('@')[0]
-  const username = `@${userId.split('@')[0]}`
+ 
+  const xd = `@${userId.split('@')[0]}`
+  const numero = xd
+  const username = xd
 
   const nacionalidad = detectarPais(numero)
 
@@ -83,14 +84,9 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
 
-  const numero = userId.split('@')[0]
-let nombre
-try {
-  nombre = await (conn.getName ? conn.getName(userId) : numero)
-} catch {
-  nombre = numero
-}
-const username = `@${nombre}`
+  const xd = `@${userId.split('@')[0]}`
+  const numero = xd
+  const username = xd
 
   const nacionalidad = detectarPais(numero)
 
@@ -146,7 +142,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
     if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 
       const { pp, caption } = await generarBienvenida({ conn, userId, groupMetadata, chat })
-
+/*
       const { imageMessage } = await generateWAMessageContent(
         { image: { url: pp } },
         { upload: conn.waUploadToServer }
@@ -181,7 +177,8 @@ handler.before = async function (m, { conn, groupMetadata }) {
       }, { quoted: fkontak })
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-      
+      */
+      await conn.sendMessage(m.chat, { image: { url: pp }, caption, ...rcanal }, { quoted: null })
       /*
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
