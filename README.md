@@ -48,7 +48,8 @@
 ---
 
 ### **`✧ Click en la imagen para descargar termux ✧`**
-<a href="https://www.mediafire.com/file/wkinzgpb0tdx5qh/com.termux_1022.apk/file">
+<a href="
+">
 <img src="https://qu.ax/finc.jpg" height="125px">
 </a> 
 
