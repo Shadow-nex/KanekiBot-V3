@@ -140,7 +140,7 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     groupName: groupMetadata.subject,
     memberCount: groupSize,
     avatar: pp,
-    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764121832815_75928.jpeg"
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764123152081_656966.jpeg"
   })
 
   return { pp, caption, welcomeImg, mentions: [userId] }
@@ -184,7 +184,7 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
     groupName: groupMetadata.subject,
     memberCount: groupSize,
     avatar: pp,
-    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764121832815_75928.jpeg"
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764123158112_921487.jpeg"
   })
 
   return { pp, caption, byeImg, mentions: [userId] }
@@ -223,7 +223,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
-                        display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
+                        display_text: "⿻ 𝗖 𝗔 𝗡 𝗔 𝗟 ⿻",
                         url: channel,
                         merchant_url: channel
                       })
@@ -266,7 +266,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
-                        display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
+                        display_text: "⿻ 𝗖 𝗔 𝗡 𝗔 𝗟 ⿻",
                         url: channel,
                         merchant_url: channel
                       })
