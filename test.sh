@@ -72,7 +72,7 @@ rapida() {
 
 while true; do
   menu
-  read -p "👉 Elige una opción: " op
+  read -p "🌴 Elige una opción: " op
   case $op in
     1) instalar ;;
     2) rapida ;;
@@ -80,6 +80,6 @@ while true; do
        echo -e "\e[31mSaliendo del instalador premium...\e[0m"
        exit
        ;;
-    *) echo -e "\e[31m❌ Opción no válida\e[0m";;
+    *) echo -e "\e[31mOpción no válida\e[0m";;
   esac
 done
