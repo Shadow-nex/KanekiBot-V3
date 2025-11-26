@@ -3,7 +3,6 @@ import fetch from 'node-fetch'
 import FormData from 'form-data'
 import { WAMessageStubType, generateWAMessageContent, generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 
-/* Detectar país */
 function detectarPais(numero) {
   const codigos = {
     "1": "🇺🇸 EE.UU / 🇨🇦 Canadá", "7": "🇷🇺 Rusia / 🇰🇿 Kazajistán",
@@ -35,7 +34,6 @@ function detectarPais(numero) {
   return "🌎 Desconocido"
 }
 
-/* Mini contacto */
 let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
   .then(res => res.arrayBuffer()).catch(() => null)
 
@@ -44,7 +42,6 @@ const fkontak = {
   message: { locationMessage: { name: '🌲✨  𝐊𝐀𝐍𝐄𝐊𝐈 - 𝐈𝐀 ✨🌲', jpegThumbnail: Buffer.from(thumb || []) } }
 }
 
-/* Fecha y hora Perú */
 function fechaHoraPeru() {
   const fecha = new Date().toLocaleDateString("es-PE", {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
@@ -56,10 +53,6 @@ function fechaHoraPeru() {
   })
   return { fecha, hora }
 }
-
-/* =============================== */
-/*     API WELCOME V5 + GOODBYE V5 */
-/* =============================== */
 
 async function generarImagenWelcome({ username, groupName, memberCount, avatar, background }) {
   try {
@@ -109,10 +102,6 @@ async function generarImagenBye({ username, groupName, memberCount, avatar, back
   }
 }
 
-/* =============================== */
-/*            BIENVENIDA           */
-/* =============================== */
-
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
   const username = `@${userId.split('@')[0]}`
   const numero = userId.split("@")[0]
@@ -142,8 +131,6 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
 
 ૮꒰ ˶• ᴗ •˶꒱ა ¡Disfruta tu estadía!
 > Usa *#help* para ver la lista de comandos.`
-
-  /* ============ USAR API IMAGEN WELCOME ============ */
 
   const welcomeImg = await generarImagenWelcome({
     username,

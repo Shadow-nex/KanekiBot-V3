@@ -120,17 +120,20 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     .replace(/{desc}/g, `${desc}`)
 
   const caption =
-`❀ Bienvenido a *"_${groupMetadata.subject}_"*
-✰ Usuario » ${username}
-✰ País » ${pais}
+`✿┆. 🥗 ۪۪۪۪۪۪  ⃦፝֟     !𝐖 𝐄 𝐋 𝐂 𝐎 𝐌 𝐄¡ㅤ⃦፝֟  ۪۪۪۪۪۪ 🥙 .┆✿
+౨ৎ  ︵ֺ︵ֺ︵︵ֺ︵︵୭୭୭︵ֺ︵︵ֺ︵︵ֺ︵ֺ︵ ౨ৎ
 
-● ${mensaje}
-◆ Ahora somos ${groupSize} miembros
-ꕥ Fecha » ${fecha}
-ꕥ Hora 🇵🇪 » ${hora}
+𝅄 ── ׁ ୭୧ ۪ ઈ ׄ  *🄱ɪᴇɴᴠᴇɴɪᴅᴏ* : ᡣ𐭩
+𝅄 ︵୭୧┈꒰ ${username}  ꒱︵
 
-૮꒰ ˶• ᴗ •˶꒱ა ¡Disfruta tu estadía!
-> Usa *#help* para ver la lista de comandos.`
+> ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
+> ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupSize}
+> ⋅˚₊‧🎋‧₊˚ ⋅ *🄿ais:* ${pais}
+> ⋅˚₊‧🌾‧₊˚ ⋅ *🄷ora:* ${hora}
+> ⋅˚₊‧🍁‧₊˚ ⋅ *🄵echa:* ${fecha}
+
+• *Descripción:*
+• .˚🌊 𓈒𓏸 *${mensaje}* 𖥻`
 
   const welcomeImg = await generarImagenWelcome({
     username,
