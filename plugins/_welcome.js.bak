@@ -1,4 +1,6 @@
 import fs from 'fs'
+import fetch from 'node-fetch'
+import FormData from 'form-data'
 import { WAMessageStubType, generateWAMessageContent, generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 
 /* Detectar país */
@@ -28,9 +30,8 @@ function detectarPais(numero) {
     "258": "🇲🇿 Mozambique", "260": "🇿🇲 Zambia",
     "263": "🇿🇼 Zimbabue"
   }
-  for (const code in codigos) {
+  for (const code in codigos)
     if (numero.startsWith(code)) return codigos[code]
-  }
   return "🌎 Desconocido"
 }
 
@@ -56,6 +57,62 @@ function fechaHoraPeru() {
   return { fecha, hora }
 }
 
+/* =============================== */
+/*     API WELCOME V5 + GOODBYE V5 */
+/* =============================== */
+
+async function generarImagenWelcome({ username, groupName, memberCount, avatar, background }) {
+  try {
+    const form = new FormData()
+    form.append('username', username)
+    form.append('guildName', groupName)
+    form.append('memberCount', memberCount)
+    form.append('quality', 90)
+
+    const av = await fetch(avatar).then(r => r.arrayBuffer())
+    const bg = await fetch(background).then(r => r.arrayBuffer())
+
+    form.append('avatar', Buffer.from(av), { filename: 'avatar.png', contentType: 'image/png' })
+    form.append('background', Buffer.from(bg), { filename: 'bg.jpg', contentType: 'image/jpeg' })
+
+    const res = await fetch('https://api.siputzx.my.id/api/canvas/welcomev5', { method: 'POST', body: form })
+    if (!res.ok) throw new Error("API Welcome Error")
+
+    return Buffer.from(await res.arrayBuffer())
+  } catch (e) {
+    console.log("❌ Error WelcomeV5:", e)
+    return null
+  }
+}
+
+async function generarImagenBye({ username, groupName, memberCount, avatar, background }) {
+  try {
+    const form = new FormData()
+    form.append('username', username)
+    form.append('guildName', groupName)
+    form.append('memberCount', memberCount)
+    form.append('quality', 90)
+
+    const av = await fetch(avatar).then(r => r.arrayBuffer())
+    const bg = await fetch(background).then(r => r.arrayBuffer())
+
+    form.append('avatar', Buffer.from(av), { filename: 'avatar.png', contentType: 'image/png' })
+    form.append('background', Buffer.from(bg), { filename: 'bg.jpg', contentType: 'image/jpeg' })
+
+    const res = await fetch('https://api.siputzx.my.id/api/canvas/goodbyev5', { method: 'POST', body: form })
+    if (!res.ok) throw new Error("API Goodbye Error")
+
+    return Buffer.from(await res.arrayBuffer())
+  } catch (e) {
+    console.log("❌ Error ByeV5:", e)
+    return null
+  }
+}
+
+/* =============================== */
+/*            BIENVENIDA           */
+/* =============================== */
+
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
   const username = `@${userId.split('@')[0]}`
   const numero = userId.split("@")[0]
@@ -65,7 +122,6 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
   const { fecha, hora } = fechaHoraPeru()
-
   const groupSize = groupMetadata.participants.length + 1
   const desc = groupMetadata.desc?.toString() || 'Sin descripción'
 
@@ -74,7 +130,7 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     .replace(/{grupo}/g, `*${groupMetadata.subject}*`)
     .replace(/{desc}/g, `${desc}`)
 
-  const caption = 
+  const caption =
 `❀ Bienvenido a *"_${groupMetadata.subject}_"*
 ✰ Usuario » ${username}
 ✰ País » ${pais}
@@ -87,8 +143,19 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
 ૮꒰ ˶• ᴗ •˶꒱ა ¡Disfruta tu estadía!
 > Usa *#help* para ver la lista de comandos.`
 
-  return { pp, caption, mentions: [userId] }
+  /* ============ USAR API IMAGEN WELCOME ============ */
+
+  const welcomeImg = await generarImagenWelcome({
+    username,
+    groupName: groupMetadata.subject,
+    memberCount: groupSize,
+    avatar: pp,
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764121832815_75928.jpeg"
+  })
+
+  return { pp, caption, welcomeImg, mentions: [userId] }
 }
+
 
 async function generarDespedida({ conn, userId, groupMetadata, chat }) {
   const username = `@${userId.split('@')[0]}`
@@ -99,7 +166,6 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
     .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
   const { fecha, hora } = fechaHoraPeru()
-
   const groupSize = groupMetadata.participants.length - 1
   const desc = groupMetadata.desc?.toString() || 'Sin descripción'
 
@@ -121,109 +187,118 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
 (˶˃⤙˂˶) ¡Te esperamos pronto!
 > Usa *#help* para ver la lista de comandos.`
 
-  return { pp, caption, mentions: [userId] }
+  const byeImg = await generarImagenBye({
+    username,
+    groupName: groupMetadata.subject,
+    memberCount: groupSize,
+    avatar: pp,
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764121832815_75928.jpeg"
+  })
+
+  return { pp, caption, byeImg, mentions: [userId] }
 }
 
 let handler = m => m
 
 handler.before = async function (m, { conn, participants, groupMetadata }) {
-  if (!m.messageStubType || !m.isGroup) return !0
+  try {
+    if (!m.messageStubType || !m.isGroup) return !0
 
-  const chat = global.db.data.chats[m.chat]
-  const userId = m.messageStubParameters[0]
+    const chat = global.db.data.chats[m.chat]
+    const userId = m.messageStubParameters[0]
 
-  /* WELCOME */
-  if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+    /* WELCOME */
+    if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 
-    const { pp, caption, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
+      const { pp, caption, welcomeImg, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
 
-    const { imageMessage } = await generateWAMessageContent(
-      { image: { url: pp } },
-      { upload: conn.waUploadToServer }
-    )
+      const { imageMessage } = await generateWAMessageContent(
+        welcomeImg ? { image: welcomeImg } : { image: { url: pp } },
+        { upload: conn.waUploadToServer }
+      )
 
-    const msg = generateWAMessageFromContent(
-      m.chat,
-      {
-        viewOnceMessage: {
-          message: {
-            interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-              body: { text: caption },
-              footer: { text: dev },
-              header: {
-                title: "",
-                hasMediaAttachment: true,
-                imageMessage
-              },
-              contextInfo: { mentionedJid: mentions },
-              nativeFlowMessage: {
-                buttons: [
-                  {
-                    name: "cta_url",
-                    buttonParamsJson: JSON.stringify({
-                      display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
-                      url: channel,
-                      merchant_url: channel
-                    })
-                  }
-                ]
-              }
-            })
+      const msg = generateWAMessageFromContent(
+        m.chat,
+        {
+          viewOnceMessage: {
+            message: {
+              interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+                body: { text: caption },
+                footer: { text: dev },
+                header: { title: "", hasMediaAttachment: true, imageMessage },
+                contextInfo: { mentionedJid: mentions },
+                nativeFlowMessage: {
+                  buttons: [
+                    {
+                      name: "cta_url",
+                      buttonParamsJson: JSON.stringify({
+                        display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
+                        url: channel,
+                        merchant_url: channel
+                      })
+                    }
+                  ]
+                }
+              })
+            }
           }
-        }
-      },
-      { quoted: fkontak }
-    )
+        },
+        { quoted: fkontak }
+      )
 
-    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
-  }
+      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+    }
 
-  /* BYE */
-  if (chat.welcome &&
-    (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
-     m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
+    /* BYE */
+    if (chat.welcome &&
+      (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
+       m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
 
-    const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
+      const { pp, caption, byeImg, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
 
-    const { imageMessage } = await generateWAMessageContent(
-      { image: { url: pp } },
-      { upload: conn.waUploadToServer }
-    )
+      const { imageMessage } = await generateWAMessageContent(
+        byeImg ? { image: byeImg } : { image: { url: pp } },
+        { upload: conn.waUploadToServer }
+      )
 
-    const msg = generateWAMessageFromContent(
-      m.chat,
-      {
-        viewOnceMessage: {
-          message: {
-            interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-              body: { text: caption },
-              footer: { text: dev },
-              header: {
-                title: "",
-                hasMediaAttachment: true,
-                imageMessage
-              },
-              contextInfo: { mentionedJid: mentions },
-              nativeFlowMessage: {
-                buttons: [
-                  {
-                    name: "cta_url",
-                    buttonParamsJson: JSON.stringify({
-                      display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
-                      url: channel,
-                      merchant_url: channel
-                    })
-                  }
-                ]
-              }
-            })
+      const msg = generateWAMessageFromContent(
+        m.chat,
+        {
+          viewOnceMessage: {
+            message: {
+              interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+                body: { text: caption },
+                footer: { text: dev },
+                header: { title: "", hasMediaAttachment: true, imageMessage },
+                contextInfo: { mentionedJid: mentions },
+                nativeFlowMessage: {
+                  buttons: [
+                    {
+                      name: "cta_url",
+                      buttonParamsJson: JSON.stringify({
+                        display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
+                        url: channel,
+                        merchant_url: channel
+                      })
+                    }
+                  ]
+                }
+              })
+            }
           }
-        }
-      },
-      { quoted: fkontak }
-    )
+        },
+        { quoted: fkontak }
+      )
 
-    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+    }
+
+  } catch (e) {
+    console.error(e)
+    await conn.sendMessage(m.chat, {
+      text: `✘ Error al enviar el welcome: ${e.message}`,
+      mentions: [m.sender]
+    })
   }
 }
 
