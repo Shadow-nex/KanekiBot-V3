@@ -48,13 +48,13 @@ const detectarPais = (numero) => {
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-let nombre
-try {
-  nombre = await (conn.getName ? conn.getName(userId) : numero)
-} catch {
-  nombre = numero
-}
-const username = `@${nombre}`
+   let nombre
+   try {
+     nombre = await (conn.getName ? conn.getName(userId) : numero)
+   } catch {
+     nombre = numero
+   }
+   const username = `@${nombre}`
 
   const nacionalidad = detectarPais(numero)
 
@@ -94,13 +94,13 @@ const username = `@${nombre}`
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-let nombre
-try {
-  nombre = await (conn.getName ? conn.getName(userId) : numero)
-} catch {
-  nombre = numero
-}
-const username = `@${nombre}`
+   let nombre
+   try {
+     nombre = await (conn.getName ? conn.getName(userId) : numero)
+   } catch {
+     nombre = numero
+   }
+   const username = `@${nombre}`
 
   const nacionalidad = detectarPais(numero)
 
@@ -169,7 +169,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
               body: { text: caption },
               footer: { text: dev },
               header: {
-                title: groupMetadata.subject,
+                title: "",
                 hasMediaAttachment: true,
                 imageMessage
               },
@@ -192,12 +192,11 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
       
-      /*
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      }) */
+      })
     }
 
     if (chat.welcome && (
@@ -219,7 +218,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
               body: { text: caption },
               footer: { text: dev },
               header: {
-                title: groupMetadata.subject,
+                title: "",
                 hasMediaAttachment: true,
                 imageMessage
               },
@@ -242,12 +241,12 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 
-      /*
+      
       await conn.sendMessage(m.chat, {
         audio: { url: "https://qu.ax/GMQnD.m4a" },
         mimetype: "audio/mpeg",
         ptt: true
-      }) */
+      })
     }
 
   } catch (e) {
