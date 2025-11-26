@@ -2,11 +2,11 @@ import fs from 'fs'
 import fetch from 'node-fetch'
 import { WAMessageStubType, generateWAMessageContent, generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 
-const obtenerUsername = async (conn, userId) => {
+const obtenerNombreLimpio = async (conn, userId) => {
   try {
-    const info = await conn.onWhatsApp(userId)
-    const pushName = info?.[0]?.notify || info?.[0]?.vname || info?.[0]?.name
-    return pushName ? `@${pushName}` : `@${userId.split('@')[0]}`
+    let name = await conn.getName(userId)
+    if (!name) name = userId.split('@')[0]
+    return `@${name}`
   } catch {
     return `@${userId.split('@')[0]}`
   }
@@ -64,7 +64,7 @@ const detectarPais = (numero) => {
 const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-  const username = await obtenerUsername(conn, userId)
+  const username = await obtenerNombreLimpio(conn, userId)
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
@@ -108,7 +108,7 @@ const generarBienvenida = async ({ conn, userId, groupMetadata, chat }) => {
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
 
   const numero = userId.split('@')[0]
-  const username = await obtenerUsername(conn, userId)
+  const username = await obtenerNombreLimpio(conn, userId)
   const nacionalidad = detectarPais(numero)
 
   const pp = await conn.profilePictureUrl(userId, 'image')
