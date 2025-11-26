@@ -85,7 +85,7 @@ const username1 = `@${userId.split('@')[0]}`
 • .˚🌊 𓈒𓏸 *\`\`\`${finalMsg}\`\`\`* 𖥻
 `
 
-  return { pp, caption, username }
+  return { pp, caption, username1 }
 }
 
 const generarDespedida = async ({ conn, userId, groupMetadata, chat }) => {
