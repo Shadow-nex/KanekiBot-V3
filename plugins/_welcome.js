@@ -199,7 +199,6 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
     const chat = global.db.data.chats[m.chat]
     const userId = m.messageStubParameters[0]
 
-    /* WELCOME */
     if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 
       const { pp, caption, welcomeImg, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
@@ -241,7 +240,6 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
     }
 
-    /* BYE */
     if (chat.welcome &&
       (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
        m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
