@@ -1,4 +1,4 @@
-import fetch from "node-fetch"
+/*import fetch from "node-fetch"
 
 function formatSize(bytes) {
   if (bytes === 0 || isNaN(bytes)) return '0 B'
@@ -68,4 +68,4 @@ handler.command = ["ytmp4", "playmp4"]
 handler.group = true
 handler.register = true
 
-export default handler
+export default handler*/
