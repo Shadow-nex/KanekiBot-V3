@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { WAMessageStubType } from '@whiskeysockets/baileys'
+import { WAMessageStubType, generateWAMessageContent, generateWAMessageFromContent, proto } from '@whiskeysockets/baileys'
 
 /* Detectar país */
 function detectarPais(numero) {
@@ -32,6 +32,15 @@ function detectarPais(numero) {
     if (numero.startsWith(code)) return codigos[code]
   }
   return "🌎 Desconocido"
+}
+
+/* Mini contacto */
+let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
+  .then(res => res.arrayBuffer()).catch(() => null)
+
+const fkontak = {
+  key: { participant: '0@s.whatsapp.net', remoteJid: 'status@broadcast', id: 'Halo' },
+  message: { locationMessage: { name: '🌲✨  𝐊𝐀𝐍𝐄𝐊𝐈 - 𝐈𝐀 ✨🌲', jpegThumbnail: Buffer.from(thumb || []) } }
 }
 
 /* Fecha y hora Perú */
@@ -120,25 +129,101 @@ let handler = m => m
 handler.before = async function (m, { conn, participants, groupMetadata }) {
   if (!m.messageStubType || !m.isGroup) return !0
 
-  const primaryBot = global.db.data.chats[m.chat].primaryBot
-  if (primaryBot && conn.user.jid !== primaryBot) throw !1
-
   const chat = global.db.data.chats[m.chat]
   const userId = m.messageStubParameters[0]
 
+  /* WELCOME */
   if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+
     const { pp, caption, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
-    rcanal.contextInfo.mentionedJid = mentions
-    await conn.sendMessage(m.chat, { image: { url: pp }, caption, ...rcanal }, { quoted: null })
+
+    const { imageMessage } = await generateWAMessageContent(
+      { image: { url: pp } },
+      { upload: conn.waUploadToServer }
+    )
+
+    const msg = generateWAMessageFromContent(
+      m.chat,
+      {
+        viewOnceMessage: {
+          message: {
+            interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+              body: { text: caption },
+              footer: { text: dev },
+              header: {
+                title: "",
+                hasMediaAttachment: true,
+                imageMessage
+              },
+              contextInfo: { mentionedJid: mentions },
+              nativeFlowMessage: {
+                buttons: [
+                  {
+                    name: "cta_url",
+                    buttonParamsJson: JSON.stringify({
+                      display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
+                      url: channel,
+                      merchant_url: channel
+                    })
+                  }
+                ]
+              }
+            })
+          }
+        }
+      },
+      { quoted: fkontak }
+    )
+
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
   }
 
-  if (chat.welcome && 
-    (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE || 
+  /* BYE */
+  if (chat.welcome &&
+    (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
      m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
 
     const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
-    rcanal.contextInfo.mentionedJid = mentions
-    await conn.sendMessage(m.chat, { image: { url: pp }, caption, ...rcanal }, { quoted: null })
+
+    const { imageMessage } = await generateWAMessageContent(
+      { image: { url: pp } },
+      { upload: conn.waUploadToServer }
+    )
+
+    const msg = generateWAMessageFromContent(
+      m.chat,
+      {
+        viewOnceMessage: {
+          message: {
+            interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+              body: { text: caption },
+              footer: { text: dev },
+              header: {
+                title: "",
+                hasMediaAttachment: true,
+                imageMessage
+              },
+              contextInfo: { mentionedJid: mentions },
+              nativeFlowMessage: {
+                buttons: [
+                  {
+                    name: "cta_url",
+                    buttonParamsJson: JSON.stringify({
+                      display_text: "⌒᷼✿ 𝗖𝗔𝗡𝗔𝗟 ⿻",
+                      url: channel,
+                      merchant_url: channel
+                    })
+                  }
+                ]
+              }
+            })
+          }
+        }
+      },
+      { quoted: fkontak }
+    )
+
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
   }
 }
 
