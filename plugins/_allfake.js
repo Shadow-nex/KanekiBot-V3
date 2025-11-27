@@ -113,7 +113,7 @@ global.rcanalx = {
       thumbnailUrl: icono,
       sourceUrl: redes,
       mediaType: 1,
-      renderLargerThumbnail: true
+      renderLargerThumbnail: false
     },
   },
 }
