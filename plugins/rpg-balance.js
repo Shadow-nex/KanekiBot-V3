@@ -23,7 +23,7 @@ const texto = `ᥫ᭡ 𝐄𝐬𝐭𝐚𝐝𝐨 𝐝𝐞𝐥 𝐀𝐝𝐯𝐞𝐧
  
 > 🍃 *⍴ᥲrᥲ ⍴r᥆𝗍ᥱgᥱr 𝗍ᥙ ძіᥒᥱr᥆, ¡ძᥱ⍴ósі𝗍ᥲᥣ᥆ ᥱᥒ ᥱᥣ ᑲᥲᥒᥴ᥆ ᥙsᥲᥒძ᥆ #ძᥱ⍴᥆sі𝗍!*`
   await conn.sendMessage(m.chat, {
-      image: { url: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763684294269_643963.jpeg' },
+      image: { url: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764275511024_766404.jpeg' },
       caption: texto,
       mentions: [who],
       ...rcanal
