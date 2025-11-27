@@ -51,8 +51,8 @@ const handler = async (m, { conn, args }) => {
   }
 }
 
+handler.command = ["react"]
 handler.help = ["react"]
 handler.tags = ["tools"]
-handler.command = ["react"]
 
 export default handler
