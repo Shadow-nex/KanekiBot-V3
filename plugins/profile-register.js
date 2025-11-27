@@ -50,7 +50,7 @@ Que la buena energía continúe contigo 🦋🍃`
     
     const productMessage = {
       product: {
-        productImage: { url: pp },
+        productImage: { url: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274472720_304571.jpeg' },
         productId: '8888888888888',
         title: '🎄 𝐑𝐞𝐠𝐢𝐬𝐭𝐫𝐨 𝐄𝐱𝐢𝐬𝐭𝐞𝐧𝐭𝐞 🍇',
         description: global.textbot,
