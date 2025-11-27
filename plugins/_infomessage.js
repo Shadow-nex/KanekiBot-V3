@@ -18,7 +18,7 @@ const usuario = await resolveLidToRealJid(m?.sender, conn, m?.chat)
 const groupAdmins = participants.filter(p => p.admin)
 
   const getThumbnail = async () => {
-    const res = await axios.get("https://files.catbox.moe/t19dtc.jpg", { responseType: "arraybuffer" })
+    const res = await axios.get("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274687365_458259.jpeg", { responseType: "arraybuffer" })
     return Buffer.from(res.data, "binary")
   }
 
