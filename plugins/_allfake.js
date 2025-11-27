@@ -67,7 +67,7 @@ global.icono = [
 'https://cdn.yupra.my.id/yp/mmuj995h.jpg', 
 'https://cdn.yupra.my.id/yp/ey5l5cct.jpg',
 'https://cdn.yupra.my.id/yp/o720p39m.jpg',
-'https://cdn.yupra.my.id/yp/a81y4vy5.jpg',
+'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg',
 'https://cdn.yupra.my.id/yp/uwx1azzu.jpg',
 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763311856541_363781.jpeg'
 ].getRandom()
