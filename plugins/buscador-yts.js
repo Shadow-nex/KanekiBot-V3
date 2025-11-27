@@ -182,7 +182,7 @@ handler.before = async (m, { conn }) => {
 
 handler.help = ['ytbuscar <texto>']
 handler.tags = ['search']
-handler.command = ['ytbuscar', 'yts', 'ytssearch']
+handler.command = ['ytbuscar', 'yts', 'ytsearch']
 handler.group = true
 
 export default handler
