@@ -26,17 +26,17 @@ var handler = async (m, { conn, usedPrefix, command, text }) => {
     };
     await m.react('🕒')
     //conn.reply(m.chat, `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`, m)
-await conn.sendMessage(
+
+let msg = await conn.reply(
   m.chat,
-  {
-    document: { url: "https://example.com/busqueda" },
-    mimetype: "application/pdf",
-    fileName: "Buscando aplicación...",
-    caption: "*☕ Buscando tu aplicación... 🍃*", 
-    jpegThumbnail: thumb2
-  },
-  { quoted: fkontak }
+  `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`,
+  m
 )
+
+setTimeout(() => {
+  conn.sendMessage(m.chat, { delete: msg.key })
+}, 2000)
+
 
     let searchA = await search(text)
     if (!searchA.length) return m.reply(`⚠️ No se encontró ninguna APK con el nombre *${text}*.`)
