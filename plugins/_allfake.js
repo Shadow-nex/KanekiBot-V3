@@ -106,7 +106,7 @@ global.rcanalx = {
     },
     externalAdReply: {
       title: `🍃 кαиєкι вσт αι 🌳`,
-      body: `🍒 !𝐀𝐂𝐂𝐄𝐒𝐎 𝐃𝐄𝐍𝐄𝐆𝐀𝐃𝐎¡ 🍁⿻𝅄`,
+      body: `▤🍒 !𝐀𝐂𝐂𝐄𝐒𝐎 𝐃𝐄𝐍𝐄𝐆𝐀𝐃𝐎¡ 🍁⿻𝅄`,
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
