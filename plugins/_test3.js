@@ -1,6 +1,6 @@
 const handler = async (m, { conn }) => {
   try {
-    const apiUrl = "https://akirax-api.vercel.app/sfw/waifu";
+    const apiUrl = "https://akirax-api.vercel.app/nsfw/waifu";
 
     const res = await fetch(apiUrl);
     if (!res.ok) throw new Error(`API respondió ${res.status}`);
@@ -12,7 +12,7 @@ const handler = async (m, { conn }) => {
     if (!img.ok) throw new Error(`Imagen respondió ${img.status}`);
 
     const array = await img.arrayBuffer();
-    const buffer = Buffer.from(array); // Sin import, funciona igual
+    const buffer = Buffer.from(array);
 
     await conn.sendMessage(
       m.chat,
