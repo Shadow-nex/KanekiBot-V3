@@ -73,7 +73,7 @@ var handler = async (m, { text, conn }) => {
     await m.react('🔍')
     const results = await yts(text)
     const videos = results.videos.slice(0, 15)
-    if (!videos.length) return conn.reply(m.chat, '⚠️ No se encontraron resultados.', m)
+    if (!videos.length) return conn.reply(m.chat, 'No se encontraron resultados.', m)
 
     ytCache[m.sender] = { results: videos, timestamp: Date.now() }
 
