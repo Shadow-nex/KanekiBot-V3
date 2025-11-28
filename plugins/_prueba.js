@@ -1,24 +1,45 @@
 const handler = async (m, { conn, command, args }) => {
-  // Obtener JID o número
-  const target =
-    m.mentionedJid?.[0] ||
-    (args[0] ? args[0].replace(/[^0-9]/g, "") + "@s.whatsapp.net" : null);
+  let targetJid = null;
 
-  if (!target)
+  // 1) Mención
+  if (m.mentionedJid?.length > 0) {
+    targetJid = m.mentionedJid[0];
+  }
+
+  // 2) Responder a un mensaje
+  else if (m.quoted) {
+    targetJid = m.quoted.sender;
+  }
+
+  // 3) Texto como número
+  else if (args[0]) {
+    const num = args[0].replace(/[^0-9]/g, "");
+    if (num) targetJid = num + "@s.whatsapp.net";
+  }
+
+  // 4) Si no detecta nada
+  if (!targetJid)
     return conn.reply(
       m.chat,
-      `⚠️ *Debes mencionar o escribir un número.*\n\nEjemplos:\n.addowner @user\n.delowner @user`,
+      `⚠️ *Debes mencionar, responder un mensaje o escribir un número.*`,
       m,
-      { quoted: m } // 🔥 responde al mensaje del usuario
+      { quoted: m }
     );
 
-  // Obtener solo número
-  const number = target.replace(/[^0-9]/g, "");
+  // Convertir a número limpio REAL
+  const number = targetJid.replace(/[^0-9]/g, "");
 
   if (!number)
-    return conn.reply(m.chat, "⚠️ *Número inválido.*", m, { quoted: m });
+    return conn.reply(
+      m.chat,
+      "⚠️ *No pude obtener un número válido.*",
+      m,
+      { quoted: m }
+    );
 
-  // ➕ AGREGAR OWNER
+  // -----------------------------
+  // AGREGAR OWNER
+  // -----------------------------
   if (command === "addowner") {
     if (global.owner.includes(number))
       return conn.reply(
@@ -32,13 +53,15 @@ const handler = async (m, { conn, command, args }) => {
 
     return conn.reply(
       m.chat,
-      `✅ *Nuevo owner agregado temporalmente:*\n@${number}`,
+      `✅ *Nuevo owner agregado temporalmente:*\n+${number}`,
       m,
-      { mentions: [target], quoted: m } // 🔥 respuesta al mensaje
+      { quoted: m }
     );
   }
 
-  // ➖ ELIMINAR OWNER
+  // -----------------------------
+  // ELIMINAR OWNER
+  // -----------------------------
   if (command === "delowner") {
     if (!global.owner.includes(number))
       return conn.reply(
@@ -52,14 +75,14 @@ const handler = async (m, { conn, command, args }) => {
 
     return conn.reply(
       m.chat,
-      `🗑️ *Owner eliminado:* @${number}`,
+      `🗑️ *Owner eliminado:* +${number}`,
       m,
-      { mentions: [target], quoted: m } // 🔥 respuesta al mensaje
+      { quoted: m }
     );
   }
 };
 
-handler.help = ["addowner @user", "delowner @user"];
+handler.help = ["addowner", "delowner"];
 handler.tags = ["owner"];
 handler.command = ["addowner", "delowner"];
 
