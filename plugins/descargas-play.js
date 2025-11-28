@@ -6,7 +6,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text, command }) => {
   try {
     if (!text?.trim())
-      return conn.reply(m.chat, `⚽ *Por favor, ingresa el nombre o enlace del video.*`, m)
+      return conn.reply(m.chat, `🪻 *Por favor, ingresa el nombre o enlace del video.*`, m, rcanal)
 
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
@@ -59,7 +59,7 @@ const handler = async (m, { conn, text, command }) => {
     }, { quoted: m })
 
     if (command === 'playaudio') {
-      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/tplay?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
@@ -91,7 +91,7 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     if (command === 'playvideo') {
-      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/yplay?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
