@@ -128,7 +128,7 @@ global.rcanalw = {
     },
     externalAdReply: {
       title: botname,
-      body: dev,
+      body: '',
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
