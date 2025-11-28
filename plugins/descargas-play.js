@@ -5,7 +5,8 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 
 const handler = async (m, { conn, text, command }) => {
   try {
-    if (!text?.trim()) return conn.reply(m.chat, `⚽ *Por favor, ingresa el nombre o enlace del video.*`, m)
+    if (!text?.trim())
+      return conn.reply(m.chat, `⚽ *Por favor, ingresa el nombre o enlace del video.*`, m)
 
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
@@ -19,7 +20,7 @@ const handler = async (m, { conn, text, command }) => {
     const vistas = formatViews(views)
     const canal = author?.name || 'Desconocido'
     const canalLink = author?.url || 'https://youtube.com'
-    
+
     const infoMessage = `
 🍃 *Título:* 
 > *${title}*
@@ -58,15 +59,15 @@ const handler = async (m, { conn, text, command }) => {
     }, { quoted: m })
 
     if (command === 'playaudio') {
-      const apiUrl = `https://api-shadowxyz.vercel.app/download/ytmp3V2?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
-      if (!json.status || !json.result?.download_url)
+      if (!json.status || !json.result?.audio?.url)
         throw '*⚠ No se obtuvo un enlace de audio válido.*'
 
       const data = json.result
-      const audioUrl = data.download_url
+      const audioUrl = data.audio.url
       const titulo = data.title
 
       await conn.sendMessage(m.chat, {
@@ -80,7 +81,7 @@ const handler = async (m, { conn, text, command }) => {
             body: canal,
             mediaType: 1,
             thumbnailUrl: data.thumbnail,
-            sourceUrl: data.youtube_url,
+            sourceUrl: url,
             renderLargerThumbnail: false
           }
         }
@@ -90,15 +91,14 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     if (command === 'playvideo') {
-      const apiUrl = `https://api.yupra.my.id/api/downloader/ytmp4?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
-      if (!json.status || !json.result?.formats?.[0]?.url)
+      if (!json.status || !json.result?.video?.url)
         throw '⚠ No se obtuvo enlace de video válido.'
 
-      const videoData = json.result.formats.find(f => f.qualityLabel === '360p') || json.result.formats[0]
-      const videoUrl = videoData.url
+      const videoUrl = json.result.video.url
       const titulo = json.result.title || title
 
       await conn.sendMessage(m.chat, {
