@@ -31,6 +31,7 @@ const handler = async (m, { conn, command, args }) => {
       { quoted: m }
     );
 
+
   const who = m.sender;
   const now = new Date().toLocaleString();
   const tagTarget = "@" + number;
