@@ -1,83 +1,88 @@
 const handler = async (m, { conn, command, args }) => {
   let targetJid = null;
 
-  // 1) Mención
   if (m.mentionedJid?.length > 0) {
     targetJid = m.mentionedJid[0];
   }
 
-  // 2) Responder a un mensaje
   else if (m.quoted) {
     targetJid = m.quoted.sender;
   }
 
-  // 3) Texto como número
   else if (args[0]) {
     const num = args[0].replace(/[^0-9]/g, "");
     if (num) targetJid = num + "@s.whatsapp.net";
   }
 
-  // 4) Si no detecta nada
   if (!targetJid)
     return conn.reply(
       m.chat,
-      `⚠️ *Debes mencionar, responder un mensaje o escribir un número.*`,
+      `*Debes mencionar, responder un mensaje o escribir un número válido.*`,
       m,
       { quoted: m }
     );
 
-  // Convertir a número limpio REAL
-  const number = targetJid.replace(/[^0-9]/g, "");
-
+  const number = targetJid.replace(/[^0-9]/g, ""); 
   if (!number)
     return conn.reply(
       m.chat,
-      "⚠️ *No pude obtener un número válido.*",
+      `*No pude obtener un número válido.*`,
       m,
       { quoted: m }
     );
 
-  // -----------------------------
-  // AGREGAR OWNER
-  // -----------------------------
+  const who = m.sender;
+  const now = new Date().toLocaleString();
+  const tagTarget = "@" + number;
+  const tagWho = "@" + who.replace(/[^0-9]/g, "");
+
   if (command === "addowner") {
     if (global.owner.includes(number))
       return conn.reply(
         m.chat,
-        `⚠️ *El usuario +${number} ya es owner.*`,
+        `⚠️ El usuario ${tagTarget} ya es owner.`,
         m,
-        { quoted: m }
+        { quoted: m, mentions: [targetJid] }
       );
 
     global.owner.push(number);
 
     return conn.reply(
       m.chat,
-      `✅ *Nuevo owner agregado temporalmente:*\n+${number}`,
+      `✅ *Nuevo owner agregado:*\n` +
+      `👤 Usuario: ${tagTarget}\n` +
+      `👑 Añadido por: ${tagWho}\n` +
+      `📅 Fecha: ${now}`,
       m,
-      { quoted: m }
+      {
+        quoted: m,
+        mentions: [targetJid, who]
+      }
     );
   }
 
-  // -----------------------------
-  // ELIMINAR OWNER
-  // -----------------------------
   if (command === "delowner") {
     if (!global.owner.includes(number))
       return conn.reply(
         m.chat,
-        `⚠️ *El usuario +${number} no es owner.*`,
+        `⚡ El usuario ${tagTarget} no es owner.`,
         m,
-        { quoted: m }
+        { quoted: m, mentions: [targetJid] }
       );
 
     global.owner = global.owner.filter(v => v !== number);
 
     return conn.reply(
       m.chat,
-      `🗑️ *Owner eliminado:* +${number}`,
+      `🌿 *Owner eliminado:* 🪻\n` +
+      `🪴 Usuario: ${tagTarget}\n` +
+      `🪺 Removido por: ${tagWho}\n` +
+      `⚡ Fecha: ${now}`,
       m,
-      { quoted: m }
+      {
+        quoted: m,
+        mentions: [targetJid, who]
+      }
     );
   }
 };
@@ -85,5 +90,5 @@ const handler = async (m, { conn, command, args }) => {
 handler.help = ["addowner", "delowner"];
 handler.tags = ["owner"];
 handler.command = ["addowner", "delowner"];
-
+handler.owner = true;
 export default handler;
