@@ -130,7 +130,6 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
  ⋅˚₊‧🌾‧₊˚ ⋅ *🄷ora:* ${hora}
  ⋅˚₊‧🍁‧₊˚ ⋅ *🄵echa:* ${fecha}
 
-
 > • .˚🌊 𓈒𓏸 *${mensaje}* 𖥻`
 
   const welcomeImg = await generarImagenWelcome({
