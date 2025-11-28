@@ -2,27 +2,41 @@ import fetch from "node-fetch"
 import yts from "yt-search"
 import crypto from "crypto"
 import axios from "axios"
+import Jimp from "jimp"
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
+
+  const getFileSize = async (url) => {
+    try {
+      const head = await fetch(url, { method: "HEAD" });
+      const size = head.headers.get("content-length");
+      if (!size) return "Desconocido";
+      let mb = (Number(size) / 1024 / 1024).toFixed(2);
+      return `${mb} MB`;
+    } catch {
+      return "Desconocido";
+    }
+  };
+
   try {
     if (!text?.trim())
-      return conn.reply(m.chat, `*🍃 Por favor, ingresa el nombre o enlace del video.*`, m, rcanal)
+      return conn.reply(m.chat, `*🍃 Por favor, ingresa el nombre o enlace del video.*`, m, rcanal);
 
-    await m.react('🔎')
+    await m.react('🔎');
 
-    const videoMatch = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|shorts\/|v\/)?([a-zA-Z0-9_-]{11})/)
-    const query = videoMatch ? `https://youtu.be/${videoMatch[1]}` : text
+    const videoMatch = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|shorts\/|v\/)?([a-zA-Z0-9_-]{11})/);
+    const query = videoMatch ? `https://youtu.be/${videoMatch[1]}` : text;
 
-    const search = await yts(query)
-    const allItems = (search?.videos?.length ? search.videos : search.all) || []
+    const search = await yts(query);
+    const allItems = (search?.videos?.length ? search.videos : search.all) || [];
     const result = videoMatch
       ? allItems.find(v => v.videoId === videoMatch[1]) || allItems[0]
-      : allItems[0]
+      : allItems[0];
 
-    if (!result) throw 'No se encontraron resultados.'
+    if (!result) throw 'No se encontraron resultados.';
 
-    const { title = 'Desconocido', thumbnail, timestamp = 'N/A', views, ago = 'N/A', url = query, author = {} } = result
-    const vistas = formatViews(views)
+    const { title = 'Desconocido', thumbnail, timestamp = 'N/A', views, ago = 'N/A', url = query, author = {} } = result;
+    const vistas = formatViews(views);
 
     const res3 = await fetch("https://files.catbox.moe/wfd0ze.jpg");
     const thumb3 = Buffer.from(await res3.arrayBuffer());
@@ -33,17 +47,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         documentMessage: {
           title: "𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... ..",
           fileName: "🎄☃️ 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... .. 🍃",
-          jpegThumbnail: thumb3
-        }
-      }
-    };
-
-    const fkontak = {
-      key: { fromMe: false, participant: "0@s.whatsapp.net" },
-      message: {
-        documentMessage: {
-          title: `「 ${title} 」`,
-          fileName: `☕ 𝗗𝗲𝘀𝗰𝗮𝗿𝗴𝗮 𝗰𝗼𝗺𝗽𝗹𝗲𝘁𝗮 𝗰𝗼𝗻 𝗲𝘅𝗶𝘁𝗼.\n\n\n⚡ ${textbot}`,
           jpegThumbnail: thumb3
         }
       }
@@ -60,19 +63,57 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
 > ౼⋆·˚ ☾︎* *ძᥱsᥴᥲrgᥲᥒძ᥆ 𝗍ᥙs mᥲmᥲძᥲs* ☃️`;
 
-    const thumb = (await conn.getFile(thumbnail)).data
-    await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 })
+    const thumb = (await conn.getFile(thumbnail)).data;
+    await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 });
 
-
-    const audio = await savetube.download(url, "audio");
+    const audio = await savetube.download(url);
     if (!audio?.status) throw `Error al obtener el audio: ${audio?.error || 'Desconocido'}`;
+
+    let thumbDoc = null;
+    try {
+      const img = await Jimp.read(result.thumbnail);
+      img.resize(300, Jimp.AUTO).quality(70);
+      thumbDoc = await img.getBufferAsync(Jimp.MIME_JPEG);
+    } catch (err) {
+      console.log("⚠️ Error al procesar miniatura:", err.message);
+      thumbDoc = Buffer.alloc(0);
+    }
+
+    const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763384842220_234152.jpeg")).buffer();
+    const fkontak = {
+      key: {
+        fromMe: false,
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast"
+      },
+      message: {
+        productMessage: {
+          product: {
+            productImage: {
+              mimetype: "image/jpeg",
+              jpegThumbnail: Shadow_url
+            },
+            title: "🦌 𝐃𝐄𝐒𝐂𝐀𝐑𝐆𝐀 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐀 🎅",
+            description: "",
+            currencyCode: "USD",
+            priceAmount1000: 100000,
+            retailerId: "descarga-premium"
+          },
+          businessOwnerJid: "51919199620@s.whatsapp.net"
+        }
+      }
+    };
+
+    const fileSize = await getFileSize(audio.result.download);
 
     await conn.sendMessage(
       m.chat,
       {
-        audio: { url: audio.result.download },
-        mimetype: 'audio/mpeg',
-        fileName: `${title}.mp3`
+        document: { url: audio.result.download },
+        mimetype: "audio/mpeg",
+        fileName: `${title}.mp3`,
+        caption: `🎧 *Descarga completa*\n📦 *Tamaño:* ${fileSize}\n📀 *Título:* ${title}`,
+        ...(thumbDoc ? { jpegThumbnail: thumbDoc } : {})
       },
       { quoted: fkontak }
     );
@@ -89,10 +130,9 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-handler.command = handler.help = ['play1', 'mp3']; // SOOLO ESTOS
+handler.command = handler.help = ['play1', 'mp3'];
 handler.tags = ['download'];
 export default handler;
-
 
 const savetube = {
   api: {
@@ -183,9 +223,9 @@ const savetube = {
 };
 
 function formatViews(views) {
-  if (views === undefined) return "No disponible"
-  if (views >= 1e9) return `${(views / 1e9).toFixed(1)}B (${views.toLocaleString()})`
-  if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M (${views.toLocaleString()})`
-  if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K (${views.toLocaleString()})`
-  return views.toString()
+  if (views === undefined) return "No disponible";
+  if (views >= 1e9) return `${(views / 1e9).toFixed(1)}B (${views.toLocaleString()})`;
+  if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M (${views.toLocaleString()})`;
+  if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K (${views.toLocaleString()})`;
+  return views.toString();
 }
