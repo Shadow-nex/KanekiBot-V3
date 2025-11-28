@@ -59,7 +59,7 @@ const handler = async (m, { conn, text, command }) => {
     }, { quoted: m })
 
     if (command === 'playaudio') {
-      const apiUrl = `https://akirax-api.vercel.app/tplay?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
@@ -91,7 +91,7 @@ const handler = async (m, { conn, text, command }) => {
     }
 
     if (command === 'playvideo') {
-      const apiUrl = `https://akirax-api.vercel.app/yplay?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
