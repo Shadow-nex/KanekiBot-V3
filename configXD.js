@@ -31,7 +31,7 @@ global.kanekiAIJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.botname = "ㅤׁ෨ 🌿 xd 🪴. り"
+global.botname = "ㅤׁ෨ 🌿 𝐾𝑎𝑛𝑒𝑘𝑖 𝐵𝑜𝑡 -𝑉3 🪴. り"
 global.textbot = "💛 кαиєкι вσт ν3 • мα∂є ву sһᥲძ᥆ᥕ.᥊ᥡz"
 global.dev = "© ⍴᥆ᥕᥱrᥱძ ᑲᥡ ׅ  ׄ 몽 ۪sһᥲძ᥆ᥕ.᥊ᥡz 🧊ᰫ"
 global.author = "© mᥲძᥱ ᥕі𝗍һ ᑲᥡ ѕнα∂σω`¢σяє"
