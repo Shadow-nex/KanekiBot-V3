@@ -211,7 +211,7 @@ const json = await res.json()
 const gifs = json.data
 if (!gifs || gifs.length === 0) return m.reply('ꕥ No se encontraron resultados.')
 const randomGif = gifs[Math.floor(Math.random() * gifs.length)].mp4
-conn.sendMessage(m.chat, { video: { url: randomGif }, gifPlayback: true, caption: str, mentions: [who] }, { quoted: m })
+conn.sendMessage(m.chat, { video: { url: randomGif }, gifPlayback: true, caption: str, mentions: [who], ...rcanalw }, { quoted: m })
 } catch (e) {
 return m.reply(`⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${e.message}`)
 }}}
