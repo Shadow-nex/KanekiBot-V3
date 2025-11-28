@@ -1,6 +1,6 @@
 const handler = async (m, { conn, command, args }) => {
-  if (!m.isOwner) return conn.reply(m.chat, "❌ *Solo un owner puede usar este comando.*", m)
-
+ /* if (!m.isOwner) return conn.reply(m.chat, "❌ *Solo un owner puede usar este comando.*", m)
+*/
   const target = 
     m.mentionedJid?.[0] || 
     (args[0] ? args[0].replace(/[^0-9]/g, "") + "@s.whatsapp.net" : null)
