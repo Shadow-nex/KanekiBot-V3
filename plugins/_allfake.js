@@ -84,7 +84,7 @@ global.rcanal = {
       newsletterName: channelRD.name,
     },
     externalAdReply: {
-      title: `•◍⃝߭۫ꯨ🍨۪〬.࠭⤿ʅ ${botname} 𑁍ꥈ࣪⬪🍃`,
+      title: `•◍⃝߭۫ꯨ🍨۪〬. ${botname} 𑁍ꥈ࣪⬪`,
       body: `（つ /${nombre} • ${saludo}🍓꒱`,
       mediaUrl: null,
       description: null,
