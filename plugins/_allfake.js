@@ -149,7 +149,7 @@ global.rch = {
       sourceUrl: 'https://chat.whatsapp.com/BU22fjRehH1CUSsGEYMRXN?mode=wwt',
       thumbnailUrl: icono,
       mediaType: 1,
-      renderLargerThumbnail: true
+      renderLargerThumbnail: false
     },
   },
 }
