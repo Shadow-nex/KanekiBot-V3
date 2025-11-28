@@ -25,7 +25,18 @@ var handler = async (m, { conn, usedPrefix, command, text }) => {
         participant: "0@s.whatsapp.net"
     };
     await m.react('🕒')
-    conn.reply(m.chat, `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`, m)
+    //conn.reply(m.chat, `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`, m)
+await conn.sendMessage(
+  m.chat,
+  {
+    document: { url: "https://example.com/busqueda" },
+    mimetype: "application/pdf",
+    fileName: "Buscando aplicación...",
+    caption: "*☕ Buscando tu aplicación... 🍃*", 
+    jpegThumbnail: thumb2
+  },
+  { quoted: fkontak }
+)
 
     let searchA = await search(text)
     if (!searchA.length) return m.reply(`⚠️ No se encontró ninguna APK con el nombre *${text}*.`)
