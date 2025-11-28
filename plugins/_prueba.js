@@ -17,7 +17,7 @@ const handler = async (m, { conn, command, args }) => {
   if (!targetJid)
     return conn.reply(
       m.chat,
-      `*Debes mencionar, responder un mensaje o escribir un número válido.*`,
+      `⚡ *Por favo, menciona a un usuario pará agregar o quitar como owner.*`,
       m,
       { quoted: m }
     );
@@ -49,10 +49,10 @@ const handler = async (m, { conn, command, args }) => {
 
     return conn.reply(
       m.chat,
-      `✅ *Nuevo owner agregado:*\n` +
-      `👤 Usuario: ${tagTarget}\n` +
-      `👑 Añadido por: ${tagWho}\n` +
-      `📅 Fecha: ${now}`,
+      `✅ *Nuevo owner agregado:* ✅\n` +
+      `🌿 Usuario: ${tagTarget}\n` +
+      `⚡ Añadido por: ${tagWho}\n` +
+      `🪴 Fecha: ${now}`,
       m,
       {
         quoted: m,
