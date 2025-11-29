@@ -1,84 +1,90 @@
-// Play Store Search - By Jose Xral 🔍
-// Busca aplicaciones en Google Play Store
-// https://whatsapp.com/channel/0029ValMlRS6buMFL9d0iQ0S
-
-import axios from 'axios';
+import axios from 'axios'
+import * as cheerio from 'cheerio'
 
 let handler = async (m, { conn, text, usedPrefix }) => {
-  if (!text) return conn.reply(m.chat, '🌿 Ingresa el nombre de la aplicación que deseas buscar.\n\nEjemplo:\n' + `> *${usedPrefix}playstore1* whatsapp`, m, rcanal);
+  if (!text) return conn.reply(
+    m.chat,
+    '🌿 Ingresa el nombre de la aplicación.\n\nEjemplo:\n' + `> *${usedPrefix}playstore* whatsapp`,
+    m
+  )
 
-  await m.react('🕓');
+  await m.react('🕓')
 
-  const PlayStore = async (search) => {
+  const searchPlayStore = async (query) => {
     try {
-      const { data } = await axios.get(`https://play.google.com/store/search?q=${search}&c=apps`);
-      const resultados = [];
-      const $ = cheerio.load(data);
-      
-      $('.ULeU3b > .VfPpkd-WsjYwc.VfPpkd-WsjYwc-OWXEXe-INsAgc.KC1dQ.Usd1Ac.AaN0Dd.Y8RQXd > .VfPpkd-aGsRMb > .VfPpkd-EScbFb-JIbuQc.TAQqTe > a').each((i, u) => {
-        const linkk = $(u).attr('href');
-        const nombre = $(u).find('.j2FCNc > .cXFu1 > .ubGTjb > .DdYX5').text();
-        const desarrollador = $(u).find('.j2FCNc > .cXFu1 > .ubGTjb > .wMUdtb').text();
-        const calificacion = $(u).find('.j2FCNc > .cXFu1 > .ubGTjb > div').attr('aria-label');
-        const calificacionTexto = $(u).find('.j2FCNc > .cXFu1 > .ubGTjb > div > span.w2kbF').text();
-        const link = `https://play.google.com${linkk}`;
+      const url = `https://play.google.com/store/search?q=${encodeURIComponent(query)}&c=apps`
+      const { data } = await axios.get(url, {
+        headers: { 
+          'User-Agent': 'Mozilla/5.0'
+        }
+      })
 
-        resultados.push({
-          link: link,
+      const $ = cheerio.load(data)
+      const apps = []
+
+      $('a.Si6A0c.Gy4nib').each((i, el) => {
+        if (i >= 5) return
+
+        const link = 'https://play.google.com' + $(el).attr('href')
+        const nombre = $(el).find('.DdYX5').text().trim()
+        const desarrollador = $(el).find('.wMUdtb').text().trim()
+        const calificacion = $(el).find('span.w2kbF').text().trim()
+
+        apps.push({
           nombre: nombre || 'Sin nombre',
           desarrollador: desarrollador || 'Sin desarrollador',
-          img: 'https://files.catbox.moe/dklg5y.jpg', 
           calificacion: calificacion || 'Sin calificación',
-          calificacionTexto: calificacionTexto || 'Sin calificación',
-          link_desarrollador: `https://play.google.com/store/apps/developer?id=${desarrollador.split(" ").join('+')}`
-        });
-      });
+          link,
+          link_desarrollador:
+            desarrollador
+              ? `https://play.google.com/store/apps/developer?id=${desarrollador.replace(/\s+/g, '+')}`
+              : 'No disponible',
+          img: 'https://files.catbox.moe/dklg5y.jpg'
+        })
+      })
 
-      return resultados.length ? resultados.slice(0, Math.min(5, resultados.length)) : { message: 'No se encontraron resultados' };
-    } catch (error) {
-      console.error(error);
-      throw new Error('Error en la búsqueda de Play Store');
+      return apps
+    } catch (e) {
+      console.error(e)
+      return []
     }
-  };
-
-  try {
-    const resultados = await PlayStore(text);
-    if (resultados.message) return m.reply(resultados.message);
-
-    let txt = `*💙 Resultados de la búsqueda en Play Store para "${text}"*\n\n`;
-    for (let app of resultados) {
-      txt += `🌿 *Nombre:* ${app.nombre}\n`;
-      txt += `💮 *Desarrollador:* ${app.desarrollador}\n`;
-      txt += `✨ *Calificación:* ${app.calificacionTexto} (${app.calificacion})\n`;
-      txt += `🔥 *Link:* ${app.link}\n`;
-      txt += `🍋 *Link del Desarrollador:* ${app.link_desarrollador}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-    }
-
-    await conn.sendMessage(m.chat, { 
-      text: txt,
-      contextInfo: {
-        externalAdReply: {
-          title: resultados[0].nombre,
-          body: `Resultados de búsqueda de Play Store - ${text}`,
-          thumbnailUrl: 'https://files.catbox.moe/dklg5y.jpg',
-          sourceUrl: resultados[0].link,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        }
-      }
-    });
-    
-    await m.react('✔️');
-  } catch (error) {
-    console.error(error);
-    m.reply('Ocurrió un error durante la búsqueda.');
-    await m.react('✖️');
   }
-};
 
-handler.help = ['playstore *<query>*'];
-handler.tags = ['search'];
-handler.command = ['playstore', 'ps'];
-handler.limit = false;
+  const resultados = await searchPlayStore(text)
 
-export default handler;
+  if (!resultados.length)
+    return m.reply('❌ No se encontraron resultados.')
+
+  let txt = `*💙 Resultados de Play Store para "${text}"*\n\n`
+
+  for (let app of resultados) {
+    txt += `🌿 *Nombre:* ${app.nombre}\n`
+    txt += `💮 *Desarrollador:* ${app.desarrollador}\n`
+    txt += `✨ *Calificación:* ${app.calificacion}\n`
+    txt += `🔥 *Link:* ${app.link}\n`
+    txt += `🍋 *Link del Desarrollador:* ${app.link_desarrollador}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n`
+  }
+
+  await conn.sendMessage(m.chat, {
+    text: txt,
+    contextInfo: {
+      externalAdReply: {
+        title: resultados[0].nombre,
+        body: `Resultados en Play Store`,
+        thumbnailUrl: resultados[0].img,
+        sourceUrl: resultados[0].link,
+        mediaType: 1,
+        renderLargerThumbnail: true
+      }
+    }
+  })
+
+  await m.react('✔️')
+}
+
+handler.help = ['playstore <texto>']
+handler.tags = ['search']
+handler.command = ['playstore', 'ps']
+handler.limit = false
+
+export default handler
