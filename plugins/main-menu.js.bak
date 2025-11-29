@@ -7,7 +7,7 @@ import moment from 'moment-timezone'
 
 const { generateWAMessageFromContent, generateWAMessageContent, proto } = baileys
 */
-let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
+let handler = async (m, { conn, usedPrefix, userId, participants }) => {
   try {
     await m.react('🍒')
 
@@ -28,7 +28,7 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     const totalCommands = Object.keys(global.plugins).length
     let readMore = String.fromCharCode(8206).repeat(4001)
 
-    const userId = m.sender.split('@')[0]
+    const userId = `@${userId.split('@')[0]}`
     const phone = PhoneNumber('+' + userId)
     const pais = phone.getRegionCode() || 'Desconocido 🌐'
  
@@ -206,11 +206,11 @@ body: textbot,
 mediaType: 1,
 mediaUrl: redes,
 sourceUrl: redes,
-thumbnail: await (await fetch(banner)).buffer(),
+thumbnail: await (await fetch(imageUrl)).buffer(),
 showAdAttribution: false,
 containsAutoReply: true,
 renderLargerThumbnail: true
-}}}, { quoted: m }) 
+}}}, { quoted: fkontak }) 
   } catch (e) {
     console.error(e)
     await conn.sendMessage(m.chat, { 
