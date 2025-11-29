@@ -25,9 +25,9 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
 
     if (!text?.trim())
-      return conn.reply(m.chat, `*🍃 Por favor, ingresa el nombre o enlace del video.*`, m, rcanal);
+      return conn.reply(m.chat, `*💛 Por favor, ingresa el nombre o enlace del video.*`, m, rcanal);
 
-    await m.react('🔎');
+    await m.react('⏰');
     await conn.sendMessage(m.chat, { text: `> ☕ Buscando en YouTube:\n> ${text} ` }, { quoted: m });
 
     const videoMatch = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|shorts\/|v\/)?([a-zA-Z0-9_-]{11})/);
