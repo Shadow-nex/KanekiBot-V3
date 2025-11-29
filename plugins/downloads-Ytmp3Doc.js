@@ -1,5 +1,5 @@
-// - 𝙲𝙾𝙳𝙸𝙶𝙾 𝙲𝚁𝙴𝙰𝙳𝙾 𝚇 𝚂𝙷𝙰𝙳𝙾𝚆-𝙽𝙴𝚇 𝚇𝙳 👑
-// - https://github.com/Shadow-nex/
+// - 𝙲𝙾𝙳𝙸𝙶𝙾 𝙲𝚁𝙴𝙰𝙳𝙾 𝚇 𝚂𝙷𝙰𝙳𝙾𝚆-xʏᴢ 𝚇𝙳 👑
+// - https://github.com/shadox-xyz/
 // - 𝙽𝙾 𝙴𝙳𝙸𝚃𝙰𝚁 𝙴𝙻 𝙲𝙾𝙳𝙸𝙶𝙾 
 
 import fetch from "node-fetch"
@@ -117,7 +117,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         document: { url: audio.result.download },
         mimetype: "audio/mpeg",
         fileName: `${title}.mp3`,
-        caption: `🎧 *Descarga completa*\n📦 *Tamaño:* ${fileSize}\n📀 *Título:* ${title}`,
+        caption: `> 🌴 ᴛɪᴛᴜʟᴏ: ${title}
+> 🌾ᴛᴀᴍᴀɴ̃ᴏ: ${fileSize}`,
         ...(thumbDoc ? { jpegThumbnail: thumbDoc } : {})
       },
       { quoted: fkontak }

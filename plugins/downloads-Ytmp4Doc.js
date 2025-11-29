@@ -1,5 +1,5 @@
-// - 𝙲𝙾𝙳𝙸𝙶𝙾 𝙲𝚁𝙴𝙰𝙳𝙾 𝚇 𝚂𝙷𝙰𝙳𝙾𝚆-𝙽𝙴𝚇 𝚇𝙳 👑
-// - https://github.com/Shadow-nex/
+// - 𝙲𝙾𝙳𝙸𝙶𝙾 𝙲𝚁𝙴𝙰𝙳𝙾 𝚇 𝚂𝙷𝙰𝙳𝙾𝚆-xʏᴢ 𝚇𝙳 👑
+// - https://github.com/shadox-xyz/
 // - 𝙽𝙾 𝙴𝙳𝙸𝚃𝙰𝚁 𝙴𝙻 𝙲𝙾𝙳𝙸𝙶𝙾 
 
 import fetch from "node-fetch"
@@ -118,7 +118,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         document: { url: video.result.download },
         mimetype: "video/mp4",
         fileName: `${title}.mp4`,
-        caption: `🎬 *Video listo*\n📦 *Tamaño:* ${fileSize}\n📀 *Título:* ${title}`,
+        caption: `> 🌴 ᴛɪᴛᴜʟᴏ: ${title}
+> 🌾ᴛᴀᴍᴀɴ̃ᴏ: ${fileSize}`,
         ...(thumbDoc ? { jpegThumbnail: thumbDoc } : {})
       },
       { quoted: fkontak }
@@ -136,8 +137,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-handler.command = ['ytmp3doc', 'ytadoc', 'mp3doc'];
-handler.help = ['ytmp3doc <texto>'];
+handler.command = ['ytmp4doc', 'ytvdoc', 'mp4doc'];
+handler.help = ['ytmp4doc <texto>'];
 handler.tags = ['download'];
 handler.group = true;
 handler.register = true;
