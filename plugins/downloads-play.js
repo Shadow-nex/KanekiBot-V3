@@ -58,7 +58,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 🌿 *Publicado:* ${ago}
 ⚡ *Link:* ${url}
 
-> 🎀⌗ ᥫ᭡ d{dev}. 🎀`;
+> 🎀⌗ ᥫ᭡ ${dev}. 🎀`;
 
     const thumb = (await conn.getFile(thumbnail)).data
     await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 })
