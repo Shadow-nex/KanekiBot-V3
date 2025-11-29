@@ -266,7 +266,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
-                        display_text: "",
+                        display_text: ".",
                         url: channel,
                         merchant_url: channel
                       })
