@@ -179,7 +179,7 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
     groupName: groupMetadata.subject,
     memberCount: groupSize,
     avatar: pp,
-    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg"
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764382807653_64665.jpeg"
   })
 
   return { pp, caption, byeImg, mentions: [userId] }
