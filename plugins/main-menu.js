@@ -3,13 +3,13 @@ import { xpRange } from '../lib/levelling.js'
 import fs from 'fs'
 import PhoneNumber from 'awesome-phonenumber'
 import moment from 'moment-timezone'
-//import baileys from '@whiskeysockets/baileys'
+import baileys from '@whiskeysockets/baileys'
 
 const { generateWAMessageFromContent, generateWAMessageContent, proto } = baileys
 
 let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
   try {
-    await m.react('🚀')
+    await m.react('🍒')
 
     const user = global.db.data.users[m.sender] || {}
     const name = await conn.getName(m.sender)
@@ -110,12 +110,12 @@ ${readMore}
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg'
     ]
     let imageUrl = imgs[Math.floor(Math.random() * imgs.length)]
-/*
+
     const { imageMessage } = await generateWAMessageContent(
       { image: { url: imageUrl } },
       { upload: conn.waUploadToServer }
     )
-*/
+
     const icon = [
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911352440_131724.jpeg',
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911305951_36243.jpeg',
@@ -149,7 +149,7 @@ ${readMore}
     }
   }
       
-   /* const msg = generateWAMessageFromContent(m.chat, {
+    const msg = generateWAMessageFromContent(m.chat, {
       viewOnceMessage: {
         message: {
           interactiveMessage: proto.Message.InteractiveMessage.fromObject({
@@ -189,28 +189,7 @@ ${readMore}
       }
     }, { quoted: fkontak })
 
-    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })*/
-await conn.sendMessage(m.chat, { 
-text: infoUser + menuTexto,
-contextInfo: {
-mentionedJid: [userId],
-isForwarded: true,
-forwardedNewsletterMessageInfo: {
-newsletterJid: channelRD.id,
-serverMessageId: '',
-newsletterName: channelRD.name
-},
-externalAdReply: {
-title: botname,
-body: textbot,
-mediaType: 1,
-mediaUrl: redes,
-sourceUrl: redes,
-thumbnail: await (await fetch(imageUrl)).buffer(),
-showAdAttribution: false,
-containsAutoReply: true,
-renderLargerThumbnail: true
-}}}, { quoted: fkontak })
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
  
   } catch (e) {
     console.error(e)
@@ -224,7 +203,6 @@ renderLargerThumbnail: true
 handler.help = ['menu']
 handler.tags = ['main']
 handler.command = ['menu','help','menú','allmenu','menucompleto']
-handler.register = true;
 
 export default handler
 
