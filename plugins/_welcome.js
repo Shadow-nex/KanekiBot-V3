@@ -137,7 +137,7 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     groupName: groupMetadata.subject,
     memberCount: groupSize,
     avatar: pp,
-    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764123152081_656966.jpeg"
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg"
   })
 
   return { pp, caption, welcomeImg, mentions: [userId] }
@@ -179,7 +179,7 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
     groupName: groupMetadata.subject,
     memberCount: groupSize,
     avatar: pp,
-    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764123158112_921487.jpeg"
+    background: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg"
   })
 
   return { pp, caption, byeImg, mentions: [userId] }
