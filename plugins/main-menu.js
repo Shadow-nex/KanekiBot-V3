@@ -9,7 +9,7 @@ const { generateWAMessageFromContent, generateWAMessageContent, proto } = bailey
 */
 let handler = async (m, { conn, usedPrefix, userId, participants }) => {
   try {
-    await m.react('')
+    await m.react('🍒')
 
     const user = global.db.data.users[m.sender] || {}
     const name = await conn.getName(m.sender)
@@ -27,8 +27,8 @@ let handler = async (m, { conn, usedPrefix, userId, participants }) => {
 
     const totalCommands = Object.keys(global.plugins).length
     let readMore = String.fromCharCode(8206).repeat(4001)
-
-    const userId = `@${userId.split('@')[0]}`
+    const username = `@${userId.split('@')[0]}`
+    const userId = m.sender.split('@')[0]
     const phone = PhoneNumber('+' + userId)
     const pais = phone.getRegionCode() || 'Desconocido 🌐'
  
