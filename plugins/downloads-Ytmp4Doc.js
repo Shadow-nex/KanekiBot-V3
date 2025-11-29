@@ -52,22 +52,23 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       message: {
         documentMessage: {
           title: "𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... ..",
-          fileName: "🎄☃️ 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... .. 🍃",
+          fileName: "☃️ 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢....",
           jpegThumbnail: thumb3
         }
       }
     };
 
-    const info = `🎄✨ *\`YOUTUBE - DOWNLOAD\`* ✨🎄
+    const info = `ㅤ       ࣪      𓈒      𔓗𓏸    ࣪     ׅ
+᱒᱒     𝒀𝒐𝒖𝑻𝒖𝒃𝒆 - 𝑫𝒐𝒄𝒔 ބ  ࣪ ㅤ
 
-🕸️ *𝐓𝐢𝐭𝐮𝐥𝐨:* ${title}
-🎁 *𝐂𝐚𝐧𝐚𝐥:* ${author.name || '❄️ Desconocido'}
-🔔 *𝐕𝐢𝐬𝐭𝐚𝐬:* ${vistas}
-⏳ *𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧:* ${timestamp}
-🎇 *𝐏𝐮𝐛𝐥𝐢𝐜𝐚𝐝𝐨:* ${ago}
-🎅 *𝐋𝐢𝐧𝐤:* ${url}
+๑ ˙•.   ⃝͈ٝ🍒̰ࠛ  𝐓𝐢𝐭𝐮𝐥𝐨: ${title}
+๑ ˙•.   ⃝͈ٝ⚡̰ࠛ  𝐂𝐚𝐧𝐚𝐥: ${author.name || '❄️ Desconocido'}
+๑ ˙•.   ⃝͈ٝ🎋̰ࠛ   𝐕𝐢𝐬𝐭𝐚𝐬: ${vistas}
+๑ ˙•.   ⃝͈ٝ🌾̰ࠛ  𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧: ${timestamp}
+๑ ˙•.   ⃝͈ٝ🍁̰ࠛ  𝐏𝐮𝐛𝐥𝐢𝐜𝐚𝐝𝐨: ${ago}
+๑ ˙•.   ⃝͈ٝ🪽̰ࠛ 𝐋𝐢𝐧𝐤: ${url}
 
-> ౼⋆·˚ ☾︎* *ძᥱsᥴᥲrgᥲᥒძ᥆ 𝗍ᥙs mᥲmᥲძᥲs* ☃️`;
+﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌`;
 
     const thumb = (await conn.getFile(thumbnail)).data;
     await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 });
@@ -118,8 +119,8 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         document: { url: video.result.download },
         mimetype: "video/mp4",
         fileName: `${title}.mp4`,
-        caption: `> 🌴 ᴛɪᴛᴜʟᴏ: ${title}
-> 🌾ᴛᴀᴍᴀɴ̃ᴏ: ${fileSize}`,
+        caption: `> 🌴 \`ᴛɪᴛᴜʟᴏ:\` *${title}*
+> 🌾 \`ᴛᴀᴍᴀɴ̃ᴏ:\` *${fileSize}*`,
         ...(thumbDoc ? { jpegThumbnail: thumbDoc } : {})
       },
       { quoted: fkontak }
