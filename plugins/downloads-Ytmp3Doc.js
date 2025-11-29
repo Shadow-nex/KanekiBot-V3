@@ -27,7 +27,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       return conn.reply(m.chat, `*💛 Por favor, ingresa el nombre o enlace del video.*`, m, rcanal);
 
     await m.react('⏰');
-    await conn.sendMessage(m.chat, { text: `> ☕ Buscando en YouTube:\n> ${text} ` }, { quoted: m });
+    await conn.sendMessage(m.chat, { text: `> 🌳 Buscando en YouTube:\n> ${text} ` }, { quoted: m });
 
     const videoMatch = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|shorts\/|v\/)?([a-zA-Z0-9_-]{11})/);
     const query = videoMatch ? `https://youtu.be/${videoMatch[1]}` : text;
@@ -59,7 +59,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const info = `🎄✨ *\`YOUTUBE - DOWNLOAD\`* ✨🎄
 
-🕸️ *𝐓𝐢𝐭𝐮𝐥𝐨:* ${title}
+🍒 *𝐓𝐢𝐭𝐮𝐥𝐨:* ${title}
 🎁 *𝐂𝐚𝐧𝐚𝐥:* ${author.name || '❄️ Desconocido'}
 🔔 *𝐕𝐢𝐬𝐭𝐚𝐬:* ${vistas}
 ⏳ *𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧:* ${timestamp}
