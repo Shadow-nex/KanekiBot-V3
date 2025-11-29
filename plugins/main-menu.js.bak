@@ -206,11 +206,11 @@ body: textbot,
 mediaType: 1,
 mediaUrl: redes,
 sourceUrl: redes,
-thumbnail: await (await fetch(imageUrl)).buffer(),
+thumbnail: await (await fetch(banner)).buffer(),
 showAdAttribution: false,
 containsAutoReply: true,
 renderLargerThumbnail: true
-}}}, { quoted: fkontak }) 
+}}}, { quoted: m }) 
   } catch (e) {
     console.error(e)
     await conn.sendMessage(m.chat, { 
