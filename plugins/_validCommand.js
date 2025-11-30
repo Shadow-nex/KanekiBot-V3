@@ -8,11 +8,6 @@ export async function before(m, { conn }) {
   const command = m.text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase()
   if (!command || command === 'bot') return
 
-  const channelRD = { 
-    id: '120363422142340004@newsletter', 
-    name: '🌸 𝗞𝗮𝗻𝗲𝗸𝗶 𝗕𝗼𝘁 | 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 🚀'
-  }
-
   const similarity = (a, b) => {
     let matches = 0
     for (let i = 0; i < Math.min(a.length, b.length); i++) {
@@ -44,7 +39,7 @@ export async function before(m, { conn }) {
 
   const texto = ` 🌿🦌 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"*
 
-🎄 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🎅🎇
+🎄 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🪴
 
 🥗 ᴘᴏsɪʙʟᴇs ᴄᴏɪɴᴄɪᴅᴇɴᴄɪᴀs: 🧊
 ${sugerencias}`
