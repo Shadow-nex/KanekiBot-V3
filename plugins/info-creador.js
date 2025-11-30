@@ -53,7 +53,7 @@ END:VCARD`.trim();
           title: "contacto test",
           description: ""
         },
-        businessOwnerJid: "51919199620@s.whatsapp.net"
+        businessOwnerJid: `${numCreador}@s.whatsapp.net`
       }
     }
   };
