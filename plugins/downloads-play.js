@@ -121,7 +121,7 @@ async function getVid(url) {
   const apis = [
     {
       api: 'Vreden',
-      endpoint: `https://api.stellarwa.xyz/dl/ytmp4?url=${encodeURIComponent(url)}&quality=360&key=this-xyz ,
+      endpoint: `https://api.stellarwa.xyz/dl/ytmp4?url=${encodeURIComponent(url)}&quality=360&key=this-xyz`,
       extractor: res => res?.result?.data?.dl
     }
   ]
