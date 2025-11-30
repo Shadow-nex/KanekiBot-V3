@@ -68,7 +68,6 @@ END:VCARD`.trim();
     },
     contextInfo: {
       mentionedJid: [m.sender],
-      isForwarded: true,
       externalAdReply: {
         title: 'ekisde 🙂‍↕️',
         body: textbot,
