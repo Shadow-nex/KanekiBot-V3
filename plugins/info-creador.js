@@ -1,6 +1,7 @@
 // by dv.shadow - https://github.com/shadox-xyz
+
 import PhoneNumber from 'awesome-phonenumber';
-import fetch from 'node-fetch'; // <-- faltaba esto
+import fetch from 'node-fetch';
 
 const handler = async (m, { conn }) => {
   const name = '🌳 sһᥲძ᥆ᥕ-᥊ᥡz • ᥆𝖿𝖿іᥴіᥲᥣ'
@@ -34,7 +35,7 @@ END:VCARD`.trim();
     vcard
   };
 
-  const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763384842220_234152.jpeg")).buffer();
+  const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513335162_487707.jpeg")).buffer();
 
   const fkontak = {
     key: {
@@ -68,11 +69,6 @@ END:VCARD`.trim();
     contextInfo: {
       mentionedJid: [m.sender],
       isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channelRD.id,
-        serverMessageId: 100,
-        newsletterName: channelRD.name
-      },
       externalAdReply: {
         title: 'ekisde 🙂‍↕️',
         body: textbot,
