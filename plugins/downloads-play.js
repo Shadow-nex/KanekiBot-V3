@@ -120,9 +120,9 @@ export default handler;
 async function getVid(url) {
   const apis = [
     {
-      api: 'Yupra',
-      endpoint: `https://api.yupra.my.id/api/downloader/ytmp4?url=${encodeURIComponent(url)}`,
-      extractor: res => res?.result?.formats?.[0]?.url || res?.result?.url
+      api: 'Adonix',
+      endpoint: `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(url)}`,
+      extractor: res => res?.result?.formats?.[0]?.url || res?.data?.url
     }
   ];
   return await fetchFromApis(apis);
