@@ -23,10 +23,10 @@ let rtx2 = `✨⚡ 𝐌𝐎𝐃𝐄 · 𝐒𝐔𝐁 — 𝐁𝐎𝐓 ✦🌿
 
 🍒 Conviértete en *Sub-Bot Temporal* usando este código.
 
-➊ Ve a los *tres puntos* en la parte superior derecha.  
-➋ Entra a **Dispositivos vinculados**.  
-➌ Toca **Vincular con número de teléfono**.  
-➍ Ingresa el código para iniciar sesión con el bot.
+➊ ~ Ve a los *tres puntos* en la parte superior derecha.  
+➋ ~ Entra a *Dispositivos vinculados*.  
+➌ ~ Toca *Vincular con número de teléfono*.  
+➍ ~ Ingresa el código para iniciar sesión con el bot.
 
 > 🌹 Recomendación: evita usar tu cuenta principal para mayor seguridad.`
 const __filename = fileURLToPath(import.meta.url)
