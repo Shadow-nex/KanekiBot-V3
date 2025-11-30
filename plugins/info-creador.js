@@ -49,7 +49,7 @@ END:VCARD`.trim();
         newsletterName: channelRD.name
       },
       externalAdReply: {
-        title: 'ekisde',
+        title: 'ekisde 🙂‍↕️',
         body: textbot,
         mediaType: 1,
         thumbnailUrl: fotoPerfil,
