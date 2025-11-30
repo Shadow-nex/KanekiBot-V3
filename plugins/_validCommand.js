@@ -55,7 +55,7 @@ ${sugerencias}`
         newsletterJid: channelRD.id,
         serverMessageId: '',
         newsletterName: channelRD.name
-      },/*
+      },*/
       externalAdReply: { 
         title: `『 ⿻֟🎍 𝐊𝐀𝐍𝐄𝐊𝐈 • 𝐀𝐒𝐒𝐈𝐒𝐓𝐀𝐍𝐓 🩸⿻֟ 』`,
         body: '© ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🍃',
