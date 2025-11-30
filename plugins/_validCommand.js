@@ -39,14 +39,14 @@ export async function before(m, { conn }) {
     .slice(0, 3)
 
   let sugerencias = similares.length
-    ? similares.map(s => `> 🪹🌠 • .\`${s.cmd}\` (${s.score}%)`).join('\n')
+    ? similares.map(s => `> ⚡🌠 • .\`${s.cmd}\` (${s.score}%)`).join('\n')
     : '• No se encontraron coincidencias.'
 
   const texto = ` 🌿🦌 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"*
 
 🎄 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🎅🎇
 
-🍂 ᴘᴏsɪʙʟᴇs ᴄᴏɪɴᴄɪᴅᴇɴᴄɪᴀs: 🧊
+🥗 ᴘᴏsɪʙʟᴇs ᴄᴏɪɴᴄɪᴅᴇɴᴄɪᴀs: 🧊
 ${sugerencias}`
 
   await conn.sendMessage(m.chat, {
@@ -64,7 +64,7 @@ ${sugerencias}`
       externalAdReply: { 
         title: `『 ⿻֟🎍 𝐊𝐀𝐍𝐄𝐊𝐈 • 𝐀𝐒𝐒𝐈𝐒𝐓𝐀𝐍𝐓 🩸⿻֟ 』`,
         body: '© ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🍃',
-        thumbnailUrl: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763819289535_182226.jpeg',
+        thumbnailUrl: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg',
         sourceUrl: redes,
         mediaType: 1,
         renderLargerThumbnail: true
