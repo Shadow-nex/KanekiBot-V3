@@ -1,6 +1,6 @@
-
 // by dv.shadow - https://github.com/shadox-xyz
 import PhoneNumber from 'awesome-phonenumber';
+import fetch from 'node-fetch'; // <-- faltaba esto
 
 const handler = async (m, { conn }) => {
   const name = '🌳 sһᥲძ᥆ᥕ-᥊ᥡz • ᥆𝖿𝖿іᥴіᥲᥣ'
@@ -33,16 +33,41 @@ END:VCARD`.trim();
     displayName: name,
     vcard
   };
+
+  const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763384842220_234152.jpeg")).buffer();
+
+  const fkontak = {
+    key: {
+      fromMe: false,
+      participant: "0@s.whatsapp.net",
+      remoteJid: "status@broadcast"
+    },
+    message: {
+      productMessage: {
+        product: {
+          productImage: {
+            mimetype: "image/jpeg",
+            jpegThumbnail: Shadow_url
+          },
+          title: "contacto test",
+          description: ""
+        },
+        businessOwnerJid: "51919199620@s.whatsapp.net"
+      }
+    }
+  };
+
   m.react('🌿');
   conn.reply(m.chat, `*\`☕ Enviando contacto xd....\`*`, m)
+
   await conn.sendMessage(m.chat, {
     contacts: {
       displayName: name,
       contacts: [contactMessage]
     },
     contextInfo: {
-    mentionedJid: [m.sender],
-    isForwarded: true,
+      mentionedJid: [m.sender],
+      isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: channelRD.id,
         serverMessageId: 100,
