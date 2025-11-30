@@ -122,7 +122,7 @@ async function getVid(url) {
     {
       api: 'Adonix',
       endpoint: `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(url)}`,
-      extractor: res => res?.result?.formats?.[0]?.url || res?.data?.url
+      extractor: res => res?.data?.formats?.[0]?.url || res?.data?.url
     }
   ];
   return await fetchFromApis(apis);
