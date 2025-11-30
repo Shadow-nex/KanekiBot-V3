@@ -121,8 +121,8 @@ async function getVid(url) {
   const apis = [
     {
       api: 'Vreden',
-      endpoint: `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(url)}&quality=360`,
-      extractor: res => res?.result?.download?.url
+      endpoint: `https://api.stellarwa.xyz/dl/ytmp4?url=${encodeURIComponent(url)}&quality=360&key=this-xyz ,
+      extractor: res => res?.result?.data?.dl
     }
   ]
   return await fetchFromApis(apis)
