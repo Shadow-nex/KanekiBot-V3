@@ -50,11 +50,11 @@ END:VCARD`.trim();
       },
       externalAdReply: {
         title: ' ',
-        body: '',
+        body: textbot,
         mediaType: 1,
         thumbnailUrl: fotoPerfil,
         renderLargerThumbnail: true,
-        sourceUrl: web
+        sourceUrl: ''
       }
     }
   }, { quoted: fkontak });
