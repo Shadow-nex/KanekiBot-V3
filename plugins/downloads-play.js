@@ -120,12 +120,12 @@ export default handler;
 async function getVid(url) {
   const apis = [
     {
-      api: 'Adonix',
-      endpoint: `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(url)}`,
-      extractor: res => res?.data?.url
+      api: 'Vreden',
+      endpoint: `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(url)}&quality=360`,
+      extractor: res => res?.result?.download?.url
     }
-  ];
-  return await fetchFromApis(apis);
+  ]
+  return await fetchFromApis(apis)
 }
 
 async function fetchFromApis(apis) {
