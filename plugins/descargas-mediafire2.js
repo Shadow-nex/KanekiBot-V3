@@ -50,8 +50,7 @@ let handler = async (m, { conn, text }) => {
 
   } catch (err) {
     console.error(err)
-    m.reply(`❌ *Error al procesar la descarga.*`)
-    await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
+    m.reply(`*Error al procesar la descarga.*`)
   }
 }
 
