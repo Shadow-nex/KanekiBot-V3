@@ -1,5 +1,5 @@
 
-// by dv.shadow - https://github.com/Yuji-XDev
+// by dv.shadow - https://github.com/shadox-xyz
 import PhoneNumber from 'awesome-phonenumber';
 
 const handler = async (m, { conn }) => {
@@ -10,7 +10,7 @@ const handler = async (m, { conn }) => {
   const correo = 'shadowcore.xyz@gmail.com'
   const web = 'https://shadow-xyz.vercel.app/'
   const direccion = 'Tokyo, Japón 🇯🇵'
-  const fotoPerfil = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763345073781_8605.jpeg'
+  const fotoPerfil = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764511566107_67722.jpeg'
 
   const vcard = `
 BEGIN:VCARD
@@ -49,7 +49,7 @@ END:VCARD`.trim();
         newsletterName: channelRD.name
       },
       externalAdReply: {
-        title: ' ',
+        title: 'ekisde',
         body: textbot,
         mediaType: 1,
         thumbnailUrl: fotoPerfil,
