@@ -19,7 +19,7 @@ let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
 let drm1 = ""
 let drm2 = ""
 let rtx = "*❀ SER BOT • MODE QR*\n\n✰ Con otro celular o en la PC escanea este QR para convertirte en un *Sub-Bot* Temporal.\n\n\`1\` » Haga clic en los tres puntos en la esquina superior derecha\n\n\`2\` » Toque dispositivos vinculados\n\n\`3\` » Escanee este codigo QR para iniciar sesion con el bot\n\n✧ ¡Este código QR expira en 45 segundos!."
-let rtx2 = "✨⚡ 𝐌𝐎𝐃𝐄 · 𝐒𝐔𝐁 — 𝐁𝐎𝐓 ✦🌿
+let rtx2 = `✨⚡ 𝐌𝐎𝐃𝐄 · 𝐒𝐔𝐁 — 𝐁𝐎𝐓 ✦🌿
 
 🍒 Conviértete en *Sub-Bot Temporal* usando este código.
 
@@ -28,7 +28,7 @@ let rtx2 = "✨⚡ 𝐌𝐎𝐃𝐄 · 𝐒𝐔𝐁 — 𝐁𝐎𝐓 ✦🌿
 ➌ Toca **Vincular con número de teléfono**.  
 ➍ Ingresa el código para iniciar sesión con el bot.
 
-> 🌹 Recomendación: evita usar tu cuenta principal para mayor seguridad."
+> 🌹 Recomendación: evita usar tu cuenta principal para mayor seguridad.`
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const kanekiAIJBOptions = {}
