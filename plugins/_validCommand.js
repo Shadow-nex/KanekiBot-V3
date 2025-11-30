@@ -37,7 +37,7 @@ export async function before(m, { conn }) {
     ? similares.map(s => `> ⚡🌠 • .\`${s.cmd}\` (${s.score}%)`).join('\n')
     : '• No se encontraron coincidencias.'
 
-  const texto = ` 🌿🦌 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"*
+  const texto = ` 🌿🪵 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"*
 
 🎄 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🪴
 
