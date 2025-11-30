@@ -34,31 +34,31 @@ export async function before(m, { conn }) {
     .slice(0, 3)
 
   let sugerencias = similares.length
-    ? similares.map(s => `> ⚡🌠 • .\`${s.cmd}\` (${s.score}%)`).join('\n')
+    ? similares.map(s => `> ⤷• .\`${s.cmd}\` (${s.score}%)`).join('\n')
     : '• No se encontraron coincidencias.'
 
-  const texto = ` 🌿🪵 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"*
+  const texto = `°𓏲🌿 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"* 🝰
 
-🎄 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🪴
+꒰𓂂𓏸🌷 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🪴
 
-🥗 ᴘᴏsɪʙʟᴇs ᴄᴏɪɴᴄɪᴅᴇɴᴄɪᴀs: 🧊
+*! ׁ ׅ 🥗 ᴘᴏsɪʙʟᴇs ᴄᴏɪɴᴄɪᴅᴇɴᴄɪᴀs: 🪽°𖥻*
 ${sugerencias}`
 
   await conn.sendMessage(m.chat, {
-    document: fs.readFileSync('./README.md'),
+    /*document: fs.readFileSync('./README.md'),
     fileName: `.`,
-    mimetype: 'application/pdf',
+    mimetype: 'application/pdf',*/
     caption: texto,
-    contextInfo: {/*
-      isForwarded: true,
+    contextInfo: {
+      /*isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: channelRD.id,
         serverMessageId: '',
         newsletterName: channelRD.name
       },*/
       externalAdReply: { 
-        title: `『 ⿻֟🎍 𝐊𝐀𝐍𝐄𝐊𝐈 • 𝐀𝐒𝐒𝐈𝐒𝐓𝐀𝐍𝐓 🩸⿻֟ 』`,
-        body: '© ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🍃',
+        title: `・⟡・ 🄺𝐀𝐍𝐄𝐊𝐈 𓈒𓏸 🄰𝐒𝐒𝐈𝐒𝐓𝐄𝐍𝐓 ⿻ﾟ`,
+        body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
         thumbnailUrl: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg',
         sourceUrl: redes,
         mediaType: 1,
