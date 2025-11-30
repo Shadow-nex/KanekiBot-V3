@@ -119,11 +119,7 @@ export default handler;
 
 async function getVid(url) {
   const apis = [
-    {
-      api: 'Adonix',
-      endpoint: `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(url)}`,
-      extractor: res => res?.data?.formats?.[0]?.url || res?.data?.url
-    }
+    { api: 'Adonix', endpoint: `${global.APIs.adonix.url}/download/ytvideo?apikey=${global.APIs.adonix.key}&url=${encodeURIComponent(url)}`, extractor: res => res.data?.url },
   ];
   return await fetchFromApis(apis);
 }
