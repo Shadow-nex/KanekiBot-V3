@@ -44,7 +44,7 @@ let handler = async (m, { conn, text }) => {
 
    
     user.coin -= 20
-    conn.reply(m.chat, `🥥 Se descontaron *20 ${currency}*`, m)
+    conn.reply(m.chat, `> ⚡ Se descontaron *20 ${currency}*`, m)
 
     await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
 
