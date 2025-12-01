@@ -48,7 +48,7 @@ handler.before = async (m, { conn }) => {
         salasRuleta[chatId].estado = 'completa';
 
         await conn.sendMessage(m.chat, { 
-            audio: { url: "https://qu.ax/iwAmy.mp3" }, 
+            audio: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764557711406_lj0t56e6.mpeg" }, 
             mimetype: "audio/mp4", 
             ptt: true 
         });
