@@ -58,7 +58,7 @@ function fechaHoraPeru() {
 async function generarImagenWelcome({ username, groupName, memberCount, avatar, background }) {
   try {
 
-    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌹 Bienvenido/a al grupo uwu")}&desc=${encodeURIComponent("Disfruta Tu estadía")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
+    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌹 Bienvenido/a al grupo uwu")}&desc=${encodeURIComponent("૮꒰ ˶• ᴗ •˶꒱ა Disfruta tu estadía en el grupo!")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
 
     const res = await fetch(url)
     if (!res.ok) throw new Error("API Welcome Error")
@@ -74,7 +74,7 @@ async function generarImagenWelcome({ username, groupName, memberCount, avatar, 
 async function generarImagenBye({ username, groupName, memberCount, avatar, background }) {
   try {
 
-    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("Adiós uwu")}&desc=${encodeURIComponent("Vuelve pronto")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
+    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌳 Hasta Pronto")}&desc=${encodeURIComponent("(˶˃⤙˂˶) Te esperamos pronto!")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
 
     const res = await fetch(url)
     if (!res.ok) throw new Error("API Bye Error")
