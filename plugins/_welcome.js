@@ -39,7 +39,7 @@ let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/mai
 
 const fkontak = {
   key: { participant: '0@s.whatsapp.net', remoteJid: 'status@broadcast', id: 'Halo' },
-  message: { locationMessage: { name: '🌲✨  𝐊𝐀𝐍𝐄𝐊𝐈 - 𝐈𝐀 ✨🌲', jpegThumbnail: Buffer.from(thumb || []) } }
+  message: { locationMessage: { name: '❥ᰰຼ⚡  𝐊𝐀𝐍𝐄𝐊𝐈 - 𝐈𝐀 🌿', jpegThumbnail: Buffer.from(thumb || []) } }
 }
 
 function fechaHoraPeru() {
@@ -58,7 +58,7 @@ function fechaHoraPeru() {
 async function generarImagenWelcome({ username, groupName, memberCount, avatar, background }) {
   try {
 
-    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌹 Bienvenido/a al grupo uwu")}&desc=${encodeURIComponent("૮꒰ ˶• ᴗ •˶꒱ა Disfruta tu estadía en el grupo!")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
+    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌹 Bienvenido/a al grupo")}&desc=${encodeURIComponent("¡ᴅɪsғʀᴜᴛᴀ ᴛᴜ ᴇsᴛᴀᴅɪᴀ ᴇɴ ᴇʟ ɢʀᴜᴘᴏ!")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
 
     const res = await fetch(url)
     if (!res.ok) throw new Error("API Welcome Error")
@@ -74,7 +74,7 @@ async function generarImagenWelcome({ username, groupName, memberCount, avatar, 
 async function generarImagenBye({ username, groupName, memberCount, avatar, background }) {
   try {
 
-    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌳 Hasta Pronto")}&desc=${encodeURIComponent("(˶˃⤙˂˶) Te esperamos pronto!")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
+    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌳 Hasta Pronto")}&desc=${encodeURIComponent("(˶˃⤙˂˶) ᴛᴇ ᴇsᴘᴇʀᴀᴍᴏs ᴘʀᴏɴᴛᴏ!")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
 
     const res = await fetch(url)
     if (!res.ok) throw new Error("API Bye Error")
@@ -106,7 +106,7 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     .replace(/{desc}/g, `${desc}`)
 
   const caption =
-`꒰ ✿ !Bienvenido/a¡, ${username}: ᡣ𐭩  ✿ ꒱
+`*꒰ ✿ !Bienvenido/a¡, ${username}: ᡣ𐭩  ✿ ꒱*
   
 
  ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
@@ -147,7 +147,7 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
     .replace(/{desc}/g, `*${desc}*`)
 
   const caption =
-`✿𐦍 〰️ !Hastas pronto¡, ${username} ᡣ𐭩𐦍
+`*✿𐦍 !Hastas pronto¡, ${username} ᡣ𐭩𐦍*
 
  ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
  ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupSize}
@@ -201,7 +201,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
-                        display_text: "click",
+                        display_text: " ⃘݂ click aqui",
                         url: channel,
                         merchant_url: channel
                       })
@@ -244,7 +244,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
-                        display_text: ".",
+                        display_text: " ⃘݂ click aqui",
                         url: channel,
                         merchant_url: channel
                       })
