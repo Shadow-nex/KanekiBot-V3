@@ -49,7 +49,8 @@ handler.before = async (m, { conn }) => {
 
         await conn.sendMessage(m.chat, { 
            audio: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764557711406_lj0t56e6.mpeg" },
-           mimetype: "audio/mpeg"
+           mimetype: "audio/mpeg",
+           ptt: true 
         }, { quoted: m })
 
         await conn.sendMessage(m.chat, { 
