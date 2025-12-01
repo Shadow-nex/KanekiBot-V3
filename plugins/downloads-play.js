@@ -60,7 +60,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
 > 🪷⌗ ᥫ᭡ ${dev}. 🎀`;
 
-    // ENVÍO RÁPIDO DEL MENSAJE CON IMAGEN
     const thumb = (await conn.getFile(thumbnail)).data
     await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 })
 
