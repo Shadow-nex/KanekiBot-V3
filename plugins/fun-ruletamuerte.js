@@ -47,13 +47,10 @@ handler.before = async (m, { conn }) => {
         salasRuleta[chatId].jugadores.push(senderId);
         salasRuleta[chatId].estado = 'completa';
 
-        let audio = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764557711406_lj0t56e6.mpeg")).buffer()
-
-      await conn.sendMessage(m.chat, { 
-        audio,
-        ptt: true,
-        mimetype: "audio/mpeg"
-      }, { quoted: m })
+        await conn.sendMessage(m.chat, { 
+           audio: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764557711406_lj0t56e6.mpeg" },
+           mimetype: "audio/mpeg"
+        }, { quoted: m })
 
         await conn.sendMessage(m.chat, { 
             text: '✦ *Ruleta de la Muerte* ✦\n\n❀ ¡La sala está completa!\n\n> ✧ Seleccionando al perdedor...' 
