@@ -108,7 +108,6 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
   const caption =
 `*꒰ ✿ !Bienvenido/a¡, ${username}: ᡣ𐭩  ✿ ꒱*
   
-
  ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
  ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupSize}
  ⋅˚₊‧🎋‧₊˚ ⋅ *🄿ais:* ${pais}
