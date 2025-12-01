@@ -106,8 +106,7 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
     .replace(/{desc}/g, `${desc}`)
 
   const caption =
-`༊*·˚  🥗  —  W  E  L  C  O  M  E  —  🥙  ˚·*༊
- ꒰ ✿ !Bienvenido¡, ${username}: ᡣ𐭩  ✿ ꒱
+`꒰ ✿ !Bienvenido/a¡, ${username}: ᡣ𐭩  ✿ ꒱
   
 
  ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
@@ -148,9 +147,7 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
     .replace(/{desc}/g, `*${desc}*`)
 
   const caption =
-`✿﹒.🥗⸽⸽  𖦹  〰️  W E L C O M E  〰️  𖦹  ⸽⸽🥙 .﹒✿
-
-   𐦍 〰️ !Hastas pronto¡, ${username} ᡣ𐭩𐦍
+`✿𐦍 〰️ !Hastas pronto¡, ${username} ᡣ𐭩𐦍
 
  ⋅˚₊‧🪽‧₊˚ ⋅ *🄶rupo:* ${groupMetadata.subject}
  ⋅˚₊‧🌱‧₊˚ ⋅ *🄼iembros:* ${groupSize}
