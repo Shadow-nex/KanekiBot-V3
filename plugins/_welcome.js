@@ -31,7 +31,7 @@ function detectarPais(numero) {
   }
   for (const code in codigos)
     if (numero.startsWith(code)) return codigos[code]
-  return "🌎 Desconocido"
+  return "Desconocido"
 }
 
 let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
