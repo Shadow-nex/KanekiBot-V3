@@ -60,9 +60,9 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
 > 🪷⌗ ᥫ᭡ ${dev}. 🎀`;
 
+    // ENVÍO RÁPIDO DEL MENSAJE CON IMAGEN
     const thumb = (await conn.getFile(thumbnail)).data
     await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 })
-
 
     if (['play', 'mp3'].includes(command)) {
       const audio = await savetube.download(url, "audio");
@@ -80,6 +80,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
       await m.react('✔️');
     }
+
 
     else if (['play2', 'mp4'].includes(command)) {
 
@@ -115,18 +116,26 @@ handler.command = handler.help = ['play', 'play2', 'mp3', 'mp4'];
 handler.tags = ['download'];
 export default handler;
 
-//=================
-
 
 async function getVid(url) {
   const apis = [
     {
-      api: 'Vreden',
+      api: 'Zenzxz',
       endpoint: `https://api.zenzxz.my.id/api/downloader/ytmp4?url=${encodeURIComponent(url)}&resolution=144p`,
-      extractor: res => res?.result?.data?.download_url
+      extractor: res => res?.data?.download_url
     }
-  ]
-  return await fetchFromApis(apis)
+  ];
+
+  const primary = await fetchFromApis(apis);
+  if (primary?.url) return primary;
+
+  
+  try {
+    const vid = await savetubeVid(url);
+    if (vid?.status) return { url: vid.result.download, api: "Savetube" };
+  } catch (e) {}
+
+  return null;
 }
 
 async function fetchFromApis(apis) {
@@ -147,7 +156,40 @@ async function fetchFromApis(apis) {
   return null;
 }
 
-//=================
+async function savetubeVid(link) {
+  try {
+    const id = savetube.youtube(link);
+    if (!id) return { status: false };
+
+    const cdnRes = await savetube.getCDN();
+    if (!cdnRes.status) return cdnRes;
+
+    const cdn = cdnRes.data;
+
+    const info = await savetube.request(`https://${cdn}${savetube.api.info}`, { url: `https://www.youtube.com/watch?v=${id}` });
+    if (!info.status) return info;
+
+    const decrypted = await savetube.crypto.decrypt(info.data.data);
+
+    const dl = await savetube.request(`https://${cdn}${savetube.api.download}`, {
+      id,
+      downloadType: "video",
+      quality: "144p",
+      key: decrypted.key
+    });
+
+    if (!dl.data?.data?.downloadUrl)
+      return { status: false };
+
+    return {
+      status: true,
+      result: { download: dl.data.data.downloadUrl }
+    };
+  } catch (err) {
+    return { status: false };
+  }
+}
+
 
 const savetube = {
   api: {
