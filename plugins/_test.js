@@ -47,8 +47,8 @@ let handler = async (m, { conn, args, command, usedPrefix, isCreator }) => {
   // Solo envía desde ESTE bot porque no usas multisocket
   if (command === "reactall") {
 
-    if (!isCreator)
-      return m.reply("🚫 Solo el owner puede usar este comando.")
+    /*if (!isCreator)
+      return m.reply("🚫 Solo el owner puede usar este comando.")*/
 
     if (!args[0] || !args[1])
       return m.reply(`⚠ Uso:\n${usedPrefix}reactall <link_post> <emoji>`)
