@@ -214,6 +214,8 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
         },
         { quoted: fkontak }
       )
+      
+      await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 /*
       await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
       await conn.sendMessage(m.chat, {
