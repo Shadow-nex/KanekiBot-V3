@@ -46,11 +46,19 @@ handler.before = async (m, { conn }) => {
 
         salasRuleta[chatId].jugadores.push(senderId);
         salasRuleta[chatId].estado = 'completa';
+        
+        const audiosRuleta = [
+            "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764557711406_lj0t56e6.mpeg",
+            "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764599004217_p74wwj8k.mpeg",
+            "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764599014079_gkrbhl10.mpeg"
+        ];
+
+        const audioRandom = audiosRuleta[Math.floor(Math.random() * audiosRuleta.length)];
 
         await conn.sendMessage(m.chat, { 
-           audio: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764557711406_lj0t56e6.mpeg" },
-           mimetype: "audio/mpeg"
-        }, { quoted: m })
+            audio: { url: audioRandom },
+            mimetype: "audio/mpeg"
+        }, { quoted: m });
 
         await conn.sendMessage(m.chat, { 
             text: '✦ *Ruleta de la Muerte* ✦\n\n❀ ¡La sala está completa!\n\n> ✧ Seleccionando al perdedor...' 
@@ -64,11 +72,11 @@ handler.before = async (m, { conn }) => {
             "《 ████████████》100%\n- ¡Resultado final!"
         ];
 
-        let { key } = await conn.sendMessage(m.chat, { text: "✧ ¡Calculando resultado!" }, { quoted: m });
+        let { key } = await conn.sendMessage(m.chat, { text: "✧ ¡Calculando resultado!" }, { quoted: fkontak });
 
         for (let msg of loadingMessages) {
             await delay(3000);
-            await conn.sendMessage(m.chat, { text: msg, edit: key }, { quoted: m });
+            await conn.sendMessage(m.chat, { text: msg, edit: key }, { quoted: fkontak });
         }
 
         const [jugador1, jugador2] = salasRuleta[chatId].jugadores;
@@ -80,11 +88,12 @@ handler.before = async (m, { conn }) => {
         });
 
         await delay(60000);        
-            await conn.groupParticipantsUpdate(m.chat, [perdedor], 'remove');
-            await conn.sendMessage(m.chat, { 
-                text: `❀ @${perdedor.split('@')[0]} ha sido eliminado. Fin del juego.`, 
-                mentions: [perdedor] 
-            });        
+        await conn.groupParticipantsUpdate(m.chat, [perdedor], 'remove');
+        await conn.sendMessage(m.chat, { 
+            text: `❀ @${perdedor.split('@')[0]} ha sido eliminado. Fin del juego.`, 
+            mentions: [perdedor] 
+        });        
+
         delete salasRuleta[chatId];
     }
 
