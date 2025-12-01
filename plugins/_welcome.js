@@ -54,53 +54,39 @@ function fechaHoraPeru() {
   return { fecha, hora }
 }
 
+
 async function generarImagenWelcome({ username, groupName, memberCount, avatar, background }) {
   try {
-    const form = new FormData()
-    form.append('username', username)
-    form.append('guildName', groupName)
-    form.append('memberCount', memberCount)
-    form.append('quality', 90)
 
-    const av = await fetch(avatar).then(r => r.arrayBuffer())
-    const bg = await fetch(background).then(r => r.arrayBuffer())
+    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("🌹 Bienvenido/a al grupo uwu")}&desc=${encodeURIComponent("Disfruta Tu estadía")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
 
-    form.append('avatar', Buffer.from(av), { filename: 'avatar.png', contentType: 'image/png' })
-    form.append('background', Buffer.from(bg), { filename: 'bg.jpg', contentType: 'image/jpeg' })
-
-    const res = await fetch('https://api.siputzx.my.id/api/canvas/welcomev5', { method: 'POST', body: form })
+    const res = await fetch(url)
     if (!res.ok) throw new Error("API Welcome Error")
 
     return Buffer.from(await res.arrayBuffer())
+
   } catch (e) {
-    console.log("❌ Error WelcomeV5:", e)
+    console.log("Error Welcome API:", e)
     return null
   }
 }
 
 async function generarImagenBye({ username, groupName, memberCount, avatar, background }) {
   try {
-    const form = new FormData()
-    form.append('username', username)
-    form.append('guildName', groupName)
-    form.append('memberCount', memberCount)
-    form.append('quality', 90)
 
-    const av = await fetch(avatar).then(r => r.arrayBuffer())
-    const bg = await fetch(background).then(r => r.arrayBuffer())
+    const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent("Adiós uwu")}&desc=${encodeURIComponent("Vuelve pronto")}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
 
-    form.append('avatar', Buffer.from(av), { filename: 'avatar.png', contentType: 'image/png' })
-    form.append('background', Buffer.from(bg), { filename: 'bg.jpg', contentType: 'image/jpeg' })
-
-    const res = await fetch('https://api.siputzx.my.id/api/canvas/goodbyev5', { method: 'POST', body: form })
-    if (!res.ok) throw new Error("API Goodbye Error")
+    const res = await fetch(url)
+    if (!res.ok) throw new Error("API Bye Error")
 
     return Buffer.from(await res.arrayBuffer())
+
   } catch (e) {
-    console.log("❌ Error ByeV5:", e)
+    console.log("Error Bye API:", e)
     return null
   }
 }
+
 
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
   const username = `@${userId.split('@')[0]}`
@@ -218,7 +204,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
                     {
                       name: "cta_url",
                       buttonParamsJson: JSON.stringify({
-                        display_text: "⿻ 𝗖 𝗔 𝗡 𝗔 𝗟 ⿻",
+                        display_text: "click",
                         url: channel,
                         merchant_url: channel
                       })
