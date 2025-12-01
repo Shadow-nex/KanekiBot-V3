@@ -27,15 +27,9 @@ var handler = async (m, { conn, usedPrefix, command, text }) => {
     await m.react('🕒')
     //conn.reply(m.chat, `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`, m)
 
-let msg = await conn.reply(
-  m.chat,
-  `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`,
-  m
-)
+     let msg = await conn.reply(m.chat, `*☕ ᑲᥙsᥴᥲᥒძ᥆ 𝗍ᥙ ᥲ⍴ᥣіᥴᥲᥴіóᥒ ᥱs⍴ᥱrᥱ.... 🐢*`, m)
 
-setTimeout(() => {
-  conn.sendMessage(m.chat, { delete: msg.key })
-}, 2000)
+     setTimeout(() => { conn.sendMessage(m.chat, { delete: msg.key }) }, 2000)
 
 
     let searchA = await search(text)
