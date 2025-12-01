@@ -247,7 +247,7 @@ let handler = async (m, { conn }) => {
   userNumbers[userId] = { number: currentNumber, message: sentMsg }
 }
 
-handler.command = /^(numvirtual|númerovirtual|nvirtual)$/i
+handler.command = ['numvirtual']
 handler.help = ['numvirtual']
 handler.tags = ['tools']
 
