@@ -1,37 +1,44 @@
-import axios from 'axios'
+import fetch from "node-fetch"
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return m.reply(`🪴 Por favor, ingresa lo que deseas buscar por Wallpaper.`)
+let handler = async (m, { conn, text, command }) => {
+
+  if (!text) return m.reply(`🎋 *Uso correcto:*\n.${command} <tema>\n\nEjemplo:\n.${command} itachi`)
+  
+  await conn.sendMessage(m.chat, { react: { text: "🔎", key: m.key } })
+
+  await m.reply("🔎 Buscando fondos 4K, espera un momento...")
+
+  const total = 15
+  const query = encodeURIComponent(text)
+  const url = `https://wallhaven.cc/api/v1/search?q=${query}&categories=111&purity=100&atleast=3840x2160&sorting=random&order=desc`
+
   try {
-    await m.react('🕒')
+    const res = await fetch(url)
+    const json = await res.json()
 
-    const res = await axios.get(`https://xrljosedevapi.vercel.app/search/wallpaper?query=${encodeURIComponent(text)}`)
-    const data = res.data
+    const wallpapers = json.data.slice(0, total)
+    if (!wallpapers.length)
+      return m.reply("⚠️ No encontré fondos, intenta otro nombre.")
 
-    if (!data.status || !data.data?.length)
-      return conn.reply(m.chat, `ꕥ No se encontraron resultados para "${text}".`, m)
-
-    const results = data.data.slice(0, 15)
-
-    const medias = results.map(img => ({
-      type: 'image',
-      data: { url: img.previewUrl || img.imageUrl }
-    }))
-
-    await conn.sendSylphy(m.chat, medias, {
-      caption: `🌲 Wallpaper - Search 🪺\n\n❄️ Búsqueda » "${text}"\n🌿 Resultados » ${medias.length}`,
-      quoted: m
-    })
-
-    await m.react('✔️')
-  } catch (e) {
-    await m.react('✖️')
-    console.error(e)
-    conn.reply(
+    await conn.sendFile(
       m.chat,
-      `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n` + e,
+      wallpapers[0].path,
+      "wallpaper.jpg",
+      `🌲 *Wallpaper Search* 🪺\n\n❄️ Tema: *${text}*\n🌿 Resultados: *${wallpapers.length}*`,
       m
     )
+
+    for (let i = 1; i < wallpapers.length; i++) {
+      await conn.sendFile(m.chat, wallpapers[i].path, "wallpaper.jpg", null, m)
+    }
+
+    await conn.sendMessage(m.chat, { react: { text: "✅", key: m.key } })
+
+   // await m.reply(`🌱 Se enviaron *${wallpapers.length} fondos 4K* de *${text}*.`)
+
+  } catch (e) {
+    console.error(e)
+    m.reply("❄️ Ocurrió un error al buscar fondos.")
   }
 }
 
