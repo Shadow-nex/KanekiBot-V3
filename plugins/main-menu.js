@@ -69,7 +69,7 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     for (let tag in tags) {
       let comandos = commands
         .filter(cmd => cmd.tags.includes(tag))
-        .map(cmd => cmd.help.map(e => `* ۫  𖢷͜੭ 🌴ֹ 𔐼ֹ֪➩* \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
+        .map(cmd => cmd.help.map(e => `• ۫  𖢷͜੭ 🌴ֹ 𔐼ֹ֪➩ \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
         .join('\n')
       if (comandos) {
         menuTexto += `\n\n> ׅ 𓈈 ׁ ${tags[tag]} 𓏽 ֟꒱𑁬
@@ -77,9 +77,7 @@ ${comandos}\n`
       }
     }
 
-    const infoUser = `    🌳 •┆ 𝐊𝐀𝐍𝐄𝐊𝐈 𝐁𝐎𝐓 𝐀𝐈 ┆• 🥙
-          •╌╌╌╌╌╌╌╌╌╌╌╌•
- ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🎄۫ 
+    const infoUser = `.     ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🎄۫ 
     ᗞᗞ @${userId}  ⌒᷼🥗 
 
 ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮  ̮   ̮   ̮   ̮   ̮   ̮ 
@@ -103,8 +101,7 @@ ${readMore}
  ᦷᩘᦷ  ⃪֪݊🥙໑ٜ࣪ ㅤ🄻ibreria: *${libreria}*
  ᦷᩘᦷ  ⃪֪݊🎍໑ٜ࣪ ㅤ🄵echa: *${hora}, ${dia}, ${fechaTxt}*
 
-\`ׄ★߷︎ ׅ  𝑪𝑶𝑴𝑨𝑵𝑫𝑶𝑺 𝑫𝑰𝑺𝑷𝑶𝑵𝑰𝑩𝑳𝑬𝑺: っっ ฺฺ✿ᰰ᷒\`
- ${readMore}`.trim()
+${readMore}`.trim()
 
     const imgs = [
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274865023_563721.jpeg',
