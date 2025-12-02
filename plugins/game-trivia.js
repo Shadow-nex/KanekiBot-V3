@@ -970,12 +970,12 @@ const handler = async (m, { conn, command, args, usedPrefix }) => {
         { quoted: m }
       )
     }
-
+/*
   } catch (err) {
     console.error(err)
     m.reply("⚠️ Error ejecutando trivia.")
   }
-}
+}*/
 
 handler.before = async (m, { conn }) => {
   const session = triviaSessions.get(m.chat)
