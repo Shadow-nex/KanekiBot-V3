@@ -18,7 +18,7 @@ let handler = async (m, { conn, text, command }) => {
 
     const wallpapers = json.data.slice(0, total)
     if (!wallpapers.length)
-      return m.reply("⚠️ No encontré fondos, intenta otro nombre.")
+      return m.reply("No encontré fondos, intenta otro nombre.")
 
     await conn.sendFile(
       m.chat,
