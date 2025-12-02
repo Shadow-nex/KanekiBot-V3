@@ -64,6 +64,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 })
 
     if (['play', 'mp3'].includes(command)) {
+
       const audio = await savetube.download(url, "audio");
       if (!audio?.status) throw `Error al obtener el audio: ${audio?.error || 'Desconocido'}`;
 
@@ -79,7 +80,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
       await m.react('✔️');
     }
-
 
     else if (['play2', 'mp4'].includes(command)) {
 
@@ -119,8 +119,8 @@ export default handler;
 async function getVid(url) {
   const apis = [
     {
-      api: 'Zenzxz',
-      endpoint: `https://api.zenzxz.my.id/api/downloader/ytmp4?url=${encodeURIComponent(url)}&resolution=144p`,
+      api: 'Yupra',
+      endpoint: `https://api.yupra.my.id/api/downloader/ytmp4?url=${encodeURIComponent(url)}`,
       extractor: res => res?.data?.download_url
     }
   ];
@@ -128,7 +128,6 @@ async function getVid(url) {
   const primary = await fetchFromApis(apis);
   if (primary?.url) return primary;
 
-  
   try {
     const vid = await savetubeVid(url);
     if (vid?.status) return { url: vid.result.download, api: "Savetube" };
@@ -136,6 +135,8 @@ async function getVid(url) {
 
   return null;
 }
+
+
 
 async function fetchFromApis(apis) {
   for (const { api, endpoint, extractor } of apis) {
@@ -154,6 +155,8 @@ async function fetchFromApis(apis) {
   }
   return null;
 }
+
+
 
 async function savetubeVid(link) {
   try {
