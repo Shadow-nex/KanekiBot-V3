@@ -72,14 +72,13 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
         .map(cmd => cmd.help.map(e => `• ۫  𖢷͜੭ 🌴ֹ 𔐼ֹ֪➩ \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
         .join('\n')
       if (comandos) {
-        menuTexto += `\n\n> ׅ 𓈈 ׁ ${tags[tag]} 𓏽 ֟꒱𑁬
+        menuTexto += `\n\n> ׅ    𓈈 ׁ ${tags[tag]} 𓏽 ֟꒱𑁬
 ${comandos}\n`
       }
     }
 
     const infoUser = `.     ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🎄۫ 
     ᗞᗞ @${userId}  ⌒᷼🥗 
-
 ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮  ̮   ̮   ̮   ̮   ̮   ̮ 
 ︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶
 
@@ -102,12 +101,6 @@ ${readMore}
  ᦷᩘᦷ  ⃪֪݊🎍໑ٜ࣪ ㅤ🄵echa: *${hora}, ${dia}, ${fechaTxt}*
 
 ${readMore}`.trim()
-
-    const imgs = [
-      'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274865023_563721.jpeg',
-      'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg'
-    ]
-    let imageUrl = imgs[Math.floor(Math.random() * imgs.length)]
 
 /*    const { imageMessage } = await generateWAMessageContent(
       { image: { url: imageUrl } },
@@ -204,7 +197,7 @@ body: textbot,
 mediaType: 1,
 mediaUrl: redes,
 sourceUrl: redes,
-thumbnail: await (await fetch(imageUrl)).buffer(),
+thumbnail: await (await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg')).buffer(),
 showAdAttribution: false,
 containsAutoReply: true,
 renderLargerThumbnail: true
