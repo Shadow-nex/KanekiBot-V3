@@ -1,8 +1,8 @@
 import fetch from "node-fetch"
 
 const triviaImages = [
-  'https://cdn.yupra.my.id/yp/o720p39m.jpg',
-  'https://cdn.yupra.my.id/yp/ey5l5cct.jpg',
+  '',
+  '',
   'https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg'
 ]
 
