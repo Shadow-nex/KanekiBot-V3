@@ -949,13 +949,13 @@ const handler = async (m, { conn, command }) => {
         { quoted: m }
       )
 
-      if (!msg?.key?.id) return m.reply("⚠️ Error interno al generar trivia.")
+      if (!msg?.key?.id) return m.reply("Error interno al generar trivia.")
 
       const timeout = setTimeout(async () => {
         const correct = q.answer
         await conn.sendMessage(
           m.chat,
-          { text: `⏳ *Tiempo agotado*\nLa respuesta correcta era: *${correct}*` }
+          { text: `⚡ *Tiempo agotado*\nLa respuesta correcta era: *${correct}*` }
         )
         triviaSessions.delete(m.chat)
       }, 60000)
@@ -1012,7 +1012,7 @@ handler.before = async (m, { conn }) => {
 
     const txt = m.text.trim().toUpperCase()
     if (!["A", "B", "C"].includes(txt))
-      return m.reply("❌ Responde solo con A, B o C.")
+      return m.reply("Responde solo con A, B o C.")
 
     const correct = questions[session.index].answer
     const isCorrect = txt === correct
