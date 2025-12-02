@@ -102,14 +102,14 @@ ${readMore}
  ᦷᩘᦷ  ⃪֪݊🥙໑ٜ࣪ ㅤ🄻ibreria: *${libreria}*
  ᦷᩘᦷ  ⃪֪݊🎍໑ٜ࣪ ㅤ🄵echa: *${hora}, ${dia}, ${fechaTxt}*
 
-\`ׄ★߷︎ ׅ  𝑪𝑶𝑴𝑨𝑵𝑫𝑶𝑺 𝑫𝑰𝑺𝑷𝑶𝑵𝑰𝑩𝑳𝑬𝑺 っっ ฺฺ✿ᰰ᷒\`
+\`ׄ★߷︎ ׅ  𝑪𝑶𝑴𝑨𝑵𝑫𝑶𝑺 𝑫𝑰𝑺𝑷𝑶𝑵𝑰𝑩𝑳𝑬𝑺: っっ ฺฺ✿ᰰ᷒\`
  ${readMore}`.trim()
-/*
+
     const imgs = [
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274865023_563721.jpeg',
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg'
     ]
-    let imageUrl = imgs[Math.floor(Math.random() * imgs.length)]*/
+    let imageUrl = imgs[Math.floor(Math.random() * imgs.length)]
 
 /*    const { imageMessage } = await generateWAMessageContent(
       { image: { url: imageUrl } },
@@ -206,7 +206,7 @@ body: textbot,
 mediaType: 1,
 mediaUrl: redes,
 sourceUrl: redes,
-thumbnail: await (await fetch(banner)).buffer(),
+thumbnail: await (await fetch(imageUrl)).buffer(),
 showAdAttribution: false,
 containsAutoReply: true,
 renderLargerThumbnail: true
