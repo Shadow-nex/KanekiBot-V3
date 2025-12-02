@@ -59,16 +59,17 @@ const handler = async (m, { conn, text, command }) => {
     }, { quoted: m })
 
     if (command === 'playaudio') {
-      const apiUrl = `https://akirax-api.vercel.app/ytplay?url=${encodeURIComponent(url)}`
+      const apiUrl = `https://akirax-api.vercel.app/download/ytmp3?url=${encodeURIComponent(url)}`
       const res = await fetch(apiUrl)
       const json = await res.json()
 
-      if (!json.status || !json.result?.audio?.url)
+      if (!json.status || !json.result?.download)
         throw '*⚠ No se obtuvo un enlace de audio válido.*'
 
       const data = json.result
-      const audioUrl = data.audio.url
+      const audioUrl = data.download
       const titulo = data.title
+      const thumb = data.thumbnail
 
       await conn.sendMessage(m.chat, {
         audio: { url: audioUrl },
@@ -80,7 +81,7 @@ const handler = async (m, { conn, text, command }) => {
             title: titulo,
             body: canal,
             mediaType: 1,
-            thumbnailUrl: data.thumbnail,
+            thumbnailUrl: thumb,
             sourceUrl: url,
             renderLargerThumbnail: false
           }
