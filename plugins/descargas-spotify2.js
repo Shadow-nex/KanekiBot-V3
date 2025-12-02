@@ -123,7 +123,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       {
         audio: { url: song.download },
         mimetype: 'audio/mpeg',
-        ptt: true, // nota de voz xd
+        ptt: false, // nota de voz xd
         fileName: `${song.title}.mp3`,
       },
       { quoted: m }

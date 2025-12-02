@@ -44,7 +44,7 @@ var handler = async (m, { conn, usedPrefix, command, text }) => {
     await conn.sendFile(m.chat, data5.icon, 'thumbnail.jpg', txt, fkontak, null, rcanalw)
 
     if (data5.size.includes('GB') || data5.size.replace(' MB', '') > 999) {
-      return await conn.reply(m.chat, `El archivo es demasiado pesado para enviarlo.`, m, rch)
+      return await conn.reply(m.chat, `El archivo es demasiado pesado para enviarlo.`, m, rcanal)
     }
 /*
     let thumb = null
@@ -73,7 +73,7 @@ var handler = async (m, { conn, usedPrefix, command, text }) => {
     await m.react('✔️')
   } catch (error) {
     await m.react('✖️')
-    return conn.reply(m.chat, `⚠️ Ocurrió un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${error.message}`, m, rch)
+    return conn.reply(m.chat, `⚠️ Ocurrió un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${error.message}`, m, rcanal)
   }
 }
 

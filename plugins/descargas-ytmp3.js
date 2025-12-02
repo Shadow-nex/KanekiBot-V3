@@ -96,7 +96,7 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
 
   } catch (e) {
     console.error(e)
-    await conn.reply(m.chat, `Error: ${e.message}`, m, rch)
+    await conn.reply(m.chat, `Error: ${e.message}`, m, rcanal)
   }
 }
 

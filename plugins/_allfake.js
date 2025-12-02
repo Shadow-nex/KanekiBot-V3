@@ -84,8 +84,8 @@ global.rcanal = {
       newsletterName: channelRD.name,
     },
     externalAdReply: {
-      title: `•◍⃝߭۫ꯨ🍨۪〬. ${botname} 𑁍ꥈ࣪⬪`,
-      body: `（つ /${nombre} • ${saludo}🍓꒱`,
+      title: botname,
+      body: `（${nombre}) • ${saludo}꒱`,
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
@@ -132,21 +132,6 @@ global.rcanalw = {
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
-      thumbnailUrl: icono,
-      mediaType: 1,
-      renderLargerThumbnail: false
-    },
-  },
-}
-
-global.rch = {
-  contextInfo: {
-    forwardingScore: 2025,
-    isForwarded: true,
-    externalAdReply: { 
-      title: ' ⊹🌿꙰  kᥲᥒᥱkі ᑲ᥆𝗍 ᥲі ✧🎄🦌',
-      body: '',
-      sourceUrl: 'https://chat.whatsapp.com/BU22fjRehH1CUSsGEYMRXN?mode=wwt',
       thumbnailUrl: icono,
       mediaType: 1,
       renderLargerThumbnail: false
