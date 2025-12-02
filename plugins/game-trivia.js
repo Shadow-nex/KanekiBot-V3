@@ -1,9 +1,9 @@
 import fetch from "node-fetch"
 
 const triviaImages = [
-  'https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg',
-  'https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg',
-  'https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg'
+  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764702813658_529190.jpeg',
+  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764702648146_261677.jpeg',
+  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764702642043_131159.jpeg'
 ]
 
 const questions = [
