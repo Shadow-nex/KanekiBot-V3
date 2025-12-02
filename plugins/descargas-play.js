@@ -21,27 +21,15 @@ const handler = async (m, { conn, text, command }) => {
     const canal = author?.name || 'Desconocido'
     const canalLink = author?.url || 'https://youtube.com'
 
-    const infoMessage = `
-🍃 *Título:* 
-> *${title}*
+    const infoMessage = `🍃 *${title}*
 
-🚀 *Canal:* 
-> ${canal}
+✿ *Canal:* ${canal}
+✎ *Vistas:* ${vistas}
+❑ *Duración:* ${timestamp || 'Desconocido'}
+☁︎ *Publicado:* ${ago || 'Desconocido'}
+➪ *Enlace:* ${url}
 
-💐 *Vistas:*
-> ${vistas}
-
-⌛ *Duración:* 
-> ${timestamp || 'Desconocido'}
-
-📆 *Publicado:* 
-> ${ago || 'Desconocido'}
-
-🌱 *Enlace:*
-> ${url}
-
-🎍 *Canal:*
-> ${canalLink}`.trim()
+✧︎ *Canal:* ${canalLink}`.trim()
 
     await conn.sendMessage(m.chat, {
       image: { url: thumbnail },
@@ -104,7 +92,7 @@ const handler = async (m, { conn, text, command }) => {
 
       await conn.sendMessage(m.chat, {
         video: { url: videoUrl },
-        caption: `❄️ *${titulo}*`,
+        caption: null,
         mimetype: 'video/mp4',
         fileName: `${titulo}.mp4`,
         contextInfo: {
