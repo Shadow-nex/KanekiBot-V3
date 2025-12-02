@@ -5,10 +5,8 @@ let handler = async (m, { conn, text, command }) => {
 
   await m.reply("🔎 Buscando fondos 4K, espera un momento...")
 
-  // Cantidad de imágenes
   const total = 15
 
-  // API de Wallhaven (no requiere API key)
   const query = encodeURIComponent(text)
   const url = `https://wallhaven.cc/api/v1/search?q=${query}&categories=111&purity=100&atleast=3840x2160&sorting=random&order=desc`
 
