@@ -89,7 +89,7 @@ global.rcanal = {
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
-      thumbnailUrl: icono,
+      thumbnailUrl: await (await fetch(icono)).buffer(),
       mediaType: 1,
       renderLargerThumbnail: false
     },
@@ -110,7 +110,7 @@ global.rcanalx = {
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
-      thumbnailUrl: icono,
+      thumbnailUrl: await (await fetch(icono)).buffer(),
       sourceUrl: redes,
       mediaType: 1,
       renderLargerThumbnail: false
@@ -132,7 +132,7 @@ global.rcanalw = {
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
-      thumbnailUrl: icono,
+      thumbnailUrl: await (await fetch(icono)).buffer(),
       mediaType: 1,
       renderLargerThumbnail: false
     },
