@@ -69,12 +69,12 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     for (let tag in tags) {
       let comandos = commands
         .filter(cmd => cmd.tags.includes(tag))
-        .map(cmd => cmd.help.map(e => `*➩* \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
+        .map(cmd => cmd.help.map(e => ` ۫  𖢷͜੭ ׅ 🌴ֹ 𔐼ֹ֪*➩* \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
         .join('\n')
       if (comandos) {
-        menuTexto += `\n\nׅꦿ⿻ ${tags[tag]}
+        menuTexto += `\n\nׅ> ׅ 𓈈 ׁ ${tags[tag]} 𓏽 ֟꒱𑁬
 
- ۫  𖢷͜੭ ׅ ✎ֹ 𔐼ֹ֪${comandos}\n`
+${comandos}\n`
       }
     }
 
