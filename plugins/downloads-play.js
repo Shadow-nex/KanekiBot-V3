@@ -32,7 +32,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       message: {
         documentMessage: {
           title: "𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... ..",
-          fileName: "🌹 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... .. 🍃",
+          fileName: "🌹 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢....",
           jpegThumbnail: thumb3
         }
       }
@@ -43,25 +43,23 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       message: {
         documentMessage: {
           title: `「 ${title} 」`,
-          fileName: `☕ 𝗗𝗲𝘀𝗰𝗮𝗿𝗴𝗮 𝗰𝗼𝗺𝗽𝗹𝗲𝘁𝗮 𝗰𝗼𝗻 𝗲𝘅𝗶𝘁𝗼.\n\n\n⚡ ${textbot}` ,
+          fileName: `𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚 𝐋𝐢𝐬𝐭𝐚` ,
           jpegThumbnail: thumb3
         }
       }
     };
 
-    const info = `☃️ *\`YᴏᴜTᴜʙᴇ – Dᴏᴡɴʟᴏᴀᴅ\`* 💫
+    const info = `⌗ ᥫ᭡ *\`YᴏᴜTᴜʙᴇ – Dᴏᴡɴʟᴏᴀᴅ\`*. 🌾
 
-🍒 *Título:* ${title}
-🍁 *Canal:* ${author.name || '🌨️ Unknown'}
-🌹 *Vistas:* ${vistas}
-🪴 *Duración:* ${timestamp}
-🌿 *Publicado:* ${ago}
-⚡ *Link:* ${url}
-
-> 🪷⌗ ᥫ᭡ ${dev}. 🎀`;
+> . ﹡ ﹟ 🌴 ׄ ⬭ *Título:* ${title}
+> . ﹡ ﹟ 🌹 ׄ ⬭ *Canal:* ${author.name || '🌨️ Unknown'}
+> . ﹡ ﹟ 🌿 ׄ ⬭ *Vistas:* ${vistas}
+> . ﹡ ﹟ ⌛ ׄ ⬭ *Duración:* ${timestamp}
+> . ﹡ ﹟ 🗓️ ׄ ⬭ *Publicado:* ${ago}
+> . ﹡ ﹟ 🎋 ׄ ⬭ *Link:* ${url}`;
 
     const thumb = (await conn.getFile(thumbnail)).data
-    await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: fkontak2 })
+    await conn.sendMessage(m.chat, { image: thumb, caption: info, ...fake }, { quoted: fkontak2 })
 
     if (['play', 'mp3'].includes(command)) {
 
