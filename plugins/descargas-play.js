@@ -23,28 +23,30 @@ const handler = async (m, { conn, text, command }) => {
 
     const infoMessage = `🍃 *${title}*
 
-✿ *Canal:* ${canal}
-✎ *Vistas:* ${vistas}
-❑ *Duración:* ${timestamp || 'Desconocido'}
-☁︎ *Publicado:* ${ago || 'Desconocido'}
-➪ *Enlace:* ${url}
+> ✿ *Canal:* ${canal}
+> ✎ *Vistas:* ${vistas}
+> ❑ *Duración:* ${timestamp || 'Desconocido'}
+> ☁︎ *Publicado:* ${ago || 'Desconocido'}
+> ➪ *Enlace:* ${url}
 
-✧︎ *Canal:* ${canalLink}`.trim()
+> ✧︎ *Canal:* ${canalLink}`.trim()
 
-    await conn.sendMessage(m.chat, {
-      image: { url: thumbnail },
-      caption: infoMessage,
+    const thumb = (await conn.getFile(thumbnail))?.data
+    const JT = {
       contextInfo: {
         externalAdReply: {
-          title: title,
-          body: canal,
-          thumbnailUrl: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763869835047_557840.jpeg',
-          sourceUrl: url,
+          title: botname,
+          body: dev,
           mediaType: 1,
-          renderLargerThumbnail: false
-        }
-      }
-    }, { quoted: m })
+          previewType: 0,
+          mediaUrl: url,
+          sourceUrl: url,
+          thumbnail: thumb,
+          renderLargerThumbnail: true,
+        },
+      },
+    }
+    await conn.reply(m.chat, infoMessage, m, JT)
 
     if (command === 'playaudio') {
       const apiUrl = `https://akirax-api.vercel.app/download/ytmp3?url=${encodeURIComponent(url)}`
