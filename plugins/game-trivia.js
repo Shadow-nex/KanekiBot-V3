@@ -932,14 +932,14 @@ const handler = async (m, { conn, command }) => {
 ╭━━━〔 🎓 𝐓𝐑𝐈𝐕𝐈𝐀 𝐂𝐔𝐋𝐓𝐔𝐑𝐀𝐋 🌸 〕━━⬣
 ┃ 🧩 *Pregunta:* ${q.question}
 ┃
-┃ 🌿 *Opciones:*
+┃ 🌿 *Opciones:* 🪴
 ┃  A) ${q.options[0]}
 ┃  B) ${q.options[1]}
 ┃  C) ${q.options[2]}
 ┃
 ┃ 🏆 *Puntos:* ${pointsRandom}
-┃ ⏳ *Tiempo:* 1 minuto
-┃ ✏️ Responde con A, B o C.
+┃ 🌹 *Tiempo:* 1 minuto
+┃ 🍒 Responde con A, B o C.
 ╰━━━━━━━━━━━━━━━━━━⬣
 `.trim()
 
