@@ -11,7 +11,7 @@ let timestamp = speed()
 let latensi = speed() - timestamp
 
 const start = new Date().getTime()
-await conn.sendMessage(m.chat, { text: " ." }, { quoted: m })
+await conn.sendMessage(m.chat, { text: " " }, { quoted: m })
 const end = new Date().getTime()
 const latency = end - start
 
@@ -37,7 +37,7 @@ const thumbBuffer = Buffer.from(await (await fetch('https://i.pinimg.com/origina
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
 
-const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513335162_487707.jpeg")).buffer()
+const Shadow_url = await (await fetch(banner)).buffer()
 
 const fkontak = {
   key: {
