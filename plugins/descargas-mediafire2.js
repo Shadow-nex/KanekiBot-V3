@@ -5,46 +5,61 @@ let handler = async (m, { conn, text }) => {
   const user = global.db.data.users[m.sender] || {}
 
   if (user.coin < 20) {
-    return conn.reply(m.chat, `💮 No tienes suficientes *${currency}*.\nNecesitas *20* para usar este comando.`, m)
+    return conn.reply(
+      m.chat,
+      `🔥 No tienes suficientes *${currency}*.\nNecesitas *20* para usar este comando.`,
+      m
+    )
   }
 
-  if (!text) return m.reply(`✨ *Ingresa un enlace válido de Mediafire.*`)
+  if (!text) return m.reply(`🍃 *Ingresa un enlace válido de Mediafire.*`)
 
   await conn.sendMessage(m.chat, { react: { text: "⏳", key: m.key } })
-  m.reply(`*Obteniendo información...* 🔍`)
+  m.reply(`🎍 *Obteniendo información...*`)
 
   try {
 
-
-    let info = await fetch(`https://api-nv.ultraplus.click/api/download/mediafire?url=${encodeURIComponent(text)}&key=hYSK8YrJpKRc9jSE`)
+    let info = await fetch(
+      `https://api-nv.ultraplus.click/api/download/mediafire?url=${encodeURIComponent(text)}&key=hYSK8YrJpKRc9jSE`
+    )
     let json = await info.json()
 
     if (!json.status || !json.result?.fileName) throw "Error obteniendo información"
 
     let d = json.result
 
-    let msg = `🍰 *MEDIAFIRE - INFORMACIÓN DEL ARCHIVO*\n\n` +
-    `✨ *Nombre:* ${d.fileName}\n` +
-    `☕ *Tamaño:* ${d.fileSize}\n` +
-    `❄️ *Tipo:* ${d.fileType}\n` +
-    `🚀 *Subido:* ${d.uploaded}\n\n` +
-    `🎇 *Descargando archivo...*`
+    let msg = `🌾 *MEDIAFIRE - INFORMACIÓN DEL ARCHIVO*\n\n` +
+    `❄️ *Nombre:* ${d.fileName}\n` +
+    `🍃 *Tamaño:* ${d.fileSize}\n` +
+    `🥗 *Tipo:* ${d.fileType}\n` +
+    `⚡ *Subido:* ${d.uploaded}\n\n` +
+    `🐥 *Descargando archivo...*`
 
     await conn.sendMessage(m.chat, { text: msg }, { quoted: m })
 
-    let dl = await fetch(`https://akirax-api.vercel.app/download/mediafire?url=${encodeURIComponent(text)}`)
+    let dl = await fetch(
+      `https://akirax-api.vercel.app/download/mediafire?url=${encodeURIComponent(text)}`
+    )
     let json2 = await dl.json()
 
     if (!json2.status || !json2.result?.downloadUrl) throw "No se pudo descargar"
 
     let { fileName, downloadUrl } = json2.result
     let mimetype = lookup(fileName.split('.').pop()) || 'application/octet-stream'
+    
+    await conn.sendMessage(
+      m.chat,
+      {
+        document: { url: downloadUrl },
+        fileName,
+        mimetype,
+        caption: null
+      },
+      { quoted: m }
+    )
 
-    await conn.sendFile(m.chat, downloadUrl, fileName, '', m, false, { mimetype })
-
-   
     user.coin -= 20
-    conn.reply(m.chat, `> ⚡ Se descontaron *20 ${currency}*`, m)
+    conn.reply(m.chat, `🌱 Se descontaron *20 ${currency}*`, m)
 
     await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
 
