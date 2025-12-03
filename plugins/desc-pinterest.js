@@ -11,6 +11,7 @@ const pindl = {
             if (!mediaDataScript.length) return null;
 
             const mediaData = JSON.parse(mediaDataScript.html());
+
             if (mediaData["@type"] === "VideoObject" && mediaData.contentUrl?.endsWith(".mp4")) {
                 return {
                     type: "video",
@@ -19,7 +20,8 @@ const pindl = {
                     contentUrl: mediaData.contentUrl,
                     thumbnailUrl: mediaData.thumbnailUrl,
                     uploadDate: mediaData.uploadDate,
-                    duration: mediaData.duration
+                    duration: mediaData.duration,
+                    keywords: mediaData.keywords || []
                 };
             }
             return null;
@@ -32,15 +34,19 @@ const pindl = {
         try {
             const { data: html } = await axios.get(url);
             const $ = cheerio.load(html);
+
             const mediaDataScript = $('script[data-test-id="leaf-snippet"]');
             if (!mediaDataScript.length) return null;
 
             const mediaData = JSON.parse(mediaDataScript.html());
+
             if (mediaData["@type"] === "SocialMediaPosting" && mediaData.image && !mediaData.image.endsWith(".gif")) {
                 return {
                     type: "image",
                     headline: mediaData.headline,
-                    image: mediaData.image
+                    image: mediaData.image,
+                    date: mediaData.datePublished,
+                    keywords: mediaData.keywords || []
                 };
             }
             return null;
@@ -53,15 +59,19 @@ const pindl = {
         try {
             const { data: html } = await axios.get(url);
             const $ = cheerio.load(html);
+
             const mediaDataScript = $('script[data-test-id="leaf-snippet"]');
             if (!mediaDataScript.length) return null;
 
             const mediaData = JSON.parse(mediaDataScript.html());
+
             if (mediaData["@type"] === "SocialMediaPosting" && mediaData.image?.endsWith(".gif")) {
                 return {
                     type: "gif",
                     headline: mediaData.headline,
-                    gif: mediaData.image
+                    gif: mediaData.image,
+                    date: mediaData.datePublished,
+                    keywords: mediaData.keywords || []
                 };
             }
             return null;
@@ -88,15 +98,28 @@ const handler = async (m, { conn, text }) => {
         const result = await pindl.download(text);
         if (result.error) throw result.error;
 
-        let caption = "";
         const maxSize = 10 * 1024 * 1024;
 
-        if (result.type === "video" || result.type === "gif") {
-            caption = `「✦」 *Información Video/GIF*\n\n> ✐ Título » ${result.name || result.headline || "N/A"}\n> 🜸 Link » ${result.contentUrl || result.gif}`;
+        let caption = `
+「✦」 *INFORMACIÓN*
+✐ *Tipo:* ${result.type.toUpperCase()}
+✐ *Título:* ${result.name || result.headline || "N/A"}
+🜸 *Link:* ${result.contentUrl || result.image || result.gif}
+🖼 *Thumbnail:* ${result.thumbnailUrl || "N/A"}
+📅 *Fecha:* ${result.uploadDate || result.date || "N/A"}
+⏳ *Duración:* ${result.duration || "N/A"}
+🏷 *Keywords:* ${result.keywords?.join(", ") || "N/A"}
+📝 *Descripción:* ${result.description || "N/A"}
+`.trim();
 
-            const buffer = await downloadBuffer(result.contentUrl || result.gif);
+        if (result.type === "video" || result.type === "gif") {
+            const url = result.contentUrl || result.gif;
+            const buffer = await downloadBuffer(url);
+
+            caption += `\n📦 *Tamaño:* ${(buffer.length / 1024 / 1024).toFixed(2)} MB`;
+
             if (buffer.length > maxSize) {
-                caption += `\n⚠️ El archivo es muy pesado para enviar. Usa el enlace.`;
+                caption += `\n⚠️ *El archivo pesa demasiado para enviarlo.* Usa el enlace.`;
                 await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
             } else {
                 await conn.sendMessage(m.chat, {
@@ -107,7 +130,6 @@ const handler = async (m, { conn, text }) => {
             }
 
         } else if (result.type === "image") {
-            caption = `「✦」 *Información Imagen*\n\n> ✐ Título » ${result.headline || "N/A"}\n> 🜸 Link » ${result.image}`;
             await conn.sendMessage(m.chat, {
                 image: { url: result.image },
                 caption
@@ -115,6 +137,7 @@ const handler = async (m, { conn, text }) => {
         }
 
         await m.react("✅");
+
     } catch (error) {
         await m.react("✖️");
         await conn.sendMessage(m.chat, { text: `Algo salió mal: ${error}` }, { quoted: m });
