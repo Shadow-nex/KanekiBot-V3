@@ -11,7 +11,6 @@ const pindl = {
             if (!mediaDataScript.length) return null;
 
             const mediaData = JSON.parse(mediaDataScript.html());
-
             if (mediaData["@type"] === "VideoObject" && mediaData.contentUrl?.endsWith(".mp4")) {
                 return {
                     type: "video",
@@ -20,8 +19,7 @@ const pindl = {
                     contentUrl: mediaData.contentUrl,
                     thumbnailUrl: mediaData.thumbnailUrl,
                     uploadDate: mediaData.uploadDate,
-                    duration: mediaData.duration,
-                    keywords: mediaData.keywords || []
+                    duration: mediaData.duration
                 };
             }
             return null;
@@ -34,19 +32,15 @@ const pindl = {
         try {
             const { data: html } = await axios.get(url);
             const $ = cheerio.load(html);
-
             const mediaDataScript = $('script[data-test-id="leaf-snippet"]');
             if (!mediaDataScript.length) return null;
 
             const mediaData = JSON.parse(mediaDataScript.html());
-
             if (mediaData["@type"] === "SocialMediaPosting" && mediaData.image && !mediaData.image.endsWith(".gif")) {
                 return {
                     type: "image",
                     headline: mediaData.headline,
-                    image: mediaData.image,
-                    date: mediaData.datePublished,
-                    keywords: mediaData.keywords || []
+                    image: mediaData.image
                 };
             }
             return null;
@@ -59,19 +53,15 @@ const pindl = {
         try {
             const { data: html } = await axios.get(url);
             const $ = cheerio.load(html);
-
             const mediaDataScript = $('script[data-test-id="leaf-snippet"]');
             if (!mediaDataScript.length) return null;
 
             const mediaData = JSON.parse(mediaDataScript.html());
-
             if (mediaData["@type"] === "SocialMediaPosting" && mediaData.image?.endsWith(".gif")) {
                 return {
                     type: "gif",
                     headline: mediaData.headline,
-                    gif: mediaData.image,
-                    date: mediaData.datePublished,
-                    keywords: mediaData.keywords || []
+                    gif: mediaData.image
                 };
             }
             return null;
@@ -97,76 +87,39 @@ const handler = async (m, { conn, text }) => {
     try {
         const result = await pindl.download(text);
         if (result.error) throw result.error;
-       // --- dentro de tu handler, después de obtener `result` ---
 
-const maxSize = 10 * 1024 * 1024;
+        let caption = "";
+        const maxSize = 10 * 1024 * 1024;
 
-// normalizar keywords a string seguro
-const normalizeKeywords = (kw) => {
-  if (!kw) return "N/A";
-  if (Array.isArray(kw)) return kw.length ? kw.join(", ") : "N/A";
-  if (typeof kw === "string") return kw || "N/A";
-  if (typeof kw === "object") {
-    try {
-      // intentar extraer valores y aplanar
-      const vals = Object.values(kw).flat(Infinity).filter(Boolean);
-      return vals.length ? vals.join(", ") : "N/A";
-    } catch {
-      return "N/A";
+        if (result.type === "video" || result.type === "gif") {
+            caption = `「✦」 *Información Video/GIF*\n\n> ✐ Título » ${result.name || result.headline || "N/A"}\n> 🜸 Link » ${result.contentUrl || result.gif}`;
+
+            const buffer = await downloadBuffer(result.contentUrl || result.gif);
+            if (buffer.length > maxSize) {
+                caption += `\n⚠️ El archivo es muy pesado para enviar. Usa el enlace.`;
+                await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
+            } else {
+                await conn.sendMessage(m.chat, {
+                    video: buffer,
+                    caption,
+                    mimetype: "video/mp4"
+                }, { quoted: m });
+            }
+
+        } else if (result.type === "image") {
+            caption = `「✦」 *Información Imagen*\n\n> ✐ Título » ${result.headline || "N/A"}\n> 🜸 Link » ${result.image}`;
+            await conn.sendMessage(m.chat, {
+                image: { url: result.image },
+                caption
+            }, { quoted: m });
+        }
+
+        await m.react("✅");
+    } catch (error) {
+        await m.react("✖️");
+        await conn.sendMessage(m.chat, { text: `Algo salió mal: ${error}` }, { quoted: m });
     }
-  }
-  return "N/A";
 };
-
-try {
-  const typeLabel = (result.type || "N/A").toString().toUpperCase();
-  const keywordsText = normalizeKeywords(result.keywords);
-
-  let caption = `
-「✦」 *INFORMACIÓN*
-✐ *Tipo:* ${typeLabel}
-✐ *Título:* ${result.name || result.headline || "N/A"}
-🜸 *Link:* ${result.contentUrl || result.image || result.gif || "N/A"}
-🖼 *Thumbnail:* ${result.thumbnailUrl || "N/A"}
-📅 *Fecha:* ${result.uploadDate || result.date || "N/A"}
-⏳ *Duración:* ${result.duration || "N/A"}
-🏷 *Keywords:* ${keywordsText}
-📝 *Descripción:* ${result.description || "N/A"}
-`.trim();
-
-  if (result.type === "video" || result.type === "gif") {
-    const url = result.contentUrl || result.gif;
-    const buffer = await downloadBuffer(url);
-
-    caption += `\n📦 *Tamaño:* ${(buffer.length / 1024 / 1024).toFixed(2)} MB`;
-
-    if (buffer.length > maxSize) {
-      caption += `\n⚠️ *El archivo pesa demasiado para enviarlo.* Usa el enlace.`;
-      await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
-    } else {
-      await conn.sendMessage(m.chat, {
-        video: buffer,
-        caption,
-        mimetype: "video/mp4"
-      }, { quoted: m });
-    }
-
-  } else if (result.type === "image") {
-    await conn.sendMessage(m.chat, {
-      image: { url: result.image },
-      caption
-    }, { quoted: m });
-  } else {
-    // fallback si no detectó tipo
-    await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
-  }
-
-  await m.react("✅");
-} catch (err) {
-  await m.react("✖️");
-  await conn.sendMessage(m.chat, { text: `Algo salió mal: ${err}` }, { quoted: m });
-}
-},
 
 handler.help = ["pinterestdl *<url>*"];
 handler.tags = ["descargas"];
