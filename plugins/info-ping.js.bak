@@ -100,16 +100,16 @@ let response = `
 \`\`\`${sysInfo.trim()}\`\`\`
 `
 
-const fakeDoc = {
+/*const fakeDoc = {
     document: Buffer.from("KanekiBot-AI"),
     fileName: botname,
     mimetype: "application/zip",
     fileLength: 1_000_000_000,
     caption: response,
     jpegThumbnail: editedThumb
-}
+}*/
 
-await conn.sendMessage(m.chat, fakeDoc, { mentions: [m.sender], quoted: fkontak })
+await conn.sendMessage(m.chat, response, { mentions: [m.sender], quoted: fkontak })
 })
 } catch (e) {
 console.log(e)
