@@ -1,73 +1,45 @@
-import fs from 'fs'
-import path from 'path'
-import Jimp from 'jimp'
+import fetch from "node-fetch"
+import FormData from "form-data"
 
-const bannerDir = global.banner
-if (!fs.existsSync(bannerDir)) fs.mkdirSync(bannerDir, { recursive: true })
+let handler = async (m, { conn, isOwner, usedPrefix, command }) => {
+  if (!isOwner) return m.reply("❌ Solo el owner puede usar este comando.")
 
-function getBannerPath(botJid) {
-  const botId = botJid.replace(/[:@.]/g, '_')
-  return path.join(bannerDir, `banner_${botId}.jpg`)
-}
+  if (!m.quoted || !m.quoted.mime) 
+    return m.reply(`📸 *Responde a una imagen para usar este comando.*`)
 
-function getDefaultBanner() {
-  return banner
-}
-
-const handler = async (m, { conn, command }) => {
-  const isSubBot = [
-    conn.user.jid,
-    ...global.owner.map(([num]) => `${num}@s.whatsapp.net`)
-  ].includes(m.sender)
-
-  if (!isSubBot) return m.reply(`❀ El comando *${command}* solo puede ser usado por el SubBot.`)
-
-  const botJid = conn.user.jid
-  const bannerFile = getBannerPath(botJid)
+  let mime = m.quoted.mime
+  if (!/image\/(jpe?g|png)/.test(mime))
+    return m.reply("⚠️ El archivo debe ser una imagen JPG o PNG.")
 
   try {
+    let img = await m.quoted.download()
+    if (!img) return m.reply("❌ No pude descargar la imagen.")
 
-    if (command === 'setbanner') {
-      const q = m.quoted || m
-      const mime = (q.msg || q).mimetype || ''
+    // Subir a Catbox
+    let form = new FormData()
+    form.append("reqtype", "fileupload")
+    form.append("userhash", "") // opcional
+    form.append("fileToUpload", img, "banner.jpg")
 
-      if (!/image\/(png|jpe?g)/.test(mime))
-        return m.reply(`❀ Envía o responde a una imagen (JPG/PNG) válida.`)
+    let upload = await fetch("https://catbox.moe/user/api.php", {
+      method: "POST",
+      body: form
+    })
 
-      const media = await q.download()
-      if (!media) return m.reply(`❎ No se pudo obtener la imagen.`)
+    let url = await upload.text()
+    if (!url.startsWith("https://")) 
+      return m.reply("❌ Error al subir la imagen a Catbox.")
 
-      const img = await Jimp.read(media)
-      const buffer = await img.getBufferAsync(Jimp.MIME_JPEG)
+    global.banner = url.trim()
 
-      fs.writeFileSync(bannerFile, buffer)
-      global.banner = buffer // solo aplica al SubBot actual
-
-      return m.reply(`✅ Banner actualizado para este SubBot.`)
-    }
-
-    if (command === 'resetbanner') {
-      const defaultBanner = getDefaultBanner()
-
-      if (!fs.existsSync(defaultBanner))
-        return m.reply(`⚠︎ El banner original no existe: ${defaultBanner}`)
-
-      const buffer = fs.readFileSync(defaultBanner)
-
-      fs.writeFileSync(bannerFile, buffer)
-      global.banner = buffer
-
-      return m.reply(`♻️ Banner restaurado a su imagen original.`)
-    }
-
+    m.reply(`✅ *Banner actualizado correctamente*\n\n📌 **Nuevo banner:**\n${global.banner}`)
   } catch (e) {
     console.error(e)
-    m.reply(`⚠︎ Error al procesar el banner:\n${e.message}`)
+    m.reply("⚠️ Ocurrió un error inesperado.")
   }
 }
 
-handler.help = ['setbanner','resetbanner']
-handler.tags = ['subbot']
-handler.command = ['setbanner','resetbanner']
+handler.command = ["setbanner"]
+handler.owner = true
 
 export default handler
