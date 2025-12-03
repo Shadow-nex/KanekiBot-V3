@@ -97,52 +97,76 @@ const handler = async (m, { conn, text }) => {
     try {
         const result = await pindl.download(text);
         if (result.error) throw result.error;
+       // --- dentro de tu handler, después de obtener `result` ---
 
-        const maxSize = 10 * 1024 * 1024;
+const maxSize = 10 * 1024 * 1024;
 
-        let caption = `
+// normalizar keywords a string seguro
+const normalizeKeywords = (kw) => {
+  if (!kw) return "N/A";
+  if (Array.isArray(kw)) return kw.length ? kw.join(", ") : "N/A";
+  if (typeof kw === "string") return kw || "N/A";
+  if (typeof kw === "object") {
+    try {
+      // intentar extraer valores y aplanar
+      const vals = Object.values(kw).flat(Infinity).filter(Boolean);
+      return vals.length ? vals.join(", ") : "N/A";
+    } catch {
+      return "N/A";
+    }
+  }
+  return "N/A";
+};
+
+try {
+  const typeLabel = (result.type || "N/A").toString().toUpperCase();
+  const keywordsText = normalizeKeywords(result.keywords);
+
+  let caption = `
 「✦」 *INFORMACIÓN*
-✐ *Tipo:* ${result.type.toUpperCase()}
+✐ *Tipo:* ${typeLabel}
 ✐ *Título:* ${result.name || result.headline || "N/A"}
-🜸 *Link:* ${result.contentUrl || result.image || result.gif}
+🜸 *Link:* ${result.contentUrl || result.image || result.gif || "N/A"}
 🖼 *Thumbnail:* ${result.thumbnailUrl || "N/A"}
 📅 *Fecha:* ${result.uploadDate || result.date || "N/A"}
 ⏳ *Duración:* ${result.duration || "N/A"}
-🏷 *Keywords:* ${result.keywords?.join(", ") || "N/A"}
+🏷 *Keywords:* ${keywordsText}
 📝 *Descripción:* ${result.description || "N/A"}
 `.trim();
 
-        if (result.type === "video" || result.type === "gif") {
-            const url = result.contentUrl || result.gif;
-            const buffer = await downloadBuffer(url);
+  if (result.type === "video" || result.type === "gif") {
+    const url = result.contentUrl || result.gif;
+    const buffer = await downloadBuffer(url);
 
-            caption += `\n📦 *Tamaño:* ${(buffer.length / 1024 / 1024).toFixed(2)} MB`;
+    caption += `\n📦 *Tamaño:* ${(buffer.length / 1024 / 1024).toFixed(2)} MB`;
 
-            if (buffer.length > maxSize) {
-                caption += `\n⚠️ *El archivo pesa demasiado para enviarlo.* Usa el enlace.`;
-                await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
-            } else {
-                await conn.sendMessage(m.chat, {
-                    video: buffer,
-                    caption,
-                    mimetype: "video/mp4"
-                }, { quoted: m });
-            }
-
-        } else if (result.type === "image") {
-            await conn.sendMessage(m.chat, {
-                image: { url: result.image },
-                caption
-            }, { quoted: m });
-        }
-
-        await m.react("✅");
-
-    } catch (error) {
-        await m.react("✖️");
-        await conn.sendMessage(m.chat, { text: `Algo salió mal: ${error}` }, { quoted: m });
+    if (buffer.length > maxSize) {
+      caption += `\n⚠️ *El archivo pesa demasiado para enviarlo.* Usa el enlace.`;
+      await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
+    } else {
+      await conn.sendMessage(m.chat, {
+        video: buffer,
+        caption,
+        mimetype: "video/mp4"
+      }, { quoted: m });
     }
-};
+
+  } else if (result.type === "image") {
+    await conn.sendMessage(m.chat, {
+      image: { url: result.image },
+      caption
+    }, { quoted: m });
+  } else {
+    // fallback si no detectó tipo
+    await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
+  }
+
+  await m.react("✅");
+} catch (err) {
+  await m.react("✖️");
+  await conn.sendMessage(m.chat, { text: `Algo salió mal: ${err}` }, { quoted: m });
+}
+},
 
 handler.help = ["pinterestdl *<url>*"];
 handler.tags = ["descargas"];
