@@ -55,7 +55,7 @@ const fkontak = {
         title: "Ping",
         description: ""
       },
-      businessOwnerJid: `${numCreador}@s.whatsapp.net`
+      businessOwnerJid: `51919199620@s.whatsapp.net`
     }
   }
 }
