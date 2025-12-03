@@ -15,7 +15,6 @@ await conn.sendMessage(m.chat, { text: "*🌾 Calculando ping...*" }, { quoted: 
 const end = new Date().getTime()
 const latency = end - start
 
-
 const uptime = process.uptime()
 const hours = Math.floor(uptime / 3600)
 const minutes = Math.floor((uptime % 3600) / 60)
@@ -36,7 +35,6 @@ function makeBar(porc) {
 }
 
 const ramBar = `${makeBar(percentRAM)} ${percentRAM}%`
-
 
 const cores = os.cpus().length
 const modeloCPU = os.cpus()[0].model
@@ -74,7 +72,6 @@ let response = `
 
 𓋜 𝐄𝐬𝐭𝐚𝐝𝐨 𝐝𝐞𝐥 𝐛𝐨𝐭: \`\`\`${tipoBot}\`\`\` ᨻ꯭🪴᪶᪲ ׅ
 
-
 ✎ \`𝐏𝐢𝐧𝐠:\` \`\`\`${latency} ms\`\`\`
 ✎ \`𝐋𝐚𝐭𝐞𝐧𝐜𝐲:\` \`\`\`${latensi.toFixed(4)} ms\`\`\`
 ✎ \`𝐑𝐚𝐦 𝐔𝐬𝐚𝐠𝐞:\` \`\`\`${usedRAM_MB} MB\`\`\`
@@ -84,7 +81,7 @@ let response = `
 ✎ \`𝐌𝐨𝐝𝐞𝐥𝐨:\` \`\`\`${modeloCPU}\`\`\`
 
  ׅ     ۫۫   ┄ׅ──۪፝֟─ׄ┄  ʚ⃘ɞ ┄ׄ─፝፝֟─ׅ─۫┄  ׄ  𝅄
- 
+
 ✎ \`𝐑𝐚𝐦:\` \`\`\`(${usedRAM_GB} GB) (${freeRAM_GB} GB) (${totalRAM_GB} GB)\`\`\`
 > 🥗̸᪶֟𝆹𝅥 ${ramBar}
 
@@ -93,6 +90,7 @@ let response = `
 
 ${sysInfo.trim()}\`\`\`
 `
+
 const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513335162_487707.jpeg")).buffer()
 
 const fkontak = {
@@ -116,7 +114,18 @@ const fkontak = {
   }
 }
 
-await conn.sendMessage(m.chat, { image: { url: banner }, caption: response, mentions: [userId], ...fake }, { quoted: fkontak })
+const userId = m.sender
+
+await conn.sendMessage(
+  m.chat,
+  {
+    image: { url: banner },
+    caption: response,
+    mentions: [userId],
+    ...fake
+  },
+  { quoted: fkontak }
+)
 
 })
 } catch (e) {
