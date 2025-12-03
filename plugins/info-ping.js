@@ -65,11 +65,6 @@ let diskPercent = parseInt(disk.percent.replace("%",""))
 const diskBar = `\`\`\`${makeBar(diskPercent)} \`\`\`
 \`\`\`     ${diskPercent}% \`\`\``
 
-// 🔧 ARREGLO: fake no estaba definido, aquí se crea sin modificar tu estructura
-const fake = {
-  image: { url: "https://qu.ax/hKDP.jpeg" }
-}
-
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
 
@@ -128,6 +123,7 @@ const userId = m.sender
 await conn.sendMessage(
   m.chat,
   {
+    image: banner,
     caption: response,
     mentions: [userId],
     ...fake
