@@ -5,83 +5,68 @@ import crypto from "crypto";
 import { FormData, Blob } from "formdata-node";
 import { fileTypeFromBuffer } from "file-type";
 
-let handler = async (m, { conn, isRowner }) => {
 
-  if (!m.quoted || !/image/.test(m.quoted.mimetype)) return m.reply(`🪴 Por favor, responde a una imagen con el comando *setbanner* para actualizar la foto del menu.`);
+global.subbotBanners = global.banner || {};
+
+let handler = async (m, { conn, isRowner, command }) => {
+
+  // Permisos
+  const isSubBots = [conn.user.jid, ...global.owner.map(([number]) => `${number}@s.whatsapp.net`)].includes(m.sender)
+  if (!isSubBots) return m.reply(`❀ El comando *${command}* solo puede ser ejecutado por el Socket.`)
+
+
+  if (!m.quoted || !/image/.test(m.quoted.mimetype)) 
+    return m.reply(`🪴 Responde a una imagen con *${command}* para actualizar el banner.`)
 
   try {
 
     const media = await m.quoted.download();
+    if (!isImageValid(media)) return m.reply(`🪴 Imagen inválida.`)
+
     let link = await catbox(media);
+
     
-    if (!isImageValid(media)) {
-      return m.reply(`🪴 El archivo enviado no es una imagen válida.`);
+    global.subbotBanners[m.sender] = link;
+
+    
+    if (m.sender === conn.user.jid) {
+      global.banner = link;
     }
 
-    global.banner = `${link}`;  
+    await conn.sendFile(m.chat, media, 'banner.jpg', `⚡ Banner actualizado solo para tu subbot.`, m);
 
-    await conn.sendFile(m.chat, media, 'banner.jpg', `⚡ Banner actualizado.`, m);
-
-  } catch (error) {
-    console.error(error);
-    m.reply(`Hubo un error al intentar cambiar el banner.`);
+  } catch (e) {
+    console.error(e);
+    m.reply(`Hubo un error al cambiar el banner.`);
   }
 };
 
-
-const isImageValid = (buffer) => {
-  const magicBytes = buffer.slice(0, 4).toString('hex');
-
-
-  if (magicBytes === 'ffd8ffe0' || magicBytes === 'ffd8ffe1' || magicBytes === 'ffd8ffe2') {
-    return true;
-  }
-
-
-  if (magicBytes === '89504e47') {
-    return true;
-  }
-
-
-  if (magicBytes === '47494638') {
-    return true;
-  }
-
-  return false; 
-};
+export default handler;
 
 handler.help = ['setbanner'];
 handler.tags = ['tools'];
 handler.command = ['setbanner'];
 
 
-export default handler;
-
-function formatBytes(bytes) {
-  if (bytes === 0) {
-    return "0 B";
-  }
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${(bytes / 1024 ** i).toFixed(2)} ${sizes[i]}`;
+// Validar imagen
+function isImageValid(buffer) {
+  const magic = buffer.slice(0, 4).toString('hex');
+  return [
+    "ffd8ffe0", "ffd8ffe1", "ffd8ffe2", // JPG
+    "89504e47",                         // PNG
+    "47494638"                          // GIF
+  ].includes(magic);
 }
 
 async function catbox(content) {
-  const { ext, mime } = (await fileTypeFromBuffer(content)) || {};
-  const blob = new Blob([content.toArrayBuffer()], { type: mime });
-  const formData = new FormData();
-  const randomBytes = crypto.randomBytes(5).toString("hex");
-  formData.append("reqtype", "fileupload");
-  formData.append("fileToUpload", blob, randomBytes + "." + ext);
+  const type = await fileTypeFromBuffer(content);
+  const blob = new Blob([content.toArrayBuffer()], { type: type.mime });
+  const form = new FormData();
 
-  const response = await fetch("https://catbox.moe/user/api.php", {
-    method: "POST",
-    body: formData,
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36",
-    },
-  });
+  const id = crypto.randomBytes(5).toString("hex");
+  form.append("reqtype", "fileupload");
+  form.append("fileToUpload", blob, `${id}.${type.ext}`);
 
-  return await response.text();
+  const res = await fetch("https://catbox.moe/user/api.php", { method: "POST", body: form });
+  return await res.text();
 }
