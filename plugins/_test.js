@@ -1,61 +1,28 @@
-// videomp3.js
-import ffmpeg from "fluent-ffmpeg"
-import { PassThrough } from "stream"
+import {toAudio, toPTT} from '../lib/converter.js'
 
-let handler = async (m, { conn }) => {
-  try {
-    // detectar video enviado o citado
-    const q = m.quoted || m
-    const mime = q.mtype || ""
-
-    if (!/video/.test(mime))
-      return m.reply("🎥 *Envía o cita un video para convertirlo a MP3.*")
-
-    await m.react?.("🔄")
-
-    // descargar video como buffer
-    const videoBuffer = await conn.downloadMediaMessage(q)
-
-    // convertir el buffer a un stream
-    const inputStream = new PassThrough()
-    inputStream.end(videoBuffer)
-
-    // salida en memoria
-    const outputStream = new PassThrough()
-    let audioChunks = []
-
-    outputStream.on("data", (chunk) => audioChunks.push(chunk))
-
-    const convert = () =>
-      new Promise((resolve, reject) => {
-        ffmpeg(inputStream)
-          .audioCodec("libmp3lame")
-          .audioBitrate("96k") // baja calidad
-          .format("mp3")
-          .on("error", reject)
-          .on("end", resolve)
-          .pipe(outputStream, { end: true })
-      })
-
-    await convert()
-
-    const mp3Buffer = Buffer.concat(audioChunks)
-
-    // enviar audio
-    await conn.sendMessage(m.chat, {
-      audio: mp3Buffer,
-      mimetype: "audio/mpeg",
-      fileName: "audio.mp3",
-    }, { quoted: m })
-
-    await m.react?.("✅")
-
-  } catch (err) {
-    console.error(err)
-    m.reply("❌ Error al convertir el video.")
-  }
+const handler = async (m, {conn, usedPrefix, command}) => {
+const q = m.quoted ? m.quoted : m
+const mime = (q || q.msg).mimetype || q.mediaType || ''
+  
+if (!/video|audio/.test(mime)) {
+return conn.reply(m.chat, `🪴 Por favor, responda al video o nota de voz que desee convertir a Audio/MP3.`, m)
+}
+  
+const media = await q.download()
+if (!media) {
+return conn.reply(m.chat, `Ocurrio un error al descargar su video.`, m)
+}
+  
+const audio = await toPTT(media, 'mp4')
+if (!audio.data) {
+return conn.reply(m.chat, `Ocurrio un error al convertir su nota de voz a Audio/MP3.`, m)
+}
+conn.sendMessage(m.chat, {audio: media || audio.data, mimetype: 'audio/mpeg'}, {quoted: m})
 }
 
-handler.help = ["tomp3"]
-handler.command = ["tomp3"]
+handler.help = ['tomp3', 'toaudio']
+handler.command = ['tomp3', 'toaudio']
+handler.group = true
+handler.register = true
+
 export default handler
