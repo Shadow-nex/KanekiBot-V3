@@ -81,7 +81,7 @@ handler.tags = ['download']
 handler.help = ['apkmod']
 handler.command = ['apk', 'modapk', 'aptoide']
 handler.group = true
-handler.premium = false
+handler.premium = true
 handler.register = true
 
 export default handler
