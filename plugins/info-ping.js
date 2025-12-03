@@ -32,7 +32,7 @@ const modeloCPU = os.cpus()[0].model
 
 const fechaHora = moment().tz('America/Lima').format('YYYY/MM/DD, h:mm A')
 
-const thumbBuffer = Buffer.from(await (await fetch('https://i.pinimg.com/originals/d0/bc/19/d0bc19ccb8e9441e1b3962990bfb09a6.png')).arrayBuffer())
+const thumbBuffer = Buffer.from(await (await fetch(banner)).arrayBuffer())
 
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
