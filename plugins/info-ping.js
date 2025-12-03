@@ -34,7 +34,8 @@ function makeBar(porc) {
   return `■`.repeat(filled) + `□`.repeat(empty)
 }
 
-const ramBar = `${makeBar(percentRAM)} ${percentRAM}%`
+const ramBar = `\`\`\`${makeBar(percentRAM)} \`\`\`
+\`\`\`     ${percentRAM}% \`\`\``
 
 const cores = os.cpus().length
 const modeloCPU = os.cpus()[0].model
@@ -45,10 +46,8 @@ function getDisk() {
   return new Promise((resolve) => {
     exec(`df -h /`, (err, stdout) => {
       if (err) return resolve({ total: "N/A", used: "N/A", free: "N/A", percent: "N/A" })
-
       let lines = stdout.trim().split("\n")
       let disk = lines[1].replace(/\s+/g, " ").split(" ")
-
       resolve({
         total: disk[1],
         used: disk[2],
@@ -60,6 +59,11 @@ function getDisk() {
 }
 
 const disk = await getDisk()
+
+let diskPercent = parseInt(disk.percent.replace("%",""))
+
+const diskBar = `\`\`\`${makeBar(diskPercent)} \`\`\`
+\`\`\`     ${diskPercent}% \`\`\``
 
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
@@ -82,11 +86,11 @@ let response = `
 
  ׅ     ۫۫   ┄ׅ──۪፝֟─ׄ┄  ʚ⃘ɞ ┄ׄ─፝፝֟─ׅ─۫┄  ׄ  𝅄
 
-✎ \`𝐑𝐚𝐦:\` \`\`\`(${usedRAM_GB} GB) (${freeRAM_GB} GB) (${totalRAM_GB} GB)\`\`\`
+⚡ \`𝐑𝐚𝐦:\` \`\`\`(${usedRAM_GB} GB) (${freeRAM_GB} GB) (${totalRAM_GB} GB)\`\`\`
 > 🥗̸᪶֟𝆹𝅥 ${ramBar}
 
-✎ \`𝐃𝐢𝐬𝐜𝐨:\` \`\`\`(${disk.used}) (${disk.free}) (${disk.total})\`\`\`
-> 🍃̸᪶֟𝆹𝅥 ${disk.percent}
+🌴 \`𝐃𝐢𝐬𝐜𝐨:\` \`\`\`(${disk.used}) (${disk.free}) (${disk.total})\`\`\`
+> 🍃̸᪶֟𝆹𝅥 ${diskBar}
 
 ${sysInfo.trim()}\`\`\`
 `
@@ -119,7 +123,6 @@ const userId = m.sender
 await conn.sendMessage(
   m.chat,
   {
-    image: { url: banner },
     caption: response,
     mentions: [userId],
     ...fake
