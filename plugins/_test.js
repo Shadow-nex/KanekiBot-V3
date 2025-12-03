@@ -19,12 +19,42 @@ async function anakbaik(url) {
     let date = data.match(/"uploadDate":"([^"]+)"/)
     let keyword = data.match(/"keywords":"([^"]+)"/)
 
+    // media URL (prioriza video)
+    let mediaUrl = video ? video[1] : image ? image[1] : "-"
+
+    // fallback para título: si no se detectó, tomar el filename del mediaUrl o del URL de la página
+    let detectedTitle = title ? title[1] : null
+    if (!detectedTitle) {
+      // intenta obtener filename desde mediaUrl
+      if (mediaUrl && mediaUrl !== "-") {
+        try {
+          const parts = mediaUrl.split("/")
+          let fname = parts[parts.length - 1].split("?")[0]
+          // limpiar nombre: reemplazar guiones/underscores y quitar extensión
+          fname = decodeURIComponent(fname).replace(/[-_]+/g, " ")
+          fname = fname.replace(/\.(mp4|jpg|jpeg|png|webp)$/i, "")
+          detectedTitle = fname || "-"
+        } catch (err) {
+          detectedTitle = "-"
+        }
+      } else {
+        // como última opción usar parte final de la página URL (por si pasaron el media directo como url)
+        try {
+          let pageParts = url.split("/")
+          let p = pageParts[pageParts.length - 1].split("?")[0] || "-"
+          detectedTitle = decodeURIComponent(p).replace(/[-_]+/g, " ")
+        } catch (err) {
+          detectedTitle = "-"
+        }
+      }
+    }
+
     return {
       type: video ? "video" : "image",
-      title: title ? title[1] : "-",
+      title: detectedTitle || "-",
       author: author ? author[1] : "-",
       username: author ? author[2] : "-",
-      media: video ? video[1] : image ? image[1] : "-",
+      media: mediaUrl,
       thumbnail: thumb ? thumb[1] : "-",
       uploadDate: date ? date[1] : "-",
       keywords: keyword ? keyword[1].split(",").map(x => x.trim()) : []
