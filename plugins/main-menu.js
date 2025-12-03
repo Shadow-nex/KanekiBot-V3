@@ -193,7 +193,7 @@ newsletterName: channelRD.name
 },
 externalAdReply: {
 title: botname,
-body: textbot,
+body: dev,
 mediaType: 1,
 mediaUrl: redes,
 sourceUrl: redes,
