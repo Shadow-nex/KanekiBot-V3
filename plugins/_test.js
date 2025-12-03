@@ -1,38 +1,73 @@
+import fs from 'fs'
+import path from 'path'
 import Jimp from 'jimp'
 
-const handler = async (m, { conn, command }) => {
+const bannerDir = global.banner
+if (!fs.existsSync(bannerDir)) fs.mkdirSync(bannerDir, { recursive: true })
 
-  const isSubBots = [
+function getBannerPath(botJid) {
+  const botId = botJid.replace(/[:@.]/g, '_')
+  return path.join(bannerDir, `banner_${botId}.jpg`)
+}
+
+function getDefaultBanner() {
+  return banner
+}
+
+const handler = async (m, { conn, command }) => {
+  const isSubBot = [
     conn.user.jid,
-    ...global.owner.map(([number]) => `${number}@s.whatsapp.net`)
+    ...global.owner.map(([num]) => `${num}@s.whatsapp.net`)
   ].includes(m.sender)
 
-  if (!isSubBots) return m.reply(`❀ El comando *${command}* solo puede ser ejecutado por el Socket.`)
+  if (!isSubBot) return m.reply(`❀ El comando *${command}* solo puede ser usado por el SubBot.`)
+
+  const botJid = conn.user.jid
+  const bannerFile = getBannerPath(botJid)
 
   try {
-    const q = m.quoted || m
-    const mime = (q.msg || q).mimetype || ''
 
-    if (!/image\/(png|jpe?g)/.test(mime))
-      return conn.reply(m.chat, `❀ Envía o responde una imagen válida para establecer el banner.`, m)
+    if (command === 'setbanner') {
+      const q = m.quoted || m
+      const mime = (q.msg || q).mimetype || ''
 
-    const media = await q.download()
-    if (!media) return conn.reply(m.chat, `ꕥ No se pudo obtener la imagen.`, m)
+      if (!/image\/(png|jpe?g)/.test(mime))
+        return m.reply(`❀ Envía o responde a una imagen (JPG/PNG) válida.`)
 
-    const img = await Jimp.read(media)
-    const buffer = await img.getBufferAsync(Jimp.MIME_JPEG)
+      const media = await q.download()
+      if (!media) return m.reply(`❎ No se pudo obtener la imagen.`)
 
-    global.banner = buffer
+      const img = await Jimp.read(media)
+      const buffer = await img.getBufferAsync(Jimp.MIME_JPEG)
 
-    conn.reply(m.chat, `❀ El banner global fue actualizado correctamente.`, m)
+      fs.writeFileSync(bannerFile, buffer)
+      global.banner = buffer // solo aplica al SubBot actual
+
+      return m.reply(`✅ Banner actualizado para este SubBot.`)
+    }
+
+    if (command === 'resetbanner') {
+      const defaultBanner = getDefaultBanner()
+
+      if (!fs.existsSync(defaultBanner))
+        return m.reply(`⚠︎ El banner original no existe: ${defaultBanner}`)
+
+      const buffer = fs.readFileSync(defaultBanner)
+
+      fs.writeFileSync(bannerFile, buffer)
+      global.banner = buffer
+
+      return m.reply(`♻️ Banner restaurado a su imagen original.`)
+    }
 
   } catch (e) {
-    m.reply(`⚠︎ Ocurrió un error al intentar cambiar el banner.\n\n${e.message}`)
+    console.error(e)
+    m.reply(`⚠︎ Error al procesar el banner:\n${e.message}`)
   }
 }
 
-handler.help = ['setbanner']
-handler.tags = ['socket']
-handler.command = ['setbanner']
+handler.help = ['setbanner','resetbanner']
+handler.tags = ['subbot']
+handler.command = ['setbanner','resetbanner']
 
 export default handler
