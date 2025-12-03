@@ -1,113 +1,120 @@
-import axios from "axios"
+// ——————————————————————————————
+//   FFMPEG + CONVERTIDOR + PLUGIN
+// ——————————————————————————————
 
-async function anakbaik(url) {
-  try {
-    let { data } = await axios.get(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile Safari/604.1"
-      },
-      maxRedirects: 5
-    })
+import { promises } from 'fs';
+import { join, dirname } from 'path';
+import { spawn } from 'child_process';
+import { fileURLToPath } from 'url';
 
-    let video = data.match(/"contentUrl":"(https:\/\/v1\.pinimg\.com\/videos\/[^\"]+\.mp4)"/)
-    let image = data.match(/"imageSpec_736x":\{"url":"(https:\/\/i\.pinimg\.com\/736x\/[^\"]+\.(?:jpg|jpeg|png|webp))"/) || 
-                data.match(/"imageSpec_564x":\{"url":"(https:\/\/i\.pinimg\.com\/564x\/[^\"]+\.(?:jpg|jpeg|png|webp))"/)
+// Ruta universal Windows/Linux
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
-    let thumb = data.match(/"thumbnail":"(https:\/\/i\.pinimg\.com\/videos\/thumbnails\/originals\/[^\"]+\.jpg)"/)
-    let title = data.match(/"name":"([^"]+)"/)
-    let author = data.match(/"fullName":"([^"]+)".+?"username":"([^"]+)"/)
-    let date = data.match(/"uploadDate":"([^"]+)"/)
-    let keyword = data.match(/"keywords":"([^"]+)"/)
+// ————————————————
+//   FUNCIÓN FFMPEG
+// ————————————————
+function ffmpeg(buffer, args = [], ext = '', ext2 = '') {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const tmp = join(__dirname, 'tmp', Date.now() + '.' + ext);
+      const out = tmp + '.' + ext2;
 
-    // media URL (prioriza video)
-    let mediaUrl = video ? video[1] : image ? image[1] : "-"
+      await promises.writeFile(tmp, buffer);
 
-    // fallback para título: si no se detectó, tomar el filename del mediaUrl o del URL de la página
-    let detectedTitle = title ? title[1] : null
-    if (!detectedTitle) {
-      // intenta obtener filename desde mediaUrl
-      if (mediaUrl && mediaUrl !== "-") {
-        try {
-          const parts = mediaUrl.split("/")
-          let fname = parts[parts.length - 1].split("?")[0]
-          // limpiar nombre: reemplazar guiones/underscores y quitar extensión
-          fname = decodeURIComponent(fname).replace(/[-_]+/g, " ")
-          fname = fname.replace(/\.(mp4|jpg|jpeg|png|webp)$/i, "")
-          detectedTitle = fname || "-"
-        } catch (err) {
-          detectedTitle = "-"
-        }
-      } else {
-        // como última opción usar parte final de la página URL (por si pasaron el media directo como url)
-        try {
-          let pageParts = url.split("/")
-          let p = pageParts[pageParts.length - 1].split("?")[0] || "-"
-          detectedTitle = decodeURIComponent(p).replace(/[-_]+/g, " ")
-        } catch (err) {
-          detectedTitle = "-"
-        }
-      }
+      spawn('ffmpeg', [
+        '-y',
+        '-i', tmp,
+        ...args,
+        out,
+      ])
+        .on('error', reject)
+        .on('close', async (code) => {
+          try {
+            await promises.unlink(tmp);
+            if (code !== 0) return reject(code);
+
+            resolve({
+              data: await promises.readFile(out),
+              filename: out,
+              delete() {
+                return promises.unlink(out);
+              },
+            });
+
+          } catch (e) {
+            reject(e);
+          }
+        });
+
+    } catch (e) {
+      reject(e);
     }
-
-    return {
-      type: video ? "video" : "image",
-      title: detectedTitle || "-",
-      author: author ? author[1] : "-",
-      username: author ? author[2] : "-",
-      media: mediaUrl,
-      thumbnail: thumb ? thumb[1] : "-",
-      uploadDate: date ? date[1] : "-",
-      keywords: keyword ? keyword[1].split(",").map(x => x.trim()) : []
-    }
-
-  } catch (e) {
-    return { error: e.message }
-  }
+  });
 }
 
-let handler = async (m, { conn, args }) => {
-  try {
-    let url = args[0]
-    if (!url) return m.reply('*Ejemplo :* .pindl2 https://pin.it/4S4R8jDVR')
-
-    let res = await anakbaik(url)
-    if (res.error) return m.reply(res.error)
-
-    let caption = `
-📌 *Resultado de Pinterest*
-
-🖼️ *Tipo:* ${res.type}
-📛 *Título:* ${res.title}
-👤 *Autor:* ${res.author}
-🔎 *Usuario:* ${res.username}
-📅 *Subido:* ${res.uploadDate}
-🏷️ *Keywords:* ${res.keywords.join(", ") || "-"}
-
-🔗 *Link Directo:* 
-${res.media}
-
-⭐ *Plugin by Shadow UwU*
-`.trim()
-
-    if (res.type === 'video') {
-      await conn.sendMessage(m.chat, { 
-        video: { url: res.media },
-        caption 
-      }, { quoted: m })
-    } else {
-      await conn.sendMessage(m.chat, { 
-        image: { url: res.media },
-        caption 
-      }, { quoted: m })
-    }
-
-  } catch (e) {
-    m.reply(e.message)
-  }
+// ————————————————
+//   CONVERTIDORES
+// ————————————————
+function toPTT(buffer, ext) {
+  return ffmpeg(buffer, [
+    '-vn',
+    '-c:a', 'libopus',
+    '-b:a', '128k',
+    '-vbr', 'on',
+  ], ext, 'ogg');
 }
 
-handler.help = ['pindl2']
-handler.command = ['pindl2']
-handler.tags = ['downloader']
+function toAudio(buffer, ext) {
+  return ffmpeg(buffer, [
+    '-vn',
+    '-c:a', 'libopus',
+    '-b:a', '128k',
+    '-vbr', 'on',
+    '-compression_level', '10',
+  ], ext, 'opus');
+}
 
-export default handler
+function toVideo(buffer, ext) {
+  return ffmpeg(buffer, [
+    '-c:v', 'libx264',
+    '-c:a', 'aac',
+    '-ab', '128k',
+    '-ar', '44100',
+    '-crf', '32',
+    '-preset', 'slow',
+  ], ext, 'mp4');
+}
+
+// ————————————————
+//   PLUGIN: VIDEO → AUDIO
+// ————————————————
+let handler = async (m, { conn }) => {
+  let q = m.quoted ? m.quoted : m;
+  let mime = (q.msg || q).mimetype || '';
+
+  if (!mime || !mime.includes('video'))
+    return m.reply('Responde a un video para convertirlo a audio.');
+
+  try {
+    let buffer = await q.download();
+    let ext = mime.split('/')[1];
+
+    let out = await toAudio(buffer, ext);
+
+    await conn.sendMessage(m.chat, {
+      audio: out.data,
+      fileName: `audio_${Date.now()}.opus`,
+      mimetype: 'audio/ogg; codecs=opus',
+    }, { quoted: m });
+
+    await out.delete();
+
+  } catch (e) {
+    console.error(e);
+    m.reply('Error al convertir el video.');
+  }
+};
+
+handler.command = /^(tomp3|convert|mp3)$/i;
+
+export default handler;
