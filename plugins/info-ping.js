@@ -29,13 +29,24 @@ const totalRAM_GB = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2)
 const freeRAM_GB = (os.freemem() / 1024 / 1024 / 1024).toFixed(2)
 const usedRAM_GB = (totalRAM_GB - freeRAM_GB).toFixed(2)
 
+const percentRAM = Math.round((usedRAM_GB / totalRAM_GB) * 100)
+
+function makeBar(porc) {
+  let total = 10
+  let filled = Math.round((porc / 100) * total)
+  let empty = total - filled
+  return `▰`.repeat(filled) + `▱`.repeat(empty)
+}
+
+const ramBar = `${makeBar(percentRAM)} ${percentRAM}%`
+
 const cores = os.cpus().length
 const modeloCPU = os.cpus()[0].model
 
 const fechaHora = moment().tz('America/Lima').format('YYYY/MM/DD, h:mm A')
 
 let base = await Jimp.read(banner)
-let icon = await Jimp.read("https://i.imgur.com/7wHhYxK.png") // iconito mini
+let icon = await Jimp.read(banner)
 icon.resize(80, 80)
 
 base.composite(icon, 10, 10)
@@ -78,10 +89,10 @@ let response = `
 *CPU:* ${cores} cores
 *Modelo:* ${modeloCPU}
 *RAM:* ${usedRAM_MB} MB
-*RAM:*
  ├ • Usada: ${usedRAM_GB} GB
  ├ • Libre: ${freeRAM_GB} GB
- └ • Total: ${totalRAM_GB} GB
+ ├ • Total: ${totalRAM_GB} GB
+ └ • Uso: ${ramBar}
 
 *Uptime:* ${uptimeFormatted}
 *Fecha/Hora:* ${fechaHora}
@@ -89,39 +100,17 @@ let response = `
 \`\`\`${sysInfo.trim()}\`\`\`
 `
 
-// archivo falso
 const fakeDoc = {
-    document: Buffer.from("RIN-ITOSHI-BOT"),
-    fileName: "Rin_Itoshi_System_Status.zip",
+    document: Buffer.from("KanekiBot-AI"),
+    fileName: botname,
     mimetype: "application/zip",
-    fileLength: 1_000_000_000, // 1 GB falso
+    fileLength: 1_000_000_000,
     caption: response,
     jpegThumbnail: editedThumb
 }
 
-await conn.sendMessage(m.chat, fakeDoc, { quoted: m })
-/*
-await conn.sendMessage(
-  m.chat,
-  {
-    text: response,
-    mentions: [m.sender],
-    contextInfo: {
-      externalAdReply: {
-        title: botname,
-        body: dev,
-        thumbnail: editedThumb,
-        sourceUrl: redes,
-        mediaType: 1,
-        renderLargerThumbnail: true
-      }
-    }
-  },
-  { quoted: fkontak }
-)*/
-
+await conn.sendMessage(m.chat, fakeDoc, { mentions: [m.sender], quoted: fkontak })
 })
-
 } catch (e) {
 console.log(e)
 m.reply("Error en el comando ping.")
