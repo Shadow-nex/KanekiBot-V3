@@ -11,23 +11,21 @@ let timestamp = speed()
 let latensi = speed() - timestamp
 
 const start = new Date().getTime()
-await conn.sendMessage(m.chat, { text: "⏳ Calculando ping..." }, { quoted: m })
+await conn.sendMessage(m.chat, { text: "*🌾 Calculando ping...*" }, { quoted: m })
 const end = new Date().getTime()
 const latency = end - start
+
 
 const uptime = process.uptime()
 const hours = Math.floor(uptime / 3600)
 const minutes = Math.floor((uptime % 3600) / 60)
 const secondsUp = Math.floor(uptime % 60)
-
 const uptimeFormatted = `${hours}h ${minutes}m ${secondsUp}s`
 
 const usedRAM_MB = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)
-
 const totalRAM_GB = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2)
 const freeRAM_GB = (os.freemem() / 1024 / 1024 / 1024).toFixed(2)
 const usedRAM_GB = (totalRAM_GB - freeRAM_GB).toFixed(2)
-
 const percentRAM = Math.round((usedRAM_GB / totalRAM_GB) * 100)
 
 function makeBar(porc) {
@@ -39,10 +37,31 @@ function makeBar(porc) {
 
 const ramBar = `${makeBar(percentRAM)} ${percentRAM}%`
 
+
 const cores = os.cpus().length
 const modeloCPU = os.cpus()[0].model
 
 const fechaHora = moment().tz('America/Lima').format('YYYY/MM/DD, h:mm A')
+
+function getDisk() {
+  return new Promise((resolve) => {
+    exec(`df -h /`, (err, stdout) => {
+      if (err) return resolve({ total: "N/A", used: "N/A", free: "N/A", percent: "N/A" })
+
+      let lines = stdout.trim().split("\n")
+      let disk = lines[1].replace(/\s+/g, " ").split(" ")
+
+      resolve({
+        total: disk[1],
+        used: disk[2],
+        free: disk[3],
+        percent: disk[4]
+      })
+    })
+  })
+}
+
+const disk = await getDisk()
 
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
@@ -50,27 +69,54 @@ let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
 const tipoBot = (conn.user.jid === global.conn.user.jid) ? "⭐ Principal" : " Sub-Bot"
 
 let response = `
-*Estado del Bot:* ${tipoBot}
+˒˓  🌾  ֹ  S Y S T E M - P I N G  ׅ  ♡︪︩১  ֹ
+ᅠׅᅠ ꒰͜͡  ׄ͜͡  ⃘͜͡ ͡ ͜ ͜͡꒱ᅠׄ   ꘩⃘ׅ፝፝֟ꘟ  ׄ   ꒰͜͡  ׄ͜͡ ͜͡ ⃘ ͜͡  ͜͡꒱   ׅ
 
-*Ping:* ${latency} ms
-*Latencia Interna:* ${latensi.toFixed(4)} ms
+𓋜 𝐄𝐬𝐭𝐚𝐝𝐨 𝐝𝐞𝐥 𝐛𝐨𝐭: \`\`\`${tipoBot}\`\`\` ᨻ꯭🪴᪶᪲ ׅ
 
-*CPU:* ${cores} cores
-*Modelo:* ${modeloCPU}
 
-*RAM:* ${usedRAM_MB} MB
- ├ • Usada: ${usedRAM_GB} GB
- ├ • Libre: ${freeRAM_GB} GB
- ├ • Total: ${totalRAM_GB} GB
- └ • Uso:* ${ramBar}
+✎ \`𝐏𝐢𝐧𝐠:\` \`\`\`${latency} ms\`\`\`
+✎ \`𝐋𝐚𝐭𝐞𝐧𝐜𝐲:\` \`\`\`${latensi.toFixed(4)} ms\`\`\`
+✎ \`𝐑𝐚𝐦 𝐔𝐬𝐚𝐠𝐞:\` \`\`\`${usedRAM_MB} MB\`\`\`
+✎ \`𝐔𝐩𝐭𝐢𝐦𝐞:\` \`\`\`${uptimeFormatted}\`\`\`
+✎ \`𝐅𝐞𝐜𝐡𝐚:\` \`\`\`${fechaHora}\`\`\`
+✎ \`𝐍𝐮𝐜𝐥𝐞𝐨𝐬:\` \`\`\`(${cores})\`\`\`
+✎ \`𝐌𝐨𝐝𝐞𝐥𝐨:\` \`\`\`${modeloCPU}\`\`\`
 
-*Uptime:* ${uptimeFormatted}
-*Fecha/Hora:* ${fechaHora}
+ ׅ     ۫۫   ┄ׅ──۪፝֟─ׄ┄  ʚ⃘ɞ ┄ׄ─፝፝֟─ׅ─۫┄  ׄ  𝅄
+ 
+✎ \`𝐑𝐚𝐦:\` \`\`\`(${usedRAM_GB} GB) (${freeRAM_GB} GB) (${totalRAM_GB} GB)\`\`\`
+> 🥗̸᪶֟𝆹𝅥 ${ramBar}
 
-\`\`\`${sysInfo.trim()}\`\`\`
+✎ \`𝐃𝐢𝐬𝐜𝐨:\` \`\`\`(${disk.used}) (${disk.free}) (${disk.total})\`\`\`
+> 🍃̸᪶֟𝆹𝅥 ${disk.percent}
+
+${sysInfo.trim()}\`\`\`
 `
+const Shadow_url = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513335162_487707.jpeg")).buffer()
 
-await conn.sendMessage(m.chat, { text: response }, { quoted: m })
+const fkontak = {
+  key: {
+    fromMe: false,
+    participant: "0@s.whatsapp.net",
+    remoteJid: "status@broadcast"
+  },
+  message: {
+    productMessage: {
+      product: {
+        productImage: {
+          mimetype: "image/jpeg",
+          jpegThumbnail: Shadow_url
+        },
+        title: "Latency",
+        description: ""
+      },
+      businessOwnerJid: `51919199620@s.whatsapp.net`
+    }
+  }
+}
+
+await conn.sendMessage(m.chat, { image: { url: banner }, caption: response, mentions: [userId], ...fake }, { quoted: fkontak })
 
 })
 } catch (e) {
