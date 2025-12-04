@@ -9,7 +9,7 @@ const { generateWAMessageFromContent, generateWAMessageContent, proto } = bailey
 */
 let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
   try {
-    await m.react('🍒')
+    await m.react('🍁')
 
     const user = global.db.data.users[m.sender] || {}
     const name = await conn.getName(m.sender)
