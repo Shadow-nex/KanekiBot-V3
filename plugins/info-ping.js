@@ -35,7 +35,7 @@ function makeBar(porc) {
 }
 
 const ramBar = `\`\`\`${makeBar(percentRAM)} \`\`\`
-\`\`\`     ${percentRAM}% \`\`\``
+\`\`\`             ${percentRAM}% \`\`\``
 
 const cores = os.cpus().length
 const modeloCPU = os.cpus()[0].model
@@ -63,7 +63,7 @@ const disk = await getDisk()
 let diskPercent = parseInt(disk.percent.replace("%",""))
 
 const diskBar = `\`\`\`${makeBar(diskPercent)} \`\`\`
-\`\`\`     ${diskPercent}% \`\`\``
+\`\`\`             ${diskPercent}% \`\`\``
 
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
@@ -84,20 +84,16 @@ let response = `
 ✎ \`𝐍𝐮𝐜𝐥𝐞𝐨𝐬:\` \`\`\`(${cores})\`\`\`
 ✎ \`𝐌𝐨𝐝𝐞𝐥𝐨:\` \`\`\`${modeloCPU}\`\`\`
 
- ׅ     ۫۫   ┄ׅ──۪፝֟─ׄ┄  ʚ⃘ɞ ┄ׄ─፝፝֟─ׅ─۫┄  ׄ  𝅄
-
+ ׅ     ۫۫           ┄  ʚ⃘ɞ ┄
 ⚡ \`𝐑𝐚𝐦:\` \`\`\`(${usedRAM_GB} GB) (${freeRAM_GB} GB) (${totalRAM_GB} GB)\`\`\`
 > 🥗̸᪶֟𝆹𝅥 ${ramBar}
 
 🌴 \`𝐃𝐢𝐬𝐜𝐨:\` \`\`\`(${disk.used}) (${disk.free}) (${disk.total})\`\`\`
 > 🍃̸᪶֟𝆹𝅥 ${diskBar}
-
 ${sysInfo.trim()}\`\`\`
 `
-
+/*
 const banner = await (await fetch("https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg")).buffer()
-
-
 const fake = {
   contextInfo: {
     externalAdReply: {
@@ -110,7 +106,7 @@ const fake = {
     }
   }
 }
-
+*/
 const fkontak = {
   key: {
     fromMe: false,
@@ -139,8 +135,7 @@ await conn.sendMessage(
   {
     image: banner,
     caption: response,
-    mentions: [userId],
-    ...fake
+    mentions: [userId]
   },
   { quoted: fkontak }
 )
