@@ -27,8 +27,8 @@ var correo = 'shadowcore.xyz@gmail.com'
 global.redes = [canal, comunidad, git, github, correo].getRandom()
 
 global.nombre = m.pushName || 'Anónimo'
-global.packsticker = `°.🌳 ${nombre} • 🌿 kᥲᥒᥱkі ᑲ᥆𝗍 ᥲі ⬪🍃`
-global.packsticker2 = `\n🍒 ${dev}`
+global.packsticker = nombre
+global.packsticker2 = 
 
 global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, newsletterName: channelRD.name, serverMessageId: -1 }
 }}, { quoted: m }
@@ -57,7 +57,6 @@ switch (true) {
     break
 }
 global.saludo = hour
-//global.nombre = m.pushName || 'Anónimo'
 
 
 global.fkontak = { key: { participants:"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
