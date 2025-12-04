@@ -57,7 +57,7 @@ switch (true) {
     break
 }
 global.saludo = hour
-global.nombre = m.pushName || 'Anónimo'
+//global.nombre = m.pushName || 'Anónimo'
 
 
 global.fkontak = { key: { participants:"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
@@ -85,7 +85,7 @@ global.rcanal = {
     },
     externalAdReply: {
       title: botname,
-      body: `（${nombre}) • ${saludo}꒱`,
+      body: dev,
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
@@ -128,7 +128,7 @@ global.rcanalw = {
     },
     externalAdReply: {
       title: botname,
-      body: '',
+      body: saludo,
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
