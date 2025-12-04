@@ -89,7 +89,7 @@ ${comandos}\n`
  ⌗ֶㅤ֯𝅄⿻ 🌿 ׄ ⬭ 🅄sers registrados: *${totalreg}*
  ⌗ֶㅤ֯𝅄⿻ 🍄 ׄ ⬭ 🄶rupos activos: *${groupsCount}*
  ⌗ֶㅤ֯𝅄⿻ 🌟 ׄ ⬭ 🅁untime: *${uptime}*
-${readMore
+${readMore}
 
  ᦷᩘᦷ  ⃪֪݊🥢໑ٜ࣪ ㅤ🄱ot: *${(conn.user.jid == global.conn.user.jid ? 'Principal' : 'Sub-Bot')}*
  ᦷᩘᦷ  ⃪֪݊🎋໑ٜ࣪ ㅤ🄲omandos: *${totalCommands}*
@@ -128,7 +128,7 @@ ${readMore}`.trim()
             mimetype: "image/jpeg",
             jpegThumbnail: Shadow_url
           },
-          title: "ㅤׁ෨ 𝐌 𝐄 𝐍 𝐔 • 𝐊 𝐀 𝐍 𝐄 𝐊 𝐈 - 𝖻ᨣƚ 🎁 ラ",
+          title: "ㅤׁ෨ 𝐌 𝐄 𝐍 𝐔 • 𝐊 𝐀 𝐍 𝐄 𝐊 𝐈 ラ",
           description: "",
           currencyCode: "USD",
           priceAmount1000: 10000,
