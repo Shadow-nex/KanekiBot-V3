@@ -130,6 +130,13 @@ const fkontak = {
 
 const userId = m.sender
 
+   await conn.sendMessage(m.chat, {
+     image: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808441981_100675.jpeg"},
+     caption: response,
+     mentions: [userId],
+    ...fakex
+   }, { quoted: fkontak });
+/*    
 await conn.sendMessage(
   m.chat,
   {
@@ -140,7 +147,7 @@ await conn.sendMessage(
   },
   { quoted: fkontak }
 )
-
+*/
 })
 } catch (e) {
 console.log(e)
