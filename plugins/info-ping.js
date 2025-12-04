@@ -99,7 +99,7 @@ const fakex = {
     externalAdReply: {
       title: "System Status",
       body: dev,
-      thumbnail: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764809140251_4216.jpeg",
+      thumbnail: await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764809140251_4216.jpeg")).buffer(),
       mediaType: 1,
       renderLargerThumbnail: false,
       sourceUrl: "https://whatsapp.com"
