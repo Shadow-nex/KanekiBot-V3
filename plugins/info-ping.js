@@ -84,12 +84,12 @@ let response = `
 ✎ \`𝐍𝐮𝐜𝐥𝐞𝐨𝐬:\` \`\`\`(${cores})\`\`\`
 ✎ \`𝐌𝐨𝐝𝐞𝐥𝐨:\` \`\`\`${modeloCPU}\`\`\`
 
- ׅ     ۫۫           ┄  ʚ⃘ɞ ┄
+
 ⚡ \`𝐑𝐚𝐦:\` \`\`\`(${usedRAM_GB} GB) (${freeRAM_GB} GB) (${totalRAM_GB} GB)\`\`\`
-> 🥗̸᪶֟𝆹𝅥 ${ramBar}
+> 🥗𝆹𝅥 ${ramBar}
 
 🌴 \`𝐃𝐢𝐬𝐜𝐨:\` \`\`\`(${disk.used}) (${disk.free}) (${disk.total})\`\`\`
-> 🍃̸᪶֟𝆹𝅥 ${diskBar}
+> 🍃𝆹𝅥 ${diskBar}
 ${sysInfo.trim()}\`\`\`
 `
 
@@ -131,23 +131,11 @@ const fkontak = {
 const userId = m.sender
 
    await conn.sendMessage(m.chat, {
-    // image: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808441981_100675.jpeg"},
+     image: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764809140251_4216.jpeg"},
      caption: response,
      mentions: [userId],
     ...fakex
    }, { quoted: fkontak });
-/*    
-await conn.sendMessage(
-  m.chat,
-  {
-    image: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808441981_100675.jpeg",
-    caption: response,
-    mentions: [userId],
-    ...fakex
-  },
-  { quoted: fkontak }
-)
-*/
 })
 } catch (e) {
 console.log(e)
