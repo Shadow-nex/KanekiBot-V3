@@ -79,8 +79,7 @@ ${comandos}\n`
 
     const infoUser = `.     ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🎄۫ 
     ᗞᗞ @${userId}  ⌒᷼🍋‍🟩
-̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮  ̮   ̮   ̮   ̮   ̮   ̮ 
-︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶
+̮  ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜ ִ  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═
 
 ﹙🥦 ﹚🪽  ੭੭ ─ 𝐈𝐍𝐅𝐎 𝐁𝐎𝐓'𝐬  ﾟ･:𑇛
 
@@ -90,15 +89,15 @@ ${comandos}\n`
  ⌗ֶㅤ֯𝅄⿻ 🌿 ׄ ⬭ 🅄sers registrados: *${totalreg}*
  ⌗ֶㅤ֯𝅄⿻ 🍄 ׄ ⬭ 🄶rupos activos: *${groupsCount}*
  ⌗ֶㅤ֯𝅄⿻ 🌟 ׄ ⬭ 🅁untime: *${uptime}*
-${readMore}
-̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮   ̮  ̮   ̮   ̮   ̮   ̮   ̮ 
-︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶︶
+${readMore
 
  ᦷᩘᦷ  ⃪֪݊🥢໑ٜ࣪ ㅤ🄱ot: *${(conn.user.jid == global.conn.user.jid ? 'Principal' : 'Sub-Bot')}*
  ᦷᩘᦷ  ⃪֪݊🎋໑ٜ࣪ ㅤ🄲omandos: *${totalCommands}*
  ᦷᩘᦷ  ⃪֪݊☃️໑ٜ࣪ ㅤ🅅ersion: *${vs}*
  ᦷᩘᦷ  ⃪֪݊🥙໑ٜ࣪ ㅤ🄻ibreria: *${libreria}*
  ᦷᩘᦷ  ⃪֪݊🎍໑ٜ࣪ ㅤ🄵echa: *${hora}, ${dia}, ${fechaTxt}*
+
+═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜ ִ  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═
 
 ${readMore}`.trim()
 
