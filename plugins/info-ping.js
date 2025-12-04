@@ -92,8 +92,8 @@ let response = `
 > 🍃̸᪶֟𝆹𝅥 ${diskBar}
 ${sysInfo.trim()}\`\`\`
 `
-/*
-const banner = await (await fetch("https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg")).buffer()
+
+const banner = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808271839_765718.jpeg")).buffer()
 const fake = {
   contextInfo: {
     externalAdReply: {
@@ -101,12 +101,12 @@ const fake = {
       body: dev,
       thumbnail: banner,
       mediaType: 1,
-      renderLargerThumbnail: true,
+      renderLargerThumbnail: false,
       sourceUrl: "https://whatsapp.com"
     }
   }
 }
-*/
+
 const fkontak = {
   key: {
     fromMe: false,
