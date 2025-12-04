@@ -136,8 +136,8 @@ const userId = m.sender
      mentions: [userId],
     ...fakex
    }, { quoted: fkontak });*/
-  m.react('🌿');
-  conn.reply(m.chat, response, mentions: [userId], fkontak, fakex);
+  await conn.reply(m.chat, response, fkontak, fakex);
+  await m.react('✅');
 })
 } catch (e) {
 console.log(e)
