@@ -99,7 +99,7 @@ const fakex = {
     externalAdReply: {
       title: "System Status",
       body: dev,
-      thumbnail: banner,
+      thumbnail: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764809140251_4216.jpeg",
       mediaType: 1,
       renderLargerThumbnail: false,
       sourceUrl: "https://whatsapp.com"
@@ -128,15 +128,7 @@ const fkontak = {
   }
 }
 
-const userId = m.sender
-
-   /*await conn.sendMessage(m.chat, {
-     image: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764809140251_4216.jpeg"},
-     caption: response,
-     mentions: [userId],
-    ...fakex
-   }, { quoted: fkontak });*/
-  await conn.reply(m.chat, response, mentions: [userId], fkontak, fakex);
+  await conn.reply(m.chat, response, fkontak, fakex);
   await m.react('✔️');
 })
 } catch (e) {

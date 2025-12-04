@@ -137,7 +137,7 @@ const userId = m.sender
     ...fakex
    }, { quoted: fkontak });*/
   await conn.reply(m.chat, response, fkontak, fakex);
-  await m.react('✅');
+  await m.react('✔️');
 })
 } catch (e) {
 console.log(e)
