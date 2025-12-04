@@ -1,89 +1,131 @@
-import fs from 'fs'
-import fetch from 'node-fetch'
+import fs from 'fs';
+import fetch from 'node-fetch';
 
-let apkSession = new Map()
+let apkSession = new Map();
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-
- 
-  if (command === 'apk2') {
-    if (!text)
-      return conn.reply(m.chat, `❗ Ingresa un nombre de app\nEjemplo:\n${usedPrefix}apk2 WhatsApp`, m)
-
+  if (command === 'apk2' && text) {
     try {
-      await m.react('🔍')
+      await m.react('🔍');
 
-      const res = await fetch(`https://delirius-apiofc.vercel.app/download/apk?query=${encodeURIComponent(text)}`)
-      const json = await res.json()
+      const response = await fetch(`https://delirius-apiofc.vercel.app/download/apk?query=${encodeURIComponent(text)}`);
+      const data = await response.json();
+      if (!data.status || !data.data) throw new Error("No se encontró la aplicación.");
 
-      if (!json.status || !json.data) throw new Error("No se encontraron aplicaciones.")
+      const app = data.data;
+      apkSession.set(m.chat, { app });
 
-      let results = json.data.results || [json.data] // por si solo devuelve 1
+      let description = `🍧 *Nombre:* ${app.name}
+🌱 *Desarrollador:* ${app.developer}
+📦 *Paquete:* ${app.id}
+⚙️ *Tamaño:* ${app.size}
+⭐ *Rating:* ${app.stats?.rating?.average || "N/A"} (${app.stats?.rating?.total || 0} votos)
+📅 *Publicado:* ${app.publish}
+⚽ *Descargas:* ${app.stats?.downloads?.toLocaleString() || "N/A"}
+🏪 *Tienda:* ${app.store?.name || "Desconocida"}`;
 
-      if (!Array.isArray(results)) results = [results]
+      const buttons = [
+        {
+          buttonId: `${usedPrefix}apk_download`,
+          buttonText: { displayText: "☃️ 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐫 𝐚𝐩𝐤" },
+          type: 1
+        }
+      ];
 
-  
-      apkSession.set(m.chat, results)
+      await m.react('✅');
+      await conn.sendMessage(
+        m.chat,
+        {
+          image: { url: app.image },
+          caption: description.trim(),
+          buttons,
+          footer: dev,
+          viewOnce: true
+        },
+        { quoted: m }
+      );
 
-      let msg = `🌱 *Resultados encontrados para:* ${text}\n\n`
-      results.forEach((app, i) => {
-        msg += `*${i + 1}.* ${app.name}\n   📦 ${app.id}\n   ⭐ ${app.stats?.rating?.average || "N/A"}\n   ⚖️ ${app.size}\n\n`
-      })
+    } catch (error) {
+      console.error("Error:", error);
+      await m.react('❌');
 
-      msg += `📥 *Escribe el número de la app para descargar el APK.*\nEjemplo: 1`
-
-      await m.react('✅')
-      return conn.sendMessage(m.chat, { text: msg }, { quoted: m })
-
-    } catch (e) {
-      console.log(e)
-      await m.react('❌')
-      return conn.reply(m.chat, `❌ Error: ${e.message}`, m)
+      await conn.sendMessage(
+        m.chat,
+        { text: `❌ Ocurrió un error: ${error.message || "Error desconocido"}` },
+        { quoted: m }
+      );
     }
+    return;
   }
 
- 
-  if (command === 'apkget') {
-    return conn.reply(m.chat, `Usa así:\n${usedPrefix}apk2 WhatsApp`, m)
-  }
+  if (command === 'apk_download') {
+    let session = apkSession.get(m.chat);
+    if (!session) {
+      return conn.sendMessage(
+        m.chat,
+        { text: `❗ No hay sesión activa. Usa ${usedPrefix}apk2 <nombre de la aplicación>.` },
+        { quoted: m }
+      );
+    }
 
-  // Si el usuario envía un número después de buscar apps
-  if (/^\d+$/.test(m.text)) {
-    let results = apkSession.get(m.chat)
-    if (!results) return
-
-    let index = parseInt(m.text) - 1
-    let app = results[index]
-
-    if (!app)
-      return conn.reply(m.chat, `❗ Número inválido.`, m)
+    let { app } = session;
+    const downloadUrl = app.download;
 
     try {
-      await m.react('⌛')
+      await m.react('⌛');
+
+      let caption = dev;
 
       await conn.sendMessage(
         m.chat,
         {
-          document: { url: app.download },
+          document: { url: downloadUrl },
           fileName: `${app.name}.apk`,
           mimetype: 'application/vnd.android.package-archive',
-          caption: `📦 *${app.name}*`
+          caption: caption.trim(),
+          contextInfo: {
+            externalAdReply: {
+              title: "𝐒𝐡𝐚𝐝𝐨𝐰_°𝐱𝐲𝐳",
+              body: " 🅁🄸🄽 🄸🅃🄾🅂🄷🄸 🄱🄾🅃 🄼🄳",
+              sourceUrl: app.store?.avatar || null,
+              thumbnailUrl: app.image,
+              mediaType: 1,
+              renderLargerThumbnail: true
+            }
+          }
         },
         { quoted: m }
-      )
+      );
 
-      await m.react('☑️')
+      await m.react('☑️');
 
     } catch (err) {
-      console.log(err)
-      await m.react('❌')
-      conn.reply(m.chat, `❌ No se pudo descargar el APK.`, m)
+      console.error("Error en descarga:", err);
+      await m.react('❌'); 
+
+      await conn.sendMessage(
+        m.chat,
+        { text: `No se pudo descargar el archivo.` },
+        { quoted: m }
+      );
     }
+
+    return;
   }
-}
 
-handler.tags = ['descargas']
-handler.help = ['apk2 <nombre>']
-handler.command = ['apk2', 'apkget']
+  if (command === 'apk2' && !text) {
+    return conn.sendMessage(
+      m.chat,
+      {
+        text: `❗ Ingresa un término de búsqueda.\n\n💚 Ejemplo:\n${usedPrefix}apk2 WhatsApp`
+      },
+      { quoted: m }
+    );
+  }
+};
 
-export default handler
+handler.tags = ['descargas'];
+handler.help = ['apk2', 'apk_download'];
+handler.command = ['apk2', 'apk_download'];
+
+export default handler;
