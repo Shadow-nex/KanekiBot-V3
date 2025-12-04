@@ -35,7 +35,7 @@ global.botname = "ㅤׁ෨ 🌾 𝙆𝙖𝙣𝙚𝙠𝙞𝘽𝙤𝙩-,𝘼𝙄 �
 global.textbot = "🌾 кαиєкι вσт ν3 • мα∂є ву sһᥲძ᥆ᥕ.᥊ᥡz"
 global.dev = "© ⍴᥆ᥕᥱrᥱძ ᑲᥡ ׅ  ׄ 몽 ۪sһᥲძ᥆ᥕ.᥊ᥡz おịᰫ"
 global.author = "© mᥲძᥱ ᥕі𝗍һ ᑲᥡ shadow.xz"
-global.etiqueta = "✫.ƚԋҽ ʂԋαԃσɯ ƈσɾҽ  ⊹꙰ "
+global.etiqueta = "✫ shadow.xyz "
 
 global.currency = "¥enes"
 global.banner = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg"
