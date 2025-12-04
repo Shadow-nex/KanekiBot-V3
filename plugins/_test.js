@@ -26,8 +26,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
       const buttons = [
         {
-          buttonId: `${usedPrefix}apk_download`,
-          buttonText: { displayText: "☃️ 𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚𝐫 𝐚𝐩𝐤" },
+          buttonId: usedPrefix + "apk_download",
+          buttonText: { displayText: usedPrefix + "apk_download" },
           type: 1
         }
       ];
@@ -40,6 +40,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           caption: description.trim(),
           buttons,
           footer: dev,
+          headerType: 1, // ←
           viewOnce: true
         },
         { quoted: m }
