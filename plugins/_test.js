@@ -1,5 +1,27 @@
 import fetch from "node-fetch"
 
+
+function normalize(item = {}) {
+  return {
+    nombre: item.nombre || item.name || "Nombre desconocido",
+    enlace: item.enlace || "",
+    id: item.id || "",
+    title: item.title || "",
+    imagen: item.imagen || "",
+    desarrollador: item.desarrollador || "No especificado",
+    
+    descripcion: item.descripcion || item.description || item.Descripción || "Sin descripción disponible.",
+
+    version: item.versión || item.version || "Desconocida",
+    tamaño: item.tamaño || item.size || "N/A",
+    sistema: item.sistema || "N/A",
+    calificacion: item.calificación || item.calificacion || "N/A",
+    voto: item.voto || "N/A",
+
+    descargar: item.descargar || ""
+  }
+}
+
 let handler = async (m, { conn, text, command, usedPrefix }) => {
   if (!text) return conn.reply(m.chat, `*❗ Ingresa una búsqueda*\nEjemplo:\n${usedPrefix + command} whatsapp`, m)
 
@@ -14,28 +36,26 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
       return conn.reply(m.chat, `😿 *No encontré resultados para:* ${text}`, m)
     }
 
-    let results = json.datos
+    let results = json.datos.map(normalize)
+
     let msg = `*🔍 Resultados de búsqueda para:* _${text}_\n\n`
 
     results.forEach((item, index) => {
-      msg += `*${index + 1}* ➤ ${item.nombre || item.name}\n`
-      msg += `📌 *Versión:* ${item.versión}\n`
+      msg += `*${index + 1}* ➤ ${item.nombre}\n`
+      msg += `📌 *Versión:* ${item.version}\n`
       msg += `📱 *Android:* ${item.sistema}\n`
-      msg += `⭐ *Rating:* ${item.calificación}\n`
+      msg += `⭐ *Rating:* ${item.calificacion}\n`
       msg += `📥 Descargar: enviar *${index + 1}*\n\n`
     })
 
     msg += `🟢 *Responde con el número del APK que deseas descargar.*`
-
 
     conn.an1Search = conn.an1Search || {}
     conn.an1Search[m.sender] = results
 
     await conn.reply(m.chat, msg, m, {
       mentions: [m.sender],
-      contextInfo: {
-        isForwarded: true
-      }
+      contextInfo: { isForwarded: true }
     })
 
     conn.awaitReply(m.chat, m, {
@@ -46,7 +66,7 @@ let handler = async (m, { conn, text, command, usedPrefix }) => {
 
   } catch (e) {
     console.error(e)
-    conn.reply(m.chat, "Error al buscar resultados.", m)
+    conn.reply(m.chat, "❌ Error al buscar resultados.", m)
   }
 }
 
@@ -64,15 +84,15 @@ handler.before = async (m, { conn }) => {
 
   let app = list[num - 1]
 
-  let info = `*📲 ${app.nombre || app.name}*\n
-🔹 *Versión:* ${app.versión}
+  let info = `*📲 ${app.nombre}*\n
+🔹 *Versión:* ${app.version}
 🔹 *Tamaño:* ${app.tamaño}
 🔹 *Android:* ${app.sistema}
-🔹 *Rating:* ${app.calificación} (${app.voto} votos)
+🔹 *Rating:* ${app.calificacion} (${app.voto} votos)
 🔹 *Desarrollador:* ${app.desarrollador}
 
 📄 *Descripción:* 
-${app.description || app.Descripción || "Sin descripción disponible."}
+${app.descripcion}
 
 📥 *Descargar APK:* 
 ${app.descargar}
