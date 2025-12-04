@@ -11,7 +11,8 @@ let timestamp = speed()
 let latensi = speed() - timestamp
 
 const start = new Date().getTime()
-await conn.sendMessage(m.chat, { text: "*🌾 Calculando ping...*" }, { quoted: m })
+await m.react('🚀');
+await conn.reply(m.chat, "*🌾 Calculando ping...*", m);
 const end = new Date().getTime()
 const latency = end - start
 
