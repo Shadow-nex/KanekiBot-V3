@@ -35,7 +35,7 @@ function makeBar(porc) {
 }
 
 const ramBar = `\`\`\`${makeBar(percentRAM)} \`\`\`
-\`\`\`             ${percentRAM}% \`\`\``
+\`\`\`          ${percentRAM}% \`\`\``
 
 const cores = os.cpus().length
 const modeloCPU = os.cpus()[0].model
@@ -63,7 +63,7 @@ const disk = await getDisk()
 let diskPercent = parseInt(disk.percent.replace("%",""))
 
 const diskBar = `\`\`\`${makeBar(diskPercent)} \`\`\`
-\`\`\`             ${diskPercent}% \`\`\``
+\`\`\`          ${diskPercent}% \`\`\``
 
 exec(`neofetch --stdout`, async (error, stdout) => {
 let sysInfo = stdout?.toString("utf-8")?.replace(/Memory:/, "Ram:") || ""
@@ -93,8 +93,8 @@ let response = `
 ${sysInfo.trim()}\`\`\`
 `
 
-const banner = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808271839_765718.jpeg")).buffer()
-const fake = {
+const banner = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808441981_100675.jpeg")).buffer()
+const fakex = {
   contextInfo: {
     externalAdReply: {
       title: "System Status",
@@ -133,9 +133,10 @@ const userId = m.sender
 await conn.sendMessage(
   m.chat,
   {
-    image: banner,
+    image: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764808441981_100675.jpeg",
     caption: response,
-    mentions: [userId]
+    mentions: [userId],
+    ...fakex
   },
   { quoted: fkontak }
 )
