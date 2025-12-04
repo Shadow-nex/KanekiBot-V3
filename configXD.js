@@ -27,7 +27,7 @@ global.vs = "^1.8.2 • Latest"
 global.nameqr = "ᴋᴀɴᴇᴋɪ-ʙᴏᴛ.ᴍᴅ"
 global.sessions = "Sessions/Principal"
 global.jadi = "Sessions/SubBot"
-global.kanekiAIJadibts = false
+global.kanekiAIJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
