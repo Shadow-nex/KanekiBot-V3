@@ -95,14 +95,15 @@ let response = `
 ${sysInfo.trim()}\`\`\`
 `
 
-const banner = await (await fetch(banner)).buffer()
+// Imagen del banner
+const banner = await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513335162_487707.jpeg")).buffer()
 
-
+// Fake message funcional
 const fake = {
   contextInfo: {
     externalAdReply: {
       title: "System Status",
-      body: dev,
+      body: "Ping del bot",
       thumbnail: banner,
       mediaType: 1,
       renderLargerThumbnail: true,
@@ -111,6 +112,7 @@ const fake = {
   }
 }
 
+// FKONTAK
 const fkontak = {
   key: {
     fromMe: false,
