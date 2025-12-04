@@ -40,7 +40,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           caption: description.trim(),
           buttons,
           footer: dev,
-          headerType: 1, // ←
+          headerType: 1,
           viewOnce: true
         },
         { quoted: m }
@@ -130,3 +130,14 @@ handler.help = ['apk2', 'apk_download'];
 handler.command = ['apk2', 'apk_download'];
 
 export default handler;
+
+
+handler.before = async function (m, { conn, usedPrefix }) {
+  if (!m?.message?.buttonsResponseMessage) return;
+
+  let id = m.message.buttonsResponseMessage.selectedButtonId;
+
+  if (id === usedPrefix + "apk_download") {
+    m.text = usedPrefix + "apk_download";
+  }
+};
