@@ -60,10 +60,10 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
 
     text += `
 ✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
-۫𖢷͜੭ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
-۫𖢷͜੭ ׅ🪽ֹ \`Nivel:\` ${level}
-۫𖢷͜੭ ׅ🌾ֹ \`Rango:\` ${rank}
-۫𖢷͜੭ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\`\n`
+۫𖢷͜ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
+۫𖢷͜ ׅ🪽ֹ \`Nivel:\` ${level}
+۫𖢷͜ ׅ🌾ֹ \`Rango:\` ${rank}
+۫𖢷͜ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\`\n`
   }
 
   text += `> ${dev}`
