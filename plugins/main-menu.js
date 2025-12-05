@@ -183,7 +183,7 @@ ${readMore}`.trim()
 await conn.sendMessage(m.chat, { 
 text: infoUser + menuTexto,
 contextInfo: {
- mentionedJid: [mentionedJid],
+ //mentionedJid: [mentionedJid],
  isForwarded: true,
  forwardedNewsletterMessageInfo: {
    newsletterJid: channelRD.id,
