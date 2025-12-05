@@ -4,10 +4,13 @@ import PhoneNumber from 'awesome-phonenumber'
 import baileys from '@whiskeysockets/baileys'
 const { proto } = baileys
 
-let handler = async (m, { conn }) => {
+let handler = async (m, { conn, usedPrefix }) => {
   const user = global.db.data.users[m.sender]
   const nombre = user.name || 'Sin nombre'
   const edad = user.age || 'Desconocida'
+
+  if (!user.registered)
+    return m.reply(`❌ 𝗡𝗼 𝘁𝗶𝗲𝗻𝗲𝘀 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗼 𝗮𝗰𝘁𝗶𝘃𝗼.\n\n𝗣𝘂𝗲𝗱𝗲𝘀 𝗿𝗲𝗴𝗶𝘀𝘁𝗿𝗮𝗿𝘁𝗲 𝗰𝗼𝗻:\n*${usedPrefix}verificar nombre.edad*`)
 
   let pp
   try {
@@ -28,46 +31,35 @@ let handler = async (m, { conn }) => {
 🕸️ *Estado:* Eliminado correctamente
 
 ✨ Puedes volver a registrarte cuando desees:
-> *#reg ${nombre}.18*
+> *${usedPrefix}reg ${nombre}.18*
 
 🌟 *Kaneki Bot* siempre estará contigo.`
 
-  const productMessage = {
-    product: {
-      productImage: { url: pp },
-      productId: '7777777777',
-      title: '🎄 Registro Eliminado Correctamente 🎄',
-      description: `🌿 Nombre: ${nombre} | 🍃 Edad: ${edad} años`,
-      currencyCode: 'USD',
-      priceAmount1000: '100000',
-      retailerId: 666,
-      url: 'https://wa.me/0',
-      productImageCount: 1,
-    },
-    businessOwnerJid: m.sender,
-    footer: caption,
-    headerType: 1,
-    viewOnce: true,
-    contextInfo: {
-      forwardingScore: 9999,
-      isForwarded: true,
-      mentionedJid: [m.sender],
-      externalAdReply: {
-        title: '🎄 Registro eliminado 💮',
-        thumbnailUrl: pp,
-        sourceUrl: 'https://github.com/Shadow-nex',
-        mediaType: 1,
-        renderLargerThumbnail: true,
-      }
+  const msg = {
+    productMessage: {
+      product: {
+        productImage: {
+          mimetype: 'image/jpeg',
+          jpegThumbnail: await (await fetch(pp)).buffer()
+        },
+        productId: '7777777777',
+        title: '🎄 Registro Eliminado Correctamente 🎄',
+        description: `🌿 Nombre: ${nombre} | 🍃 Edad: ${edad} años`,
+        currencyCode: 'USD',
+        priceAmount1000: '100000',
+        retailerId: '666',
+        url: 'https://wa.me/0'
+      },
+      businessOwnerJid: m.sender
     }
   }
 
-  await conn.sendMessage(m.chat, productMessage, { quoted: m })
+  await conn.sendMessage(m.chat, msg, { quoted: m })
+  await conn.sendMessage(m.chat, { text: caption }, { quoted: m })
 }
 
 handler.help = ['unreg']
 handler.tags = ['rg']
 handler.command = ['unreg']
-handler.register = true
 
 export default handler
