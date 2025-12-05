@@ -34,15 +34,14 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     return '🌱 *Aldeano Novato*'
   }
 
-  let text = `
-╭═《 *🏆 RANKING DE ECONOMÍA RPG* 》═╮
-│  🏰 *Reino:* ${subject}
-│  📜 *Página:* ${page}/${totalPages}
-│────────────────────────│
+  let text = `╭═《 *🏆 RANKING DE ECONOMÍA* 》
+┃  🏰 *Reino:* ${subject}
+┃  📜 *Página:* ${page}/${totalPages}
+┣━━━━━━━━━━━━━━━━━━━━⬣
 `
 
   for (let i = 0; i < slice.length; i++) {
-    const { jid, coin = 0, bank = 0, exp = 0, level = 0, lastplay } = slice[i]
+    const { jid, coin = 0, bank = 0, level } = slice[i]
     const total = coin + bank
     let name
 
@@ -56,33 +55,21 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     const percent = Math.min(100, Math.floor((total / richest) * 100))
     const bar = '█'.repeat(Math.floor(percent / 10)) + '░'.repeat(10 - Math.floor(percent / 10))
 
-    let lastPlayed = '🌙 Nunca'
-    if (lastplay) {
-      const diff = Date.now() - lastplay
-      const mins = Math.floor(diff / 60000)
-      const hrs = Math.floor(mins / 60)
-      const days = Math.floor(hrs / 24)
-      if (days > 0) lastPlayed = `🕐 ${days}d ${hrs % 24}h`
-      else if (hrs > 0) lastPlayed = `🕐 ${hrs}h ${mins % 60}m`
-      else lastPlayed = `🕐 ${mins}m`
-    }
-
     const medals = ['👑', '🥈', '🥉']
     const rankEmoji = medals[i] || '🌾'
 
     text += `
-│ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
-│    💴 Oro Total: *${total.toLocaleString()} ¥enes*
-│    ⚔️ Nivel: *${level}* 
-│    🧭 Rango: ${rank}
-│    📈 Exp: *${exp.toLocaleString()}*
-│    🌿 Progreso: [${bar}] ${percent}%
-│    ${lastPlayed}
-│────────────────────────│
+┃ ✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
+┃ ┊ ۫𖢷͜੭ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
+┃ ┊ ۫𖢷͜੭ ׅ🪽ֹ \`Nivel:\` ${level}
+┃ ┊ ۫𖢷͜੭ ׅ🌾ֹ \`Rango:\` ${rank}
+┃ ┊ ۫𖢷͜੭ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\`
+┃ ╰∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ ∙ ∙ ∙ ∙
+┃ 
 `
   }
 
-  text += `╰═════════════════════════╯`
+  text += `╰═══════════════════════⬣`
 
   await conn.reply(m.chat, text.trim(), m, rcanal)
 }
