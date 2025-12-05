@@ -179,15 +179,35 @@ ${readMore}`.trim()
       }
     }, { quoted: fkontak })*/
 
-  await conn.sendMessage(m.chat, { image: { url: banner }, caption: infoUser + menuTexto, ...fake }, { quoted: fkontak })
+await conn.sendMessage(m.chat, { 
+text: infoUser + menuTexto,
+contextInfo: {
+ mentionedJid: [mentionedJid],
+ isForwarded: true,
+ forwardedNewsletterMessageInfo: {
+   newsletterJid: channelRD.id,
+   serverMessageId: '',
+   newsletterName: channelRD.name
+ },
+ externalAdReply: {
+   title: botname,
+   body: textbot,
+   mediaType: 1,
+   mediaUrl: redes,
+   sourceUrl: redes,
+   thumbnail: await (await fetch(banner)).buffer(),
+   showAdAttribution: false,
+   containsAutoReply: true,
+   renderLargerThumbnail: true
+ }}}, { quoted: fkontak })
 
-  } catch (e) {
-    console.error(e)
-    await conn.sendMessage(m.chat, { 
-      text: `✘ Error al enviar el menú: ${e.message}`,
-      mentions: [m.sender] 
-    })
-  }
+ } catch (e) {
+   console.error(e)
+   await conn.sendMessage(m.chat, { 
+     text: `✘ Error al enviar el menú: ${e.message}`,
+     mentions: [m.sender] 
+   })
+ }
 }
 
 handler.help = ['menu']
