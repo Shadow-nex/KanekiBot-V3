@@ -10,7 +10,7 @@ let handler = async (m, { conn, args }) => {
   const titulo = "Welcome To Grupo"
   const descripcion = "Disfruta tu estadía en el grupo."
   const autor = "Shado 🍀"
-  const imagen = "https://i.imgur.com/MYtR5s7.jpeg" // URL de imagen que quieras
+  const imagen = banner// URL de imagen que quieras
 
   try {
     // Descargar la imagen
