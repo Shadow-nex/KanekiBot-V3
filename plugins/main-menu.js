@@ -98,7 +98,7 @@ ${readMore}
  ⌗ֶㅤ֯𝅄⿻ 🥢 ׄ ⬭ 🄵echa: *${hora}, ${dia}, ${fechaTxt}*
 
 ${readMore}
-     ✎ ✰`.trim()
+     *✎ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs ✰*`.trim()
 
 /*    const { imageMessage } = await generateWAMessageContent(
       { image: { url: imageUrl } },
