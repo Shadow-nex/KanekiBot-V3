@@ -58,8 +58,7 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     const medals = ['👑', '🥈', '🥉']
     const rankEmoji = medals[i] || '🌾'
 
-    text += `
-┃ ✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
+    text += `┃ ✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
 ┃ ┊ ۫𖢷͜੭ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
 ┃ ┊ ۫𖢷͜੭ ׅ🪽ֹ \`Nivel:\` ${level}
 ┃ ┊ ۫𖢷͜੭ ׅ🌾ֹ \`Rango:\` ${rank}
