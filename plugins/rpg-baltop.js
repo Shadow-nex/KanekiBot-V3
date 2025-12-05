@@ -34,10 +34,9 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     return '🌱 *Aldeano Novato*'
   }
 
-  let text = `╭═《 *🏆 RANKING DE ECONOMÍA* 》
-┃  🏰 *Reino:* ${subject}
-┃  📜 *Página:* ${page}/${totalPages}
-┣━━━━━━━━━━━━━━━━━━━━⬣
+  let text = `*🏆 RANKING DE ECONOMÍA ⚡* 
+🏰 *Reino:* ${subject}
+📜 *Página:* ${page}/${totalPages}
 `
 
   for (let i = 0; i < slice.length; i++) {
@@ -58,17 +57,14 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     const medals = ['👑', '🥈', '🥉']
     const rankEmoji = medals[i] || '🌾'
 
-    text += `┃ ✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
-┃ ┊ ۫𖢷͜੭ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
-┃ ┊ ۫𖢷͜੭ ׅ🪽ֹ \`Nivel:\` ${level}
-┃ ┊ ۫𖢷͜੭ ׅ🌾ֹ \`Rango:\` ${rank}
-┃ ┊ ۫𖢷͜੭ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\`
-┃ ╰∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ ∙ ∙ ∙ ∙
-┃ 
-`
+    text += `✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
+۫𖢷͜੭ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
+۫𖢷͜੭ ׅ🪽ֹ \`Nivel:\` ${level}
+۫𖢷͜੭ ׅ🌾ֹ \`Rango:\` ${rank}
+۫𖢷͜੭ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\``
   }
 
-  text += `╰═══════════════════════⬣`
+  text += `> ${dev}`
 
   await conn.reply(m.chat, text.trim(), m, rcanal)
 }
