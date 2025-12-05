@@ -12,16 +12,17 @@ let bank = user.bank || 0
 let total = (user.coin || 0) + (user.bank || 0)
 let level = user.level || 0
 let exp = user.exp || 0
-const texto = `ᥫ᭡ 𝐄𝐬𝐭𝐚𝐝𝐨 𝐝𝐞𝐥 𝐀𝐝𝐯𝐞𝐧𝐭𝐮𝐫𝐨 🎄
+const texto = `╭━━『 ᥫ᭡ 𝐈𝐧𝐟𝐨𝐫𝐦𝐚𝐜𝐢𝐨𝐧 - 𝐁𝐚𝐥𝐚𝐧𝐜𝐞 ✰ 』
+┃┊▸ 🌱 \`Nombre:\` ${name}
+┃┊▸ 🪽 \`Cartera:\` ¥${coin.toLocaleString()} ${currency}
+┃┊▸ 🍁 \`Banco:\` ¥${bank.toLocaleString()} ${currency}
+┃┊▸ 🌾 \`Total:\` ¥${total.toLocaleString()} ${currency}
+┃┊▸ 🌿 \`Nivel:\` ${level}
+┃┊▸ 🌴 \`Exp:\` ${exp} ᥊⍴
+┃╰∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙ ∙ ∙ ∙ ∙
+╰━━━━━━━━━━━━━━━⬣
 
- *🪸 ᥒ᥆mᑲrᥱ* » ${name}
- *💐 ᥴᥲr𝗍ᥱrᥲ* » ¥${coin.toLocaleString()} ${currency}
- *💫 ᑲᥲᥒᥴ᥆* » ¥${bank.toLocaleString()} ${currency}
- *🪀 𝗍᥆𝗍ᥲᥣ* » ¥${total.toLocaleString()} ${currency}
- *🪵 ᥒі᥎ᥱᥣ* » ${level}
- *🕸️ ᥱ᥊⍴ᥱrіᥱᥒᥴіᥲ* » ${exp} ᥊⍴
- 
-> 🍃 *⍴ᥲrᥲ ⍴r᥆𝗍ᥱgᥱr 𝗍ᥙ ძіᥒᥱr᥆, ¡ძᥱ⍴ósі𝗍ᥲᥣ᥆ ᥱᥒ ᥱᥣ ᑲᥲᥒᥴ᥆ ᥙsᥲᥒძ᥆ #ძᥱ⍴᥆sі𝗍!*`
+> ➮ *⍴ᥲrᥲ ⍴r᥆𝗍ᥱgᥱr 𝗍ᥙ ძіᥒᥱr᥆, ¡ძᥱ⍴ósі𝗍ᥲᥣ᥆ ᥱᥒ ᥱᥣ ᑲᥲᥒᥴ᥆ ᥙsᥲᥒძ᥆ #ძᥱ⍴᥆sі𝗍!*`
   await conn.sendMessage(m.chat, {
       image: { url: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764275511024_766404.jpeg' },
       caption: texto,
