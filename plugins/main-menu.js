@@ -11,26 +11,27 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
   try {
     await m.react('🍁')
 
-    const user = global.db.data.users[m.sender] || {}
-    const name = await conn.getName(m.sender)
-    const premium = user.premium ? '✔️ Sí' : 'free'
-    const limit = user.limit || 10
-    const totalreg = Object.keys(global.db.data.users).length
-    const groupUserCount = m.isGroup ? participants.length : '-'
-    const groupsCount = Object.values(conn.chats).filter(v => v.id.endsWith('@g.us')).length
-    const uptime = clockString(process.uptime() * 1000)
-    const fecha = new Date(Date.now())
-    const locale = 'es-PE'
-    const dia = fecha.toLocaleDateString(locale, { weekday: 'long' })
-    const fechaTxt = fecha.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
-    const hora = fecha.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
+    let mentionedJid = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.sender
+    let user = global.db.data.users[m.sender] || {}
+    let name = await conn.getName(m.sender)
+    let premium = user.premium ? '✔️ Sí' : 'free'
+    let limit = user.limit || 10
+    let totalreg = Object.keys(global.db.data.users).length
+    let groupUserCount = m.isGroup ? participants.length : '-'
+    let groupsCount = Object.values(conn.chats).filter(v => v.id.endsWith('@g.us')).length
+    let uptime = clockString(process.uptime() * 1000)
+    let fecha = new Date(Date.now())
+    let locale = 'es-PE'
+    let dia = fecha.toLocaleDateString(locale, { weekday: 'long' })
+    let fechaTxt = fecha.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })
+    let hora = fecha.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
 
-    const totalCommands = Object.keys(global.plugins).length
+    let totalCommands = Object.keys(global.plugins).length
     let readMore = String.fromCharCode(8206).repeat(4001)
 
-    const userId = m.sender.split('@')[0]
-    const phone = PhoneNumber('+' + userId)
-    const pais = phone.getRegionCode() || 'Desconocido 🌐'
+    let userIdNum = m.sender.split('@')[0]
+    let phone = PhoneNumber('+' + userIdNum)
+    let pais = phone.getRegionCode() || 'Desconocido 🌐'
  
     let tags = {
       'info': '🪹 `𝐈𝐍𝐅𝐎` ❐',
@@ -78,7 +79,7 @@ ${comandos}\n`
     }
 
     const infoUser = `.     ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🎄۫ 
-    ᗞᗞ @${userId}  ⌒᷼🍋‍🟩
+    ᗞᗞ @${userIdNum}  ⌒᷼🍋‍🟩
 ̮═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜ ִ  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═
 
 ﹙🥦 ﹚🪽  ੭੭ ─ 𝐈𝐍𝐅𝐎 𝐁𝐎𝐓'𝐬  ﾟ･:𑇛
@@ -205,7 +206,7 @@ contextInfo: {
    console.error(e)
    await conn.sendMessage(m.chat, { 
      text: `✘ Error al enviar el menú: ${e.message}`,
-     mentions: [m.sender] 
+     mentionedJid: [mentionedJid]
    })
  }
 }
