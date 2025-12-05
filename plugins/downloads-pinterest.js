@@ -1,28 +1,12 @@
 /*
-    * Create By Brayan330
-    * Follow https://github.com/El-brayan502 
-    * Whatsapp : https://whatsapp.com/channel/0029Vb6BDQc0lwgsDN1GJ31i
+	* Create By Brayan330
+	* Follow https://github.com/El-brayan502 
+	* Whatsapp : https://whatsapp.com/channel/0029Vb6BDQc0lwgsDN1GJ31i
 */
 
 import https from 'https'
-import baileys, { generateWAMMessageFromContent } from '@whiskeysockets/baileys'
+import baileys, { generateWAMessageFromContent } from '@whiskeysockets/baileys'
 import axios from 'axios'
-
-function isPinterestUrl(text) {
-  return /(https?:\/\/)?(www\.)?(ar\.)?pinterest\.[a-z]+\/pin\/\d+/i.test(text)
-}
-
-async function downloadPinterest(url) {
-  try {
-    const api = `https://api.delirius.store/download/pinterest?url=${encodeURIComponent(url)}`
-    const res = await axios.get(api)
-    if (!res.data || !res.data.status) throw new Error("Link inválido")
-
-    return res.data.data // → { type, url, title }
-  } catch {
-    throw new Error("No se pudo descargar el contenido de Pinterest.")
-  }
-}
 
 async function sendAlbumMessage(conn, jid, medias, options = {}) {
   if (typeof jid !== 'string') throw new TypeError('jid debe ser string')
@@ -71,6 +55,77 @@ async function sendAlbumMessage(conn, jid, medias, options = {}) {
   return album
 }
 
+const getInitialAuth = () => new Promise((resolve, reject) => {
+  const options = {
+    hostname: 'id.pinterest.com',
+    path: '/',
+    method: 'GET',
+    headers: { 'User-Agent': 'Mozilla/5.0' }
+  }
+  https.get(options, res => {
+    const cookies = res.headers['set-cookie']
+    if (cookies) {
+      const csrfCookie = cookies.find(c => c.startsWith('csrftoken='))
+      const pinterestSessCookie = cookies.find(c => c.startsWith('_pinterest_sess='))
+      if (csrfCookie && pinterestSessCookie) {
+        const csrftoken = csrfCookie.split(';')[0].split('=')[1]
+        const sess = pinterestSessCookie.split(';')[0]
+        resolve({ csrftoken, cookieHeader: `csrftoken=${csrftoken}; ${sess}` })
+        return
+      }
+    }
+    reject(new Error('No se pudo obtener el token CSRF o la cookie de sesión.'))
+  }).on('error', e => reject(e))
+})
+
+const searchPinterestAPI = async (query, limit) => {
+  try {
+    const { csrftoken, cookieHeader } = await getInitialAuth()
+    let results = [], bookmark = null, keepFetching = true
+    while (keepFetching && results.length < limit) {
+      const postData = { options: { query, scope: 'pins', bookmarks: bookmark ? [bookmark] : [] }, context: {} }
+      const sourceUrl = `/search/pins/?q=${encodeURIComponent(query)}`
+      const dataString = `source_url=${encodeURIComponent(sourceUrl)}&data=${encodeURIComponent(JSON.stringify(postData))}`
+      const options = {
+        hostname: 'id.pinterest.com',
+        path: '/resource/BaseSearchResource/get/',
+        method: 'POST',
+        headers: {
+          Accept: 'application/json, text/javascript, */*, q=0.01',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'User-Agent': 'Mozilla/5.0',
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': csrftoken,
+          'X-Pinterest-Source-Url': sourceUrl,
+          Cookie: cookieHeader
+        }
+      }
+
+      const responseBody = await new Promise((resolve, reject) => {
+        const req = https.request(options, res => {
+          let body = ''
+          res.on('data', chunk => body += chunk)
+          res.on('end', () => resolve(body))
+        })
+        req.on('error', e => reject(e))
+        req.write(dataString)
+        req.end()
+      })
+
+      const jsonResponse = JSON.parse(responseBody)
+      if (jsonResponse.resource_response?.data?.results) {
+        const pins = jsonResponse.resource_response.data.results
+        pins.forEach(pin => { if (pin.images?.['736x']) results.push(pin.images['736x'].url) })
+        bookmark = jsonResponse.resource_response.bookmark
+        if (!bookmark || pins.length === 0) keepFetching = false
+      } else keepFetching = false
+    }
+    return results.slice(0, limit)
+  } catch (e) {
+    throw new Error(e.message)
+  }
+}
+
 async function sendCustomPedido(m, conn, texto) {
   try {
     const img = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763343577509_839557.jpeg'
@@ -108,33 +163,10 @@ async function sendCustomPedido(m, conn, texto) {
   }
 }
 
-let handler = async (m, { conn, args }) => {
+let handler = async (m, { conn, args, rcanal }) => {
   try {
     const text = args.join(' ')
-    if (!text) return sendCustomPedido(m, conn, '*🌳* `Ingresa lo que deseas buscar en Pinterest.`')
-
-    // ⚡ NUEVO: si es link → descarga directa
-    if (isPinterestUrl(text)) {
-      try {
-        await m.react('⬇️')
-
-        const data = await downloadPinterest(text)
-
-        if (data.type === "image") {
-          await conn.sendFile(m.chat, data.url, 'img.jpg', '🌿 Imagen de Pinterest', m)
-        } else if (data.type === "gif") {
-          await conn.sendFile(m.chat, data.url, 'file.gif', '🎞 GIF de Pinterest', m)
-        } else if (data.type === "video") {
-          await conn.sendFile(m.chat, data.url, 'video.mp4', '🎥 Video de Pinterest', m)
-        } else {
-          return m.reply("⚠️ No se reconoció el tipo de archivo.")
-        }
-
-        return
-      } catch (e) {
-        return sendCustomPedido(m, conn, `⚠️ Error al descargar:\n${e.message}`)
-      }
-    }
+    if (!text) return sendCustomPedido(m, conn, '*🌳* `Por favor, ingresa lo que deseas buscar en Pinterest.`')
 
     const parts = text.split(',')
     const query = parts[0].trim()
@@ -147,7 +179,7 @@ let handler = async (m, { conn, args }) => {
     await sendAlbumMessage(conn, m.chat, medias, { caption: `🌿 Resultados de Pinterest - "${query}"`, quoted: m })
 
   } catch (e) {
-    return sendCustomPedido(m, conn, `⚠️ Error inesperado:\n${e.message}`)
+    return sendCustomPedido(m, conn, `⚠️ Se produjo un error:\n${e.message}`)
   }
 }
 
