@@ -34,10 +34,11 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     return '🌱 *Aldeano Novato*'
   }
 
-  let text = `*🏆 RANKING DE ECONOMÍA ⚡* 
+  let text = `
+    *🏆 RANKING DE ECONOMÍA ⚡* 
 🏰 *Reino:* ${subject}
 📜 *Página:* ${page}/${totalPages}
-`
+\n`
 
   for (let i = 0; i < slice.length; i++) {
     const { jid, coin = 0, bank = 0, level } = slice[i]
@@ -57,11 +58,12 @@ let handler = async (m, { conn, args, participants, usedPrefix }) => {
     const medals = ['👑', '🥈', '🥉']
     const rankEmoji = medals[i] || '🌾'
 
-    text += `✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
+    text += `
+✧ ${rankEmoji} *${i + 1 + startIndex}. ${name}*
 ۫𖢷͜੭ ׅ🌴ֹ \`${currency}:\` *${total.toLocaleString()} ¥*
 ۫𖢷͜੭ ׅ🪽ֹ \`Nivel:\` ${level}
 ۫𖢷͜੭ ׅ🌾ֹ \`Rango:\` ${rank}
-۫𖢷͜੭ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\``
+۫𖢷͜੭ ׅ🍃ֹ \`Progreso:\` \`\`\`[${bar}] ${percent}%\`\`\`\n`
   }
 
   text += `> ${dev}`
