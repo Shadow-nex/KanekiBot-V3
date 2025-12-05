@@ -79,7 +79,7 @@ ${comandos}\n`
     }
 
     const infoUser = `̮═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜ ִ  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═
-> ✰ ¡Hola! @${userId.split('@')[0]}, Soy *${botname}*, Aquí tienes la lista de comandos.
+> ✰ ¡Hola! @${userIdNum}, Soy *${botname}*, Aquí tienes la lista de comandos.
 > ✯  ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🍋‍🟩۫ 
 
 ﹙🥦 ﹚ ੭੭ ─ 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈𝐎𝐍  ﾟ･:𑇛
@@ -181,7 +181,7 @@ ${readMore}
 await conn.sendMessage(m.chat, { 
 text: infoUser + menuTexto,
 contextInfo: {
- mentionedJid: [mentionedJid],
+ //mentionedJid: [mentionedJid],
  isForwarded: true,
  forwardedNewsletterMessageInfo: {
    newsletterJid: channelRD.id,
