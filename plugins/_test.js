@@ -28,7 +28,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   await global.db.write() // ✅ Guardar la DB inmediatamente
 
   // Fondo Itachi
-  const fondo = 'https://raw.githubusercontent.com/El-brayan502/dat2/main/uploads/e02474-1762062152606.jpg'
+  const fondo = banner
   const thumb = await (await fetch(fondo)).buffer()
 
   // PDF invisible
@@ -88,7 +88,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       mentionedJid: [m.sender],
       externalAdReply: {
         title: '📩 Registro Exitoso',
-        thumbnail: await (await fetch(icono)).buffer(),
+        thumbnail: await (await fetch(banner)).buffer(),
         mediaType: 1,
         showAdAttribution: false
       }
