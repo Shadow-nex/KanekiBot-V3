@@ -3,14 +3,13 @@ import { execSync } from 'child_process'
 var handler = async (m, { conn, text, isROwner }) => {
 if (!isROwner) return
 await m.react('🕒')
-//conn.reply(m.chat, `*ര ׄ ☃️ ׅ 𝘐𝘯𝘪𝘤𝘪𝘢𝘯𝘥𝘰 𝘱𝘳𝘰𝘤𝘦𝘴𝘰 𝘥𝘦 𝘢𝘤𝘵𝘶𝘢𝘭𝘪𝘻𝘢𝘤𝘪𝘰𝘯....*`, m)
 try {
 const stdout = execSync('git pull' + (m.fromMe && text ? ' ' + text : ''));
 let messager = stdout.toString()
 if (messager.includes('❀ Ya está cargada la actualización.')) messager = '❀ Los datos ya están actualizados a la última versión.'
 if (messager.includes('ꕥ Actualizando.')) messager = '❀ Procesando, espere un momento mientras me actualizo.\n\n' + stdout.toString()
 await m.react('✔️')
-conn.reply(m.chat, `*ര ׄ 🌿 ׅ  𝘈𝘤𝘵𝘶𝘢𝘭𝘪𝘻𝘢𝘤𝘪𝘰𝘯 𝘤𝘰𝘮𝘱𝘭𝘦𝘵𝘢𝘥𝘢 𝘤𝘰𝘯 𝘦𝘹𝘪𝘵𝘰. 𓂂𓏸*\n\n\`\`\`${messager}\`\`\``, m, rcanal)
+conn.reply(m.chat, `\`\`\`${messager}\`\`\``, m, rcanal)
 } catch { 
 try {
 const status = execSync('git status --porcelain')
