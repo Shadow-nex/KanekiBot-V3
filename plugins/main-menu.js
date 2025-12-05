@@ -80,7 +80,7 @@ ${comandos}\n`
 
     const infoUser = `̮═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜ ִ  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═
 > ✰ Hola! @${userIdNum}, Soy *${botname}*, Aquí tienes la lista de comandos.
-> . ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🍋‍🟩۫ 
+> ✯  ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🍋‍🟩۫ 
 
 ﹙🥦 ﹚🪽  ੭੭ ─ 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈𝐎𝐍  ﾟ･:𑇛
  ⌗ֶㅤ֯𝅄⿻ 🪹 ׄ ⬭ 🄿remium: *${premium}*
@@ -97,7 +97,8 @@ ${readMore}
  ⌗ֶㅤ֯𝅄⿻ 🍟 ׄ ⬭ 🄻ibreria: *${libreria}*
  ⌗ֶㅤ֯𝅄⿻ 🥢 ׄ ⬭ 🄵echa: *${hora}, ${dia}, ${fechaTxt}*
 
-${readMore}`.trim()
+${readMore}
+     ✎ ✰`.trim()
 
 /*    const { imageMessage } = await generateWAMessageContent(
       { image: { url: imageUrl } },
