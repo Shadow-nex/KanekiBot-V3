@@ -1,111 +1,57 @@
-import fetch from 'node-fetch'
-import { generateWAMessageFromContent, prepareWAMessageMedia } from '@whiskeysockets/baileys'
+import axios from "axios"
+import { generateWAMessageFromContent, proto } from "@whiskeysockets/baileys"
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  let user = global.db.data.users[m.sender]
-  let name2 = await conn.getName(m.sender)
-  let Reg = /^([^\n]+)\.([0-9]+)$/
+let handler = async (m, { conn, args }) => {
+  const link = args[0]
+  if (!link || !link.includes("chat.whatsapp.com"))
+    return m.reply("❗ *Ingresa un link de grupo válido*\nEjemplo: .invitar https://chat.whatsapp.com/XXXXXX")
 
-  if (user.registered === true) {
-    return m.reply(`🌿 Ya te encuentras registrado.\n\n¿Quieres volver a registrarte?\nUsa: *${usedPrefix}unreg*`)
-  }
+  // PERSONALIZAR:
+  const titulo = "Welcome To Grupo"
+  const descripcion = "Disfruta tu estadía en el grupo."
+  const autor = "Shado 🍀"
+  const imagen = "https://i.imgur.com/MYtR5s7.jpeg" // URL de imagen que quieras
 
-  if (!Reg.test(text)) {
-    return m.reply(`❎ Formato incorrecto\nUso:\n*${usedPrefix + command} nombre.edad*\nEjemplo:\n*${usedPrefix + command} ${name2}.19*`)
-  }
+  try {
+    // Descargar la imagen
+    let getImg = await axios.get(imagen, { responseType: "arraybuffer" })
+    let img = getImg.data
 
-  let [_, name, age] = text.match(Reg)
-  if (!name) return m.reply('👻 El nombre no puede estar vacío.')
-  if (!age) return m.reply('❄️ La edad no puede estar vacía.')
-  if (name.length >= 30) return m.reply('💛 El nombre es demasiado largo.')
-  age = parseInt(age)
-  if (age > 100 || age < 5) return m.reply(🌾 La edad ingresada no es válida.')
-
-  // Guardar registro del usuario
-  user.name = name.trim()
-  user.age = age
-  user.registered = true
-  await global.db.write() // ✅ Guardar la DB inmediatamente
-
-  // Fondo Itachi
-  const fondo = banner
-  const thumb = await (await fetch(fondo)).buffer()
-
-  // PDF invisible
-  const media = await prepareWAMessageMedia(
-    {
-      document: { url: fondo },
-      mimetype: 'application/pdf',
-      fileName: '⠀',
-      jpegThumbnail: thumb
-    },
-    { upload: conn.waUploadToServer }
-  )
-
-  // Texto de registro
-  const caption = `
-*Ya estas registrado correctamente*
-
-> *Nombre* ${name}
-> *Edad* ${age}
-> *User* @${m.sender.split('@')[0]}
-> *Bot* ${botname}
-
-*\`Gracias por registrarte para ver los comandos usa #allmenu\`*
-`
-
-  // Menú interactivo
-  const interactiveMessage = {
-    header: {
-      title: '',
-      hasMediaAttachment: true,
-      documentMessage: media.documentMessage
-    },
-    body: { text: caption },
-    /*footer: { text: '⠀' },*/
-    nativeFlowMessage: {
-      buttons: [
-        {
-          name: 'single_select',
-          buttonParamsJson: JSON.stringify({
-            title: '⠀',
-            sections: [
-              {
-                title: 'SELECCIONE UNA CATEGORIA',
-                rows: [
-                  { header: '🌿 MENU COMPLETO', title: 'Comandos', id: '.allmenu' },
-                  { header: '🗑 Eliminar registro ', title: 'Eliminar registro', id: '.unreg' },
-                  { header: '⏳ Información del tiempo activo', title: 'Sobre el status', id: '.ping' },
+    const msg = generateWAMessageFromContent(
+      m.chat,
+      {
+        viewOnceMessage: {
+          message: {
+            "messageContextInfo": { "deviceListMetadata": {}, "deviceListMetadataVersion": 2 },
+            templateMessage: {
+              hydratedTemplate: {
+                hydratedContentText: `✨ *${titulo}*\n${descripcion}\n\n👤 *By:* ${autor}`,
+                locationMessage: { jpegThumbnail: img },
+                hydratedButtons: [
+                  {
+                    urlButton: {
+                      displayText: "Unirme al grupo",
+                      url: link
+                    }
+                  }
                 ]
               }
-            ]
-          })
+            }
+          }
         }
-      ],
-      messageParamsJson: ''
-    },
-    contextInfo: {
-      mentionedJid: [m.sender],
-      externalAdReply: {
-        title: '📩 Registro Exitoso',
-        thumbnail: await (await fetch(banner)).buffer(),
-        mediaType: 1,
-        showAdAttribution: false
-      }
-    }
+      },
+      { quoted: m }
+    )
+
+    await conn.relayMessage(m.chat, msg.message, {})
+  } catch (e) {
+    console.log(e)
+    m.reply("❗ Error al enviar la tarjeta.")
   }
-
-  const msg = generateWAMessageFromContent(
-    m.chat,
-    { viewOnceMessage: { message: { interactiveMessage } } },
-    { userJid: m.sender, quoted: m }
-  )
-
-  await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
 }
 
-handler.help = ['reg2']
-handler.tags = ['info']
-handler.command = ['reg2']
+handler.help = ["invitar <link>"]
+handler.tags = ["grupo"]
+handler.command = ["invitar"]
 
 export default handler
