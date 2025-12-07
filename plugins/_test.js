@@ -1,14 +1,17 @@
 let handler = async (m, { conn, text, participants, groupMetadata }) => {
-    // Obtener el link del mismo grupo
+    // Obtener link del grupo
     let invite = await conn.groupInviteCode(m.chat)
-    let groupLink = `https://chat.whatsapp.com/${invite}`
+    let link = `https://chat.whatsapp.com/${invite}`
 
-    // Mensaje inicial
-    let isiPesan = text 
-        ? `📝 *Mensaje del administrador:*\n${text}\n\n🔗 *Ir al grupo:* ${groupLink}`
-        : `*––––––『 TAG A TODOS 』––––––*\n\n🔗 *Ir al grupo:* ${groupLink}`;
+    // Crear "mención falsa" tipo @NombreGrupo
+    let fakeTag = `@${groupMetadata.subject}`
 
-    let teks = `${isiPesan}`
+    // Mensaje principal
+    let isiPesan = text
+        ? `📝 *Mensaje del admin:*\n${text}\n\n${fakeTag}`
+        : `*––––––『 TAG A TODOS 』––––––*\n${fakeTag}`;
+
+    let teks = isiPesan;
 
     // Mencionar a todos
     for (let mem of participants) {
@@ -16,12 +19,12 @@ let handler = async (m, { conn, text, participants, groupMetadata }) => {
     }
 
     await conn.sendMessage(m.chat, { 
-        text: teks, 
+        text: teks + `\n\n🔗 ${link}`, // el link se oculta en vista previa
         mentions: participants.map(a => a.id)
     })
 };
 
-handler.help = ["tagall", "invocar"];
+handler.help = ["tagall"];
 handler.tags = ["group"];
 handler.command = ['tagall', 'all', 'invocar', 'todos'];
 handler.admin = true;
