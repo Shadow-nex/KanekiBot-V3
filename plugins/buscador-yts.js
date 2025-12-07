@@ -96,33 +96,10 @@ var handler = async (m, { text, conn }) => {
 お ☕ a1 - a15 → Descargar audio
 お 🌳 v1 - v15 → Descargar video`
 
-    /*await conn.sendMessage(m.chat, {
+    await conn.sendMessage(m.chat, {
       image: { url: videos[0].thumbnail },
       caption, ...fake
-    }, { quoted: m })*/
-    
-  await conn.sendMessage(m.chat, {
-    text: caption,
-    contextInfo: {
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channelRD.id,
-        serverMessageId: '',
-        newsletterName: channelRD.name
-      },
-      externalAdReply: {
-        title: botname,
-        body: textbot,
-        mediaType: 1,
-        mediaUrl: redes,
-        sourceUrl: redes,
-        thumbnail: videos[0].thumbnail,
-        showAdAttribution: false,
-        containsAutoReply: true,
-        renderLargerThumbnail: true
-      }
-    }
-  }, { quoted: m })
+    }, { quoted: m })
 
     await m.react('✔️')
   } catch (e) {
