@@ -1,8 +1,8 @@
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
-    let group = 'https://chat.whatsapp.com/XXXXXX';
+    let group = '';
     let packname = 'Mi Bot';
-    let imagen2 = banner;
+    let imagen2 = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765131768491_902910.jpeg';
 
 
     let rpl = {
