@@ -25,7 +25,7 @@ function fechaPeru() {
   })
 }
 
-// ⚡ Generador rápido de imagen
+// ⚡ Generador de imagen
 async function generarImagen({ title, desc, avatar, background }) {
   try {
     const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent(title)}&desc=${encodeURIComponent(desc)}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
@@ -37,55 +37,36 @@ async function generarImagen({ title, desc, avatar, background }) {
   }
 }
 
-// ✅ EXPORTABLES
+// ✅ Bienvenida
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
-  return generarMensaje({
-    conn,
-    userId,
-    groupMetadata,
-    chat,
-    tipo: 'welcome'
-  })
+  return generarMensaje({ conn, userId, groupMetadata, chat, tipo: 'welcome' })
 }
 
+// ✅ Despedida
 async function generarDespedida({ conn, userId, groupMetadata, chat }) {
-  return generarMensaje({
-    conn,
-    userId,
-    groupMetadata,
-    chat,
-    tipo: 'bye'
-  })
+  return generarMensaje({ conn, userId, groupMetadata, chat, tipo: 'bye' })
 }
 
-// ⚡ Base optimizada
+// ⚡ Motor base
 async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
-
-  // ✅ NOMBRE REAL DEL USUARIO (FIX)
-  let nombreReal = await conn.getName(userId).catch(() => null)
-
-  const username = nombreReal
-    ? `@${nombreReal.replace(/[\n\r]/g, '').trim()}`
-    : `@${userId.split('@')[0]}`
+  const username = `@${userId.split('@')[0]}`
 
   const pp = await conn.profilePictureUrl(userId, 'image')
     .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-  const groupSize =
-    tipo === 'welcome'
-      ? groupMetadata.participants.length + 1
-      : groupMetadata.participants.length - 1
+  const groupSize = tipo === 'welcome'
+    ? groupMetadata.participants.length + 1
+    : groupMetadata.participants.length - 1
 
   const descGrupo = groupMetadata.desc || 'Sin descripción'
   const fecha = fechaPeru()
 
-  const texto =
-    (tipo === 'welcome' ? chat.sWelcome : chat.sBye || '')
-      .replace(/{usuario}/g, username)
-      .replace(/{grupo}/g, groupMetadata.subject)
-      .replace(/{desc}/g, descGrupo)
+  const texto = (tipo === 'welcome' ? chat.sWelcome : chat.sBye || '')
+    .replace(/{usuario}/g, username)
+    .replace(/{grupo}/g, groupMetadata.subject)
+    .replace(/{desc}/g, descGrupo)
 
-  const caption =
+  const caption = 
 `*꒰ ✿ ${tipo === 'welcome' ? '¡Bienvenido/a!' : '¡Hasta pronto!'} ${username} ✿ ꒱*
 
  ⋅˚₊‧🪽‧₊˚ ⋅ *Grupo:* ${groupMetadata.subject}
@@ -98,15 +79,15 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
     title: tipo === 'welcome' ? '🌹 Bienvenido/a al grupo' : '🌳 Hasta pronto',
     desc: tipo === 'welcome' ? '¡Disfruta tu estadía!' : '¡Te esperamos de nuevo!',
     avatar: pp,
-    background:
-      tipo === 'welcome'
-        ? 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg'
-        : 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764382807653_64665.jpeg'
+    background: tipo === 'welcome'
+      ? 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg'
+      : 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764382807653_64665.jpeg'
   })
 
   return { image, caption, pp, username }
 }
 
+// ✅ Handler principal
 let handler = m => m
 
 handler.before = async function (m, { conn, groupMetadata }) {
@@ -118,19 +99,17 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
     if (!chat?.welcome) return true
 
+    // ✅ BIENVENIDA
     if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
       const { image, caption, pp } = await generarBienvenida({
-        conn,
-        userId,
-        groupMetadata,
-        chat
+        conn, userId, groupMetadata, chat
       })
 
       await conn.sendMessage(m.chat, {
         image,
         caption,
-        mentions: [userId],
         contextInfo: {
+          mentionedJid: [userId],  // ✅ TAG REAL
           externalAdReply: {
             title: botname,
             body: '❂ Welcome ♡',
@@ -138,28 +117,26 @@ handler.before = async function (m, { conn, groupMetadata }) {
             mediaUrl: redes,
             sourceUrl: redes,
             thumbnail: await (await fetch(pp)).buffer(),
-            renderLargerThumbnail: false
+            renderLargerThumbnail: true
           }
         }
       }, { quoted: fkontak })
     }
 
+    // ✅ DESPEDIDA
     if (
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE
     ) {
       const { image, caption, pp } = await generarDespedida({
-        conn,
-        userId,
-        groupMetadata,
-        chat
+        conn, userId, groupMetadata, chat
       })
 
       await conn.sendMessage(m.chat, {
         image,
         caption,
-        mentions: [userId],
         contextInfo: {
+          mentionedJid: [userId],  // ✅ TAG REAL
           externalAdReply: {
             title: botname,
             body: '❂ Bye ♡',
@@ -167,7 +144,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
             mediaUrl: redes,
             sourceUrl: redes,
             thumbnail: await (await fetch(pp)).buffer(),
-            renderLargerThumbnail: false
+            renderLargerThumbnail: true
           }
         }
       }, { quoted: fkontak })
