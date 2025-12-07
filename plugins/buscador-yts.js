@@ -96,10 +96,10 @@ var handler = async (m, { text, conn }) => {
 お ☕ a1 - a15 → Descargar audio
 お 🌳 v1 - v15 → Descargar video`
 
-    await conn.sendMessage(m.chat, {
+    /*await conn.sendMessage(m.chat, {
       image: { url: videos[0].thumbnail },
       caption, ...fake
-    }, { quoted: m })
+    }, { quoted: m })/*
 
     await m.react('✔️')
   } catch (e) {
