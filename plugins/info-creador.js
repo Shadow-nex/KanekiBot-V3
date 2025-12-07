@@ -71,7 +71,7 @@ END:VCARD`.trim();
         title: '✆ 𝐂𝐨𝐧𝐭𝐚𝐜𝐭𝐨 𝐝𝐞 𝐦𝐢 𝐜𝐫𝐞𝐚𝐝𝐨𝐫 𝐔𝐰𝐮 ღ',
         body: '❐ ᴄᴏɴᴛᴀᴄᴛᴀ ᴀʟ ᴘʀᴏᴘɪᴇᴛᴀʀɪᴏ ᴠɪᴀ ᴡʜᴀᴛsᴀᴘᴘ.',
         mediaType: 1,
-        thumbnailUrl: await (await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513030769_35769.jpeg')).buffer(),
+        thumbnailUrl:  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513030769_35769.jpeg',
         renderLargerThumbnail: true,
         sourceUrl: ''
       }
