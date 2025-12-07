@@ -9,7 +9,7 @@ const fkontak = {
   key: { participant: '0@s.whatsapp.net', remoteJid: 'status@broadcast', id: 'Halo' },
   message: {
     locationMessage: {
-      name: '❥ᰰຼ⚡ 𝐊𝐀𝐍𝐄𝐊𝐈 - 𝐀𝐈  🌿',
+      name: botname,
       jpegThumbnail: Buffer.from(thumb || [])
     }
   }
@@ -25,7 +25,6 @@ function fechaPeru() {
   })
 }
 
-// ⚡ Generador de imagen
 async function generarImagen({ title, desc, avatar, background }) {
   try {
     const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent(title)}&desc=${encodeURIComponent(desc)}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
@@ -37,17 +36,14 @@ async function generarImagen({ title, desc, avatar, background }) {
   }
 }
 
-// ✅ Bienvenida
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
   return generarMensaje({ conn, userId, groupMetadata, chat, tipo: 'welcome' })
 }
 
-// ✅ Despedida
 async function generarDespedida({ conn, userId, groupMetadata, chat }) {
   return generarMensaje({ conn, userId, groupMetadata, chat, tipo: 'bye' })
 }
 
-// ⚡ Motor base
 async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
   const username = `@${userId.split('@')[0]}`
 
@@ -67,13 +63,15 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
     .replace(/{desc}/g, descGrupo)
 
   const caption = 
-`*꒰ ✿ ${tipo === 'welcome' ? '¡Bienvenido/a!' : '¡Hasta pronto!'} ${username} ✿ ꒱*
+`ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱* ㅤ֢ㅤ⸱ㅤᯭִ
+*${tipo === 'welcome' ? `¡𝐁𝐢𝐞𝐧𝐯𝐞𝐧𝐢𝐝𝐨/𝐚! ${username} ᴅɪsғʀᴜᴛᴀ ᴛᴜ ᴇsᴛᴀᴅɪᴀ ᴇɴ ᴇʟ ɢʀᴜᴘᴏ` : `¡𝐀𝐝𝐢𝐨𝐬! ${username} ᴛᴇ ᴇsᴘᴇʀᴀᴍᴏs ᴘʀᴏɴᴛᴏ`}*
 
- ⋅˚₊‧🪽‧₊˚ ⋅ *Grupo:* ${groupMetadata.subject}
- ⋅˚₊‧🌱‧₊˚ ⋅ *Miembros:* ${groupSize}
- ⋅˚₊‧🍁‧₊˚ ⋅ *Fecha:* ${fecha}
 
-> • .˚🌊 *${texto || '✨ Disfruta tu estancia en el grupo'}*`
+ ׅㅤ𓏸𓈒ㅤׄ *Grupo ›* ${groupMetadata.subject}
+ ׅㅤ𓏸𓈒ㅤׄ *Miembros ›* ${groupSize}
+ ׅㅤ𓏸𓈒ㅤׄ *Fecha ›* ${fecha}
+
+> • .˚ *${texto}*`
 
   const image = await generarImagen({
     title: tipo === 'welcome' ? '🌹 Bienvenido/a al grupo' : '🌳 Hasta pronto',
@@ -87,7 +85,6 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
   return { image, caption, pp, username }
 }
 
-// ✅ Handler principal
 let handler = m => m
 
 handler.before = async function (m, { conn, groupMetadata }) {
@@ -99,31 +96,27 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
     if (!chat?.welcome) return true
 
-    // ✅ BIENVENIDA
     if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
       const { image, caption, pp } = await generarBienvenida({
         conn, userId, groupMetadata, chat
       })
 
-      await conn.sendMessage(m.chat, {
-        image,
-        caption,
-        contextInfo: {
-          mentionedJid: [userId],  // ✅ TAG REAL
-          externalAdReply: {
-            title: botname,
-            body: '❂ Welcome ♡',
-            mediaType: 1,
-            mediaUrl: redes,
-            sourceUrl: redes,
-            thumbnail: await (await fetch(pp)).buffer(),
-            renderLargerThumbnail: true
-          }
-        }
-      }, { quoted: fkontak })
+    await conn.sendMessage(m.chat, { 
+       text: caption,
+       contextInfo: {
+        externalAdReply: {
+          title: botname,
+          body: ``,
+          mediaType: 1,
+          mediaUrl: redes,
+          sourceUrl: redes,
+          thumbnail: await (await fetch(image)).buffer(),
+          showAdAttribution: false,
+          containsAutoReply: true,
+          renderLargerThumbnail: true
+        }}}, { quoted: fkontak })
     }
 
-    // ✅ DESPEDIDA
     if (
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE
@@ -136,7 +129,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
         image,
         caption,
         contextInfo: {
-          mentionedJid: [userId],  // ✅ TAG REAL
+          mentionedJid: [userId],
           externalAdReply: {
             title: botname,
             body: '❂ Bye ♡',
