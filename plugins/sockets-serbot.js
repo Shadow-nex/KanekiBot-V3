@@ -142,7 +142,7 @@ txtCode = await conn.sendMessage(
                 },
                 caption: rtx2,
                 title: "",
-                footer: dev,
+                footer: textbot,
 
                 interactiveButtons: [
                     {
