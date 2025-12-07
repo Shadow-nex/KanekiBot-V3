@@ -27,7 +27,7 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     let userIdNum = m.sender.split('@')[0]
     let phone = PhoneNumber('+' + userIdNum)
     let pais = phone.getRegionCode() || 'Desconocido 🌐'
-    let banner = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765134859629_740404.jpeg,
+    let banner = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765134859629_740404.jpeg'
  
     let tags = {
       'info': '🌾 `𝐈𝐍𝐅𝐎` ❐',
