@@ -60,7 +60,13 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
 
 // ⚡ Base optimizada
 async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
-  const username = `@${userId.split('@')[0]}`
+
+  // ✅ NOMBRE REAL DEL USUARIO (FIX)
+  let nombreReal = await conn.getName(userId).catch(() => null)
+
+  const username = nombreReal
+    ? `@${nombreReal.replace(/[\n\r]/g, '').trim()}`
+    : `@${userId.split('@')[0]}`
 
   const pp = await conn.profilePictureUrl(userId, 'image')
     .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
@@ -112,7 +118,6 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
     if (!chat?.welcome) return true
 
-    // ✅ USANDO FUNCIONES EXPORTABLES
     if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
       const { image, caption, pp } = await generarBienvenida({
         conn,
@@ -133,7 +138,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
             mediaUrl: redes,
             sourceUrl: redes,
             thumbnail: await (await fetch(pp)).buffer(),
-            renderLargerThumbnail: true
+            renderLargerThumbnail: false
           }
         }
       }, { quoted: fkontak })
@@ -162,7 +167,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
             mediaUrl: redes,
             sourceUrl: redes,
             thumbnail: await (await fetch(pp)).buffer(),
-            renderLargerThumbnail: true
+            renderLargerThumbnail: false
           }
         }
       }, { quoted: fkontak })
@@ -173,6 +178,5 @@ handler.before = async function (m, { conn, groupMetadata }) {
   }
 }
 
-// ✅ EXPORTS REALES
 export { generarBienvenida, generarDespedida }
 export default handler

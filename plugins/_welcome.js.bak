@@ -25,6 +25,7 @@ function fechaPeru() {
   })
 }
 
+// ⚡ Generador rápido de imagen
 async function generarImagen({ title, desc, avatar, background }) {
   try {
     const url = `https://canvas-8zhi.onrender.com/api/welcome3?title=${encodeURIComponent(title)}&desc=${encodeURIComponent(desc)}&profile=${encodeURIComponent(avatar)}&background=${encodeURIComponent(background)}`
@@ -36,6 +37,28 @@ async function generarImagen({ title, desc, avatar, background }) {
   }
 }
 
+// ✅ EXPORTABLES
+async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
+  return generarMensaje({
+    conn,
+    userId,
+    groupMetadata,
+    chat,
+    tipo: 'welcome'
+  })
+}
+
+async function generarDespedida({ conn, userId, groupMetadata, chat }) {
+  return generarMensaje({
+    conn,
+    userId,
+    groupMetadata,
+    chat,
+    tipo: 'bye'
+  })
+}
+
+// ⚡ Base optimizada
 async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
   const username = `@${userId.split('@')[0]}`
 
@@ -71,8 +94,8 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
     avatar: pp,
     background:
       tipo === 'welcome'
-        ? 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg' // welcome
-        : 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764382807653_64665.jpeg' // bye
+        ? 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg'
+        : 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764382807653_64665.jpeg'
   })
 
   return { image, caption, pp, username }
@@ -89,14 +112,13 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
     if (!chat?.welcome) return true
 
-    // BIENVENIDA
+    // ✅ USANDO FUNCIONES EXPORTABLES
     if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
-      const { image, caption, pp, username } = await generarMensaje({
+      const { image, caption, pp } = await generarBienvenida({
         conn,
         userId,
         groupMetadata,
-        chat,
-        tipo: 'welcome'
+        chat
       })
 
       await conn.sendMessage(m.chat, {
@@ -116,18 +138,16 @@ handler.before = async function (m, { conn, groupMetadata }) {
         }
       }, { quoted: fkontak })
     }
-    
-    // BYE
+
     if (
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE
     ) {
-      const { image, caption, pp, username } = await generarMensaje({
+      const { image, caption, pp } = await generarDespedida({
         conn,
         userId,
         groupMetadata,
-        chat,
-        tipo: 'bye'
+        chat
       })
 
       await conn.sendMessage(m.chat, {
@@ -153,4 +173,6 @@ handler.before = async function (m, { conn, groupMetadata }) {
   }
 }
 
+// ✅ EXPORTS REALES
+export { generarBienvenida, generarDespedida }
 export default handler
