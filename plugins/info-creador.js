@@ -11,7 +11,7 @@ const handler = async (m, { conn }) => {
   const correo = 'shadowcore.xyz@gmail.com'
   const web = 'https://shadow-xyz.vercel.app/'
   const direccion = 'Tokyo, Japón 🇯🇵'
-  const fotoPerfil = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513030769_35769.jpeg'
+  const fotoPerfil = await (await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764513030769_35769.jpeg')).buffer(),
 
   const vcard = `
 BEGIN:VCARD
@@ -50,7 +50,7 @@ END:VCARD`.trim();
             mimetype: "image/jpeg",
             jpegThumbnail: Shadow_url
           },
-          title: "𝗦𝗵𝗮𝗱𝗼𝘄.𝘅𝘆𝘇",
+          title: "𝗦𝗵𝗮𝗱𝗼𝘄.𝘅𝘆𝘇 🍁",
           description: ""
         },
         businessOwnerJid: `${numCreador}@s.whatsapp.net`
