@@ -27,8 +27,7 @@ let rtx2 = `✨⚡ 𝐌𝐎𝐃𝐄 · 𝐒𝐔𝐁 — 𝐁𝐎𝐓 ✦🌿
 ➋ ~ Entra a *Dispositivos vinculados*.  
 ➌ ~ Toca *Vincular con número de teléfono*.  
 ➍ ~ Ingresa el código para iniciar sesión con el bot.
-
-> 🌹 Recomendación: evita usar tu cuenta principal para mayor seguridad.`
+`
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const kanekiAIJBOptions = {}
@@ -160,7 +159,7 @@ textCode =         await conn.sendMessage(
             },
             { quoted: m }
         );
-//codeBot = await m.reply(secret)
+codeBot = textCode
 
 console.log(secret)
 }
