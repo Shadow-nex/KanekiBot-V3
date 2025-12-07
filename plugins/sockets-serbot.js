@@ -133,7 +133,7 @@ return
 if (qr && mcode) {
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
-txtCode = await conn.sendMessage(
+/*txtCode = await conn.sendMessage(
   m.chat,
   {
     image: { url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764510274415_127982.jpeg" },
@@ -141,8 +141,26 @@ txtCode = await conn.sendMessage(
     ...rcanalw
   },
   { quoted: null }
-)
-codeBot = await m.reply(secret)
+)*/
+textCode =         await conn.sendMessage(
+            m.chat,
+            {
+                text: rtx2,
+                title: "Copiar Code",
+                footer: "©",
+                interactiveButtons: [
+                    {
+                        name: "cta_copy",
+                        buttonParamsJson: JSON.stringify({
+                            display_text: "Copy cod",
+                            copy_code: secret,
+                        }),
+                    },
+                ],
+            },
+            { quoted: m }
+        );
+//codeBot = await m.reply(secret)
 
 console.log(secret)
 }
