@@ -104,7 +104,6 @@ var handler = async (m, { text, conn }) => {
   await conn.sendMessage(m.chat, {
     text: caption,
     contextInfo: {
-      mentionedJid: [userId],
       isForwarded: true,
       forwardedNewsletterMessageInfo: {
         newsletterJid: channelRD.id,
@@ -117,7 +116,7 @@ var handler = async (m, { text, conn }) => {
         mediaType: 1,
         mediaUrl: redes,
         sourceUrl: redes,
-        thumbnail: await (await fetch(videos[0].thumbnail)).buffer(),
+        thumbnail: videos[0].thumbnail,
         showAdAttribution: false,
         containsAutoReply: true,
         renderLargerThumbnail: true
