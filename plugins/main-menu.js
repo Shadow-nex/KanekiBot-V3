@@ -3,19 +3,14 @@ import { xpRange } from '../lib/levelling.js'
 import fs from 'fs'
 import PhoneNumber from 'awesome-phonenumber'
 import moment from 'moment-timezone'
-/*import baileys from '@whiskeysockets/baileys'
 
-const { generateWAMessageFromContent, generateWAMessageContent, proto } = baileys
-*/
 let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
   try {
-    await m.react('🍁')
 
     let mentionedJid = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.sender
     let user = global.db.data.users[m.sender] || {}
     let name = await conn.getName(m.sender)
-    let premium = user.premium ? '✔️ Sí' : 'free'
-    let limit = user.limit || 10
+    //let premium = user.premium ? '✔️ Sí' : 'free'
     let totalreg = Object.keys(global.db.data.users).length
     let groupUserCount = m.isGroup ? participants.length : '-'
     let groupsCount = Object.values(conn.chats).filter(v => v.id.endsWith('@g.us')).length
@@ -34,25 +29,25 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     let pais = phone.getRegionCode() || 'Desconocido 🌐'
  
     let tags = {
-      'info': '🪹 `𝐈𝐍𝐅𝐎` ❐',
-      'main': '❄️ `𝐌𝐀𝐈𝐍` ❐',
-      'anime': '🧃 `𝐀𝐍𝐈𝐌𝐄` ❐',
-      'menu': '🦋 `𝐌𝐄𝐍𝐔𝐒` ❐',
-      'search': '🍧 `𝐁𝐔𝐒𝐐𝐔𝐄𝐃𝐀𝐒` ❐',
-      'download': '🍃 `𝐃𝐄𝐒𝐂𝐀𝐑𝐆𝐀𝐒` ❐',
-      'socket': '🧊 `𝐉𝐀𝐃𝐈-𝐁𝐎𝐓𝐒` ❐',
-      'rg': '🪵 `𝐏𝐄𝐑𝐅𝐈𝐋` ❐',
-      'fun': '🪴 `𝐅𝐔𝐍` ❐',
-      'rpg': '🪸 `𝐄𝐂𝐎𝐍𝐎𝐌𝐈𝐀` ❐',
-      'gacha': '🪷 `𝐆𝐀𝐂𝐇𝐀` ❐',
-      'game': '🪺 `𝐆𝐀𝐌𝐄` ❐',
+      'info': '🌾 `𝐈𝐍𝐅𝐎` ❐',
+      'main': '🍃 `𝐌𝐀𝐈𝐍` ❐',
+      'anime': '🍁 `𝐀𝐍𝐈𝐌𝐄` ❐',
+      'menu': '🎋 `𝐌𝐄𝐍𝐔𝐒` ❐',
+      'search': '🍟 `𝐁𝐔𝐒𝐐𝐔𝐄𝐃𝐀𝐒` ❐',
+      'download': '🪽 `𝐃𝐄𝐒𝐂𝐀𝐑𝐆𝐀𝐒` ❐',
+      'socket': '🌱 `𝐉𝐀𝐃𝐈-𝐁𝐎𝐓𝐒` ❐',
+      'rg': '🌷 `𝐏𝐄𝐑𝐅𝐈𝐋` ❐',
+      'fun': '🪷 `𝐅𝐔𝐍` ❐',
+      'rpg': '🫛 `𝐄𝐂𝐎𝐍𝐎𝐌𝐈𝐀` ❐',
+      'gacha': '🥗 `𝐆𝐀𝐂𝐇𝐀` ❐',
+      'game': '⚡ `𝐆𝐀𝐌𝐄` ❐',
       'group': '🕸️ `𝐆𝐑𝐔𝐏𝐎` ❐',
       'nable': '💫 `𝐎𝐍 / 𝐎𝐅𝐅` ❐',
       'ia': ' 🌿 `𝐈𝐍𝐓𝐄𝐋𝐈𝐆𝐄𝐍𝐂𝐈𝐀` ❐',
       'stalk': '💐 `𝐒𝐓𝐀𝐋𝐊`  ❐',
-      'maker': '🎋 `𝐋𝐎𝐆𝐎𝐓𝐈𝐏𝐎𝐒` ❐',
+      'maker': '🚩 `𝐋𝐎𝐆𝐎𝐓𝐈𝐏𝐎𝐒` ❐',
       'tools': '🍬 `𝐓𝐎𝐎𝐋𝐒` ❐',
-      'sticker': '👾🪼 `𝐒𝐓𝐈𝐂𝐊𝐄𝐒` ❐',
+      'sticker': '🪼 `𝐒𝐓𝐈𝐂𝐊𝐄𝐒` ❐',
       'owner': '🐦‍🔥 `𝐎𝐖𝐍𝐄𝐑` ❐',
       'nsfw': '👾 `𝐍𝐒𝐅𝐖` ❐',
     }
@@ -70,7 +65,7 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     for (let tag in tags) {
       let comandos = commands
         .filter(cmd => cmd.tags.includes(tag))
-        .map(cmd => cmd.help.map(e => `• ۫  𖢷͜੭ 🌴ֹ 𔐼ֹ֪➩ \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
+        .map(cmd => cmd.help.map(e => ` ۫🌴ֹ 𔐼ֹ֪➩ \`\`\`${usedPrefix}${e}\`\`\``).join('\n'))
         .join('\n')
       if (comandos) {
         menuTexto += `\n\n> ׅ    𓈈 ׁ ${tags[tag]} 𓏽 ֟꒱𑁬
@@ -78,33 +73,23 @@ ${comandos}\n`
       }
     }
 
-    const infoUser = `̮═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜ ִ  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═࣪͜═͜═
-> ✰ ¡Hola! @${userIdNum}, Soy *${botname}*, Aquí tienes la lista de comandos.
-> ✯  ִ ࣪ 𓈒 ᗣ  ${ucapan()}  ࣫ㅤׅ 🍋‍🟩۫ 
+    const infoUser = ` ̮ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ִ࣪͜  ۫ 𔐼ֹ ⸼ ࣪࣪ ۪ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ࣪͜ ̮
+> ✰ *¡ʜᴏʟᴀ!* @${userIdNum}, sᴏʏ *${botname}*, ᴀǫᴜɪ ᴛɪᴇɴᴇs ʟᴀ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs.
+> ✧ ִ ࣪ 𓈒 ᗣ🪽  ${ucapan()}  ࣫ㅤׅ 🍋‍🟩۫ 
 
-﹙🥦 ﹚ ੭੭ ─ 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈𝐎𝐍  ﾟ･:𑇛
- ⌗ֶㅤ֯𝅄⿻ 🪹 ׄ ⬭ 🄿remium: *${premium}*
- ⌗ֶㅤ֯𝅄⿻ 🌵 ׄ ⬭ 🄿ais: *${pais}*
- ⌗ֶㅤ֯𝅄⿻ 🪽 ׄ ⬭ 🄻imite: *${limit}*
- ⌗ֶㅤ֯𝅄⿻ 🌿 ׄ ⬭ 🅄sers registrados: *${totalreg}*
- ⌗ֶㅤ֯𝅄⿻ 🍄 ׄ ⬭ 🄶rupos activos: *${groupsCount}*
- ⌗ֶㅤ֯𝅄⿻ 🌟 ׄ ⬭ 🅁untime: *${uptime}*
-${readMore}
-
- ⌗ֶㅤ֯𝅄⿻ 🫛 ׄ ⬭ 🄱ot: *${(conn.user.jid == global.conn.user.jid ? 'Principal' : 'Sub-Bot')}*
- ⌗ֶㅤ֯𝅄⿻ 🎋 ׄ ⬭ 🄲omandos: *${totalCommands}*
- ⌗ֶㅤ֯𝅄⿻ 🌾 ׄ ⬭ 🅅ersion: *${vs}*
- ⌗ֶㅤ֯𝅄⿻ 🍟 ׄ ⬭ 🄻ibreria: *${libreria}*
- ⌗ֶㅤ֯𝅄⿻ 🥢 ׄ ⬭ 🄵echa: *${hora}, ${dia}, ${fechaTxt}*
+﹙🫛 ﹚੭੭ ─ 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈𝐎𝐍  ﾟ･:𑇛
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ʙᴏᴛ* » 𝙺𝚊𝚗𝚎𝚔𝚒 - 𝙺𝚎𝚗
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ᴛɪᴘᴏ* » ${(conn.user.jid == global.conn.user.jid ? 'Principal' : 'Sub-Bot')}
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ᴄᴏᴍᴀɴᴅᴏs* » ${totalCommands}
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ᴀᴄᴛɪᴠᴏ* » ${uptime}
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ᴘᴀɪs* » ${pais}
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ᴜsᴜᴀʀɪᴏs ʀᴇɢ* » ${totalreg}
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ɢʀᴜᴘᴏs* » ${groupsCount}
+ ⌗ֶㅤ֯𝅄⿻ ׄ ⬭ *ʟɪʙʀᴇʀɪᴀ* » ${libreria}
 
 ${readMore}
-     *✎ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs ✰*`.trim()
+   *✎ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs ✰*`.trim()
 
-/*    const { imageMessage } = await generateWAMessageContent(
-      { image: { url: imageUrl } },
-      { upload: conn.waUploadToServer }
-    )
-*/
     const icon = [
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911352440_131724.jpeg',
       'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911305951_36243.jpeg',
@@ -137,46 +122,6 @@ ${readMore}
       }
     }
   }
-/*      
-    const msg = generateWAMessageFromContent(m.chat, {
-      viewOnceMessage: {
-        message: {
-          interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-            body: proto.Message.InteractiveMessage.Body.fromObject({
-              text: infoUser + menuTexto
-            }),
-            footer: proto.Message.InteractiveMessage.Footer.fromObject({
-              text: dev
-            }),
-            header: proto.Message.InteractiveMessage.Header.fromObject({
-              title: '',
-              hasMediaAttachment: true,
-              imageMessage
-            }),
-            nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
-              buttons: [
-                {
-                  name: "cta_url",
-                  buttonParamsJson: JSON.stringify({
-                    display_text: "❐ 𝗖𝗔𝗡𝗔𝗟 ⼢",
-                    url: channel,
-                    merchant_url: channel
-                  })
-                },
-                {
-                  name: "cta_url",
-                  buttonParamsJson: JSON.stringify({
-                    display_text: "✿ 𝗚𝗜𝗧𝗛𝗨𝗕 ⼢",
-                    url: github,
-                    merchant_url: github
-                  })
-                }
-              ]
-            })
-          })
-        }
-      }
-    }, { quoted: fkontak })*/
 
 await conn.sendMessage(m.chat, { 
 text: infoUser + menuTexto,
@@ -190,7 +135,7 @@ contextInfo: {
  },
  externalAdReply: {
    title: botname,
-   body: textbot,
+   body: `❂ ${hora}, ${dia}, ${fechaTxt} ♡`,
    mediaType: 1,
    mediaUrl: redes,
    sourceUrl: redes,

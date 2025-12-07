@@ -4,10 +4,10 @@ import PhoneNumber from 'awesome-phonenumber';
 import fetch from 'node-fetch';
 
 const handler = async (m, { conn }) => {
-  const name = '🌳 sһᥲძ᥆ᥕ-᥊ᥡz • ᥆𝖿𝖿іᥴіᥲᥣ'
+  const name = ' sһᥲძ᥆ᥕ.᥊ᥡz • ᥆𝖿𝖿іᥴіᥲᥣ'
   const numCreador = '51919199620'
-  const empresa = 'ᴋᴀɴᴇᴋɪ ʙᴏᴛ ɪɴɪᴄ.'
-  const about = '🍒 𝑫𝒆𝒔𝒂𝒓𝒓𝒐𝒍𝒍𝒂𝒅𝒐𝒓 𝒅𝒆 𝑲𝒂𝒏𝒆𝒌𝒊-𝑩𝒐𝒕 𝑽3 :D'
+  const empresa = ' » ᴋᴀɴᴇᴋɪ ʙᴏᴛ ɪɴɪᴄ.'
+  const about = '☏ 2024 - 2025 ⎈'
   const correo = 'shadowcore.xyz@gmail.com'
   const web = 'https://shadow-xyz.vercel.app/'
   const direccion = 'Tokyo, Japón 🇯🇵'
@@ -50,7 +50,7 @@ END:VCARD`.trim();
             mimetype: "image/jpeg",
             jpegThumbnail: Shadow_url
           },
-          title: "contacto test",
+          title: "𝗦𝗵𝗮𝗱𝗼𝘄.𝘅𝘆𝘇",
           description: ""
         },
         businessOwnerJid: `${numCreador}@s.whatsapp.net`
@@ -59,7 +59,7 @@ END:VCARD`.trim();
   };
 
   m.react('🌿');
-  conn.reply(m.chat, `*\`☕ Enviando contacto xd....\`*`, m)
+  conn.reply(m.chat, `*\`✎ Enviando contacto xd....\`*`, m)
 
   await conn.sendMessage(m.chat, {
     contacts: {
@@ -69,8 +69,8 @@ END:VCARD`.trim();
     contextInfo: {
       mentionedJid: [m.sender],
       externalAdReply: {
-        title: 'ekisde 🙂‍↕️',
-        body: textbot,
+        title: '✆ 𝐂𝐨𝐧𝐭𝐚𝐜𝐭𝐨 𝐝𝐞 𝐦𝐢 𝐜𝐫𝐞𝐚𝐝𝐨𝐫 𝐔𝐰𝐮 ღ',
+        body: '❐ ᴄᴏɴᴛᴀᴄᴛᴀ ᴀʟ ᴘʀᴏᴘɪᴇᴛᴀʀɪᴏ ᴠɪᴀ ᴡʜᴀᴛsᴀᴘᴘ.',
         mediaType: 1,
         thumbnailUrl: fotoPerfil,
         renderLargerThumbnail: true,
