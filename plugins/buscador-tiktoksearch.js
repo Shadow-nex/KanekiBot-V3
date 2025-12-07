@@ -76,27 +76,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           hasMediaAttachment: true,
           videoMessage: videoMsg,
         }),
-        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject(
-          {
-            buttons: [
-              {
-                name: "cta_url",
-                buttonParamsJson: JSON.stringify({
-                  display_text: "🍉 𝐕𝐞𝐫 𝐞𝐧 𝐓𝐢𝐤𝐓𝐨𝐤",
-                  url: v.url || v.nowm,
-                }),
-              },
-              {
-                name: "cta_url",
-                buttonParamsJson: JSON.stringify({
-                  display_text: "🕸️ 𝐜𝐚𝐧𝐚𝐥 𝐨𝐟𝐢𝐜𝐢𝐚𝐥",
-                  url: 'https://whatsapp.com/channel/0029VbC34Nt42DchIWA0q11f',
-                }),
-              },
-            ],
-          }
-        ),
-      });
+        
     }
 
     if (cards.length === 0)
