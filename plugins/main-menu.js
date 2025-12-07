@@ -27,7 +27,6 @@ let handler = async (m, { conn, usedPrefix, __dirname, participants }) => {
     let userIdNum = m.sender.split('@')[0]
     let phone = PhoneNumber('+' + userIdNum)
     let pais = phone.getRegionCode() || 'Desconocido 🌐'
-    let banner = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765134859629_740404.jpeg'
  
     let tags = {
       'info': '🌾 `𝐈𝐍𝐅𝐎` ❐',
@@ -140,7 +139,7 @@ contextInfo: {
    mediaType: 1,
    mediaUrl: redes,
    sourceUrl: redes,
-   thumbnail: await (await fetch(banner)).buffer(),
+   thumbnail: await (await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765134859629_740404.jpeg')).buffer(),
    showAdAttribution: false,
    containsAutoReply: true,
    renderLargerThumbnail: true
