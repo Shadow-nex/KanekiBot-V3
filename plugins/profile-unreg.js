@@ -1,8 +1,6 @@
 import fs from 'fs'
 import fetch from 'node-fetch'
 import PhoneNumber from 'awesome-phonenumber'
-import baileys from '@whiskeysockets/baileys'
-const { proto } = baileys
 
 let handler = async (m, { conn, usedPrefix }) => {
   const user = global.db.data.users[m.sender]
@@ -35,26 +33,6 @@ let handler = async (m, { conn, usedPrefix }) => {
 
 🌟 *Kaneki Bot* siempre estará contigo.`
 
-  const msg = {
-    productMessage: {
-      product: {
-        productImage: {
-          mimetype: 'image/jpeg',
-          jpegThumbnail: await (await fetch(pp)).buffer()
-        },
-        productId: '7777777777',
-        title: '🎄 Registro Eliminado Correctamente 🎄',
-        description: `🌿 Nombre: ${nombre} | 🍃 Edad: ${edad} años`,
-        currencyCode: 'USD',
-        priceAmount1000: '100000',
-        retailerId: '666',
-        url: 'https://wa.me/0'
-      },
-      businessOwnerJid: m.sender
-    }
-  }
-
-  await conn.sendMessage(m.chat, msg, { quoted: m })
   await conn.sendMessage(m.chat, { text: caption }, { quoted: m })
 }
 
