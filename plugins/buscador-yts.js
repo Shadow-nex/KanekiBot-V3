@@ -67,7 +67,7 @@ async function getshadowv(url) {
 }
 
 var handler = async (m, { text, conn }) => {
-  if (!text) return conn.reply(m.chat, `🌸 *Ingresa el nombre o enlace de YouTube.*`, m)
+  if (!text) return conn.reply(m.chat, `🌸 *Ingresa el nombre o enlace de YouTube.*`, m, rcanal)
 
   try {
     await m.react('🔍')
@@ -77,18 +77,18 @@ var handler = async (m, { text, conn }) => {
 
     ytCache[m.sender] = { results: videos, timestamp: Date.now() }
 
-    let caption = ` 🎍 𝚁𝙴𝚂𝚄𝙻𝚃𝙰𝙳𝙾𝚂 𝙳𝙴 𝙱𝚄𝚂𝚀𝚄𝙴𝙳𝙰\n`
-    caption += `*Término:* ${text}\n`
-    caption += `*Mostrando:* \`15\`\n\n`
+    let caption = ` 🌠 𝚁𝙴𝚂𝚄𝙻𝚃𝙰𝙳𝙾𝚂 𝙳𝙴 𝙱𝚄𝚂𝚀𝚄𝙴𝙳𝙰\n`
+    caption += `🌱 *Término:* ${text}\n`
+    caption += `🌾 *Mostrando:* \`15\`\n\n`
 
     for (let i = 0; i < videos.length; i++) {
       const v = videos[i]
-      caption += `🍃ᭃ *${i + 1}.* ${v.title}\n`
-      caption += `> 🌠ᭃ ᴄᴀɴᴀʟ: *${v.author.name}*\n`
-      caption += `> ⏰ᭃ ᴅᴜʀᴀᴄɪᴏɴ: *${v.timestamp || 'Desconocida'}*\n`
-      caption += `> 🗓️ᭃ sᴜʙɪᴅᴏ: *${v.ago || 'N/D'}*\n`
-      caption += `> 🧃ᭃ ᴠɪsᴛᴀs: *${formatNumber(v.views)}*\n`
-      caption += `> 🪹ᭃ ʟɪɴᴋ: ${v.url}\n`
+      caption += `✿ *${i + 1}.* ${v.title}\n`
+      caption += `🫛 𝐂𝐚𝐧𝐚𝐥: *${v.author.name}*\n`
+      caption += `🍁 𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧: *${v.timestamp || 'Desconocida'}*\n`
+      caption += `🗓️ 𝐒𝐮𝐛𝐢𝐝𝐨: *${v.ago || '--'}*\n`
+      caption += `🪽 𝐕𝐢𝐬𝐭𝐚𝐬: *${formatNumber(v.views)}*\n`
+      caption += `🍃 𝐋𝐢𝐧𝐤: ${v.url}\n`
       caption += `\n${'•'.repeat(38)}\n\n`
     }
 
@@ -118,7 +118,7 @@ handler.before = async (m, { conn }) => {
 
   const userCache = ytCache[m.sender]
   if (!userCache || !userCache.results[index] || Date.now() - userCache.timestamp > CACHE_TIME)
-    return conn.reply(m.chat, '🎍 La lista expiró. Usa el comando nuevamente.', m, rcanal)
+    return conn.reply(m.chat, '⚡ *La lista expiró. Usa el comando nuevamente.*', m, rcanal)
 
   const video = userCache.results[index]
 
@@ -135,7 +135,9 @@ handler.before = async (m, { conn }) => {
     const mb = size / (1024 * 1024)
     const sendAsDoc = mb > MAX_FILE_SIZE_MB
 
-    const caption = `📡 *${video.title}*\n🌾 *Duración:* ${video.timestamp || 'Desconocida'}\n💮 *Tamaño:* ${formatSize(size)}`
+    const caption = `❀ *${video.title}*
+✎ *Duración:* ${video.timestamp || 'Desconocida'}
+✰ *Tamaño:* ${formatSize(size)}`
 
     if (sendAsDoc) {
       await conn.sendMessage(
@@ -184,5 +186,6 @@ handler.help = ['ytbuscar <texto>']
 handler.tags = ['search']
 handler.command = ['ytbuscar', 'yts', 'ytsearch']
 handler.group = true
+handler.register = true
 
 export default handler
