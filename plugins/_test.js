@@ -1,9 +1,8 @@
-let handler = async (m, { conn, text, usedPrefix, command }) => {
+let handler = async (m, { conn }) => {
   try {
-    let group = '';
+    let group = 'https://chat.whatsapp.com/LJJTHuaBfOXAeavOwOMnEC';
     let packname = 'Mi Bot';
     let imagen2 = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765131768491_902910.jpeg';
-
 
     let rpl = {
       contextInfo: {
@@ -15,14 +14,14 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           body: 'grupo de soporte',
           thumbnailUrl: imagen2,
           sourceUrl: group,
+          renderLargerThumbnail: true
         }
       }
     };
 
-   
-    let msg = `*🌐 Grupo de soporte*\n\nÚnete al grupo oficial:\n${group}`;
+    // 🔥 AQUÍ NO SE MUESTRA EL LINK
+    let msg = `*🌐 Grupo de soporte*\n\nToca la tarjeta de arriba para unirte.`;
 
-   
     await conn.sendMessage(m.chat, { text: msg, ...rpl }, { quoted: m });
 
   } catch (e) {
