@@ -99,7 +99,7 @@ var handler = async (m, { text, conn }) => {
     /*await conn.sendMessage(m.chat, {
       image: { url: videos[0].thumbnail },
       caption, ...fake
-    }, { quoted: m })/*
+    }, { quoted: m })*/
     
   await conn.sendMessage(m.chat, {
     text: caption,
