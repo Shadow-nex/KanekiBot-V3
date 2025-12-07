@@ -104,6 +104,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
     await conn.sendMessage(m.chat, { 
        text: caption,
        contextInfo: {
+        mentionedJid: [userId],
         externalAdReply: {
           title: botname,
           body: ``,
