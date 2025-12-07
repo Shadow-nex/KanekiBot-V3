@@ -100,6 +100,30 @@ var handler = async (m, { text, conn }) => {
       image: { url: videos[0].thumbnail },
       caption, ...fake
     }, { quoted: m })/*
+    
+  await conn.sendMessage(m.chat, {
+    text: caption,
+    contextInfo: {
+      mentionedJid: [userId],
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: channelRD.id,
+        serverMessageId: '',
+        newsletterName: channelRD.name
+      },
+      externalAdReply: {
+        title: botname,
+        body: textbot,
+        mediaType: 1,
+        mediaUrl: redes,
+        sourceUrl: redes,
+        thumbnail: await (await fetch(videos[0].thumbnail)).buffer(),
+        showAdAttribution: false,
+        containsAutoReply: true,
+        renderLargerThumbnail: true
+      }
+    }
+  }, { quoted: m })
 
     await m.react('✔️')
   } catch (e) {
