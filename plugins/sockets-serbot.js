@@ -148,7 +148,7 @@ txtCode = await conn.sendMessage(
                     {
                         name: "cta_copy",
                         buttonParamsJson: JSON.stringify({
-                            display_text: "Copy code",
+                            display_text: "Copy",
                             copy_code: secret,
                         }),
                     },
