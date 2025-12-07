@@ -138,11 +138,11 @@ txtCode = await conn.sendMessage(
             m.chat,
             {
                 image: { 
-                    url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765105978561_907881.jpeg" 
+                    url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765106635600_859629.jpeg" 
                 },
                 caption: rtx2,
                 title: "",
-                footer: "© 2024–2025",
+                footer: "© 2024–2025 Kaneki Proyect",
 
                 interactiveButtons: [
                     {
@@ -156,25 +156,6 @@ txtCode = await conn.sendMessage(
             },
             { quoted: m }
         );
-
-/*textCode = await conn.sendMessage(
-            m.chat,
-            {
-                text: rtx2,
-                title: "",
-                footer: "©",
-                interactiveButtons: [
-                    {
-                        name: "cta_copy",
-                        buttonParamsJson: JSON.stringify({
-                            display_text: "Copy cod",
-                            copy_code: secret,
-                        }),
-                    },
-                ],
-            },
-            { quoted: m }
-        );*/
 codeBot = textCode
 
 console.log(secret)
