@@ -142,7 +142,7 @@ txtCode = await conn.sendMessage(
                 },
                 caption: rtx2,
                 title: "",
-                footer: "© 2024–2025 Kaneki Proyect",
+                footer: dev,
 
                 interactiveButtons: [
                     {
