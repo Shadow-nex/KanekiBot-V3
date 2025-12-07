@@ -12,11 +12,15 @@ let handler = async (m, { conn }) => {
     const invite = 'https://chat.whatsapp.com/' + await conn.groupInviteCode(group)
     const owner = metadata.owner ? '@' + metadata.owner.split('@')[0] : 'No disponible'
 
-    const info = `🍃 *Nombre:* ${metadata.subject}
-🌱 *ID:* ${metadata.id}
-👑 *Creador:* ${owner}
-☃️ *Miembros:* ${metadata.participants.length}
-🌿 *Link:* ${invite}`.trim()
+    const info = `\`\`\`
+================================
+🍃 Nombre    :  ${metadata.subject}
+🌱 ID        :  ${metadata.id}
+👑 Creador   :  ${owner}
+☃️ Miembros  :  ${metadata.participants.length}
+🌿 Link      :  ${invite}
+================================
+\`\`\``.trim()
 
     const { imageMessage } = await generateWAMessageContent(
       { image: { url: ppUrl } },
