@@ -13,9 +13,13 @@ Utilice el botón de abajo para copiar el enlace.
         await conn.sendMessage(
             m.chat,
             {
-                text: info,
+                image: { 
+                    url: "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765105978561_907881.jpeg" 
+                },
+                caption: info,
                 title: "Group Invite Link",
-                footer: "© 2024–2025 Itachi Project",
+                footer: "© 2024–2025 ",
+
                 interactiveButtons: [
                     {
                         name: "cta_copy",
@@ -28,15 +32,16 @@ Utilice el botón de abajo para copiar el enlace.
             },
             { quoted: m }
         );
+
     } catch (e) {
         conn.logger.error(e);
         m.reply(`Error: ${e.message}`);
     }
 };
 
-handler.help = ['link2']
-handler.tags = ['group']
-handler.command = ['link2', 'enlace']
+handler.help = ['link2'];
+handler.tags = ['group'];
+handler.command = ['link2', 'enlace'];
 handler.group = true;
 handler.botAdmin = true;
 
