@@ -19,7 +19,7 @@ let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
 let drm1 = ""
 let drm2 = ""
 let rtx = "*❀ SER BOT • MODE QR*\n\n✰ Con otro celular o en la PC escanea este QR para convertirte en un *Sub-Bot* Temporal.\n\n\`1\` » Haga clic en los tres puntos en la esquina superior derecha\n\n\`2\` » Toque dispositivos vinculados\n\n\`3\` » Escanee este codigo QR para iniciar sesion con el bot\n\n✧ ¡Este código QR expira en 45 segundos!."
-let rtx2 = `> ✿ *_Usa este Código para convertirte en un \`Sub-Bot*\` Temporal._*
+let rtx2 = `> ✿ *_Usa este Código para convertirte en un \`Sub-Bot\` Temporal._*
 
 > ✎ \`1\` *_Haga clic en los tres puntos en la esquina superior derecha._*
 
