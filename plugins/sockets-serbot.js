@@ -19,14 +19,15 @@ let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
 let drm1 = ""
 let drm2 = ""
 let rtx = "*❀ SER BOT • MODE QR*\n\n✰ Con otro celular o en la PC escanea este QR para convertirte en un *Sub-Bot* Temporal.\n\n\`1\` » Haga clic en los tres puntos en la esquina superior derecha\n\n\`2\` » Toque dispositivos vinculados\n\n\`3\` » Escanee este codigo QR para iniciar sesion con el bot\n\n✧ ¡Este código QR expira en 45 segundos!."
-let rtx2 = `✨⚡ 𝐌𝐎𝐃𝐄 · 𝐒𝐔𝐁 — 𝐁𝐎𝐓 ✦🌿
+let rtx2 = `> ✿ *_Usa este Código para convertirte en un \`Sub-Bot*\` Temporal._*
 
-🍒 Conviértete en *Sub-Bot Temporal* usando este código.
+> ✎ \`1\` *_Haga clic en los tres puntos en la esquina superior derecha._*
 
-➊ ~ Ve a los *tres puntos* en la parte superior derecha.  
-➋ ~ Entra a *Dispositivos vinculados*.  
-➌ ~ Toca *Vincular con número de teléfono*.  
-➍ ~ Ingresa el código para iniciar sesión con el bot.
+> ✎ \`2\` *_Toque dispositivos vinculados._*
+
+> ✎ \`3\` *_Vincular con el número de teléfono._*
+
+> ✎ \`4\` *_Escriba el Código._*
 `
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -145,7 +146,7 @@ textCode =         await conn.sendMessage(
             m.chat,
             {
                 text: rtx2,
-                title: "Copiar Code",
+                title: "",
                 footer: "©",
                 interactiveButtons: [
                     {
