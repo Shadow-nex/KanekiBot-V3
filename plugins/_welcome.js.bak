@@ -103,25 +103,10 @@ handler.before = async function (m, { conn, groupMetadata }) {
       const { image, caption } = await generarBienvenida({
         conn, userId, groupMetadata, chat
       })
-
-     /* await conn.sendMessage(m.chat, {
-        image: image || null,
-        caption,
-        contextInfo: {
-          mentionedJid: [userId],
-          externalAdReply: {
-            title: botname,
-            body: '',
-            mediaType: 1,
-            mediaUrl: redes,
-            sourceUrl: redes,
-            thumbnail: image || Buffer.from([]),
-            renderLargerThumbnail: false
-          }
-        }
-      }, { quoted: fkontak })*/
+      
      const JT = {
       contextInfo: {
+      mentionedJid: [userId],
         externalAdReply: {
           title: botname,
           body: dev,
@@ -145,22 +130,22 @@ handler.before = async function (m, { conn, groupMetadata }) {
         conn, userId, groupMetadata, chat
       })
 
-      await conn.sendMessage(m.chat, {
-        image: image || null,
-        caption,
-        contextInfo: {
-          mentionedJid: [userId],
-          externalAdReply: {
-            title: botname,
-            body: '❂ Bye ♡',
-            mediaType: 1,
-            mediaUrl: redes,
-            sourceUrl: redes,
-            thumbnail: image || Buffer.from([]),
-            renderLargerThumbnail: false
-          }
-        }
-      }, { quoted: fkontak })
+      const JT = {
+      contextInfo: {
+      mentionedJid: [userId],
+        externalAdReply: {
+          title: botname,
+          body: dev,
+          mediaType: 1,
+          previewType: 0,
+          mediaUrl: redes,
+          sourceUrl: redes,
+          thumbnail: image || Buffer.from([]),
+          renderLargerThumbnail: true,
+        },
+      },
+    }
+    await conn.reply(m.chat, caption, fkontak, JT)
     }
 
   } catch (err) {
