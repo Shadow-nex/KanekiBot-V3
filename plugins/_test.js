@@ -12,9 +12,9 @@ const handler = async (m, { conn }) => {
     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206481646_48030.webp',
     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206464183_411585.webp',
     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206454397_333640.webp',
-  '',
-  '',
-  '',
+  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206543565_175284.webp',
+  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206554456_58191.webp',
+  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206577983_237130.webp',
   ]
   
   const url = pickRandom(stikerxd)
