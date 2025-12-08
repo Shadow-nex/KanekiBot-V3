@@ -19,7 +19,7 @@ const handler = async (m, { conn }) => {
   
   const url = pickRandom(stikerxd)
   const imgBuffer = await fetch(url).then(res => res.buffer())
-  const webpBuffer = await sticker(imgBuffer, false, `ׄ 몽` ۪sһᥲძ᥆ᥕ.᥊ᥡz おịᰫ`)
+  const webpBuffer = await sticker(imgBuffer, false, `ׄ 몽\` ۪sһᥲძ᥆ᥕ.᥊ᥡz おịᰫ`)
 
   await conn.sendMessage(m.chat, { sticker: webpBuffer }, { quoted: m })
 }
