@@ -40,8 +40,8 @@ let handler = async (m, { conn, text }) => {
     if (!user.premium && sizeMB > 500) {
       return m.reply(
         `*☘ ᴇsᴛᴇ ᴀʀᴄʜɪᴠᴏ sᴜᴘᴇʀᴀ ᴇʟ ʟɪᴍɪᴛᴇ ᴅᴇ ᴅᴇsᴄᴀʀɢᴀ.*
-✿ \`ʟɪᴍɪᴛᴇ:\` 500 MB
-✿ \`ᴘᴇsᴏ:\` ${sizeMB.toFixed(2)}
+✿ \`ʟɪᴍɪᴛᴇ:\` \`\`\`500 MB\`\`\`
+✿ \`ᴘᴇsᴏ:\` \`\`\`${sizeMB.toFixed(2)}\`\`\`
 
 > *★ ʜᴀsᴛᴇ ᴜɴ ᴜsᴜᴀʀɪᴏ ᴘʀᴇᴍɪᴜᴍ ᴘᴀʀᴀ ᴅᴇsᴄᴀʀɢᴀs ᴍᴀs ɢʀᴀɴᴅᴇs.*`
       )
