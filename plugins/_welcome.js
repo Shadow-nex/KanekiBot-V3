@@ -104,7 +104,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
         conn, userId, groupMetadata, chat
       })
 
-      await conn.sendMessage(m.chat, {
+     /* await conn.sendMessage(m.chat, {
         image: image || null,
         caption,
         contextInfo: {
@@ -119,7 +119,22 @@ handler.before = async function (m, { conn, groupMetadata }) {
             renderLargerThumbnail: false
           }
         }
-      }, { quoted: fkontak })
+      }, { quoted: fkontak })*/
+     const JT = {
+      contextInfo: {
+        externalAdReply: {
+          title: botname,
+          body: dev,
+          mediaType: 1,
+          previewType: 0,
+          mediaUrl: redes,
+          sourceUrl: redes,
+          thumbnail: image || Buffer.from([]),
+          renderLargerThumbnail: true,
+        },
+      },
+    }
+    await conn.reply(m.chat, caption, fkontak, JT)
     }
 
     if (
