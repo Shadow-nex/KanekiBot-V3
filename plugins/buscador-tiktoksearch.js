@@ -52,10 +52,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 ❤️ *Likes:* ${v.likes?.toLocaleString() || 0}
 💬 *Comentarios:* ${v.comments?.toLocaleString() || 0}
 🔁 *Compartidos:* ${v.share?.toLocaleString() || 0}
-⬇️ *Descargas:* ${v.download?.toLocaleString() || 0}
-
-🎶 *Audio:* ${v.music ? v.music.split("/").pop() : "Sin información"}
-🔗 *Enlace:* ${v.url || "No disponible"}`;
+⬇️ *Descargas:* ${v.download?.toLocaleString() || 0}`;
 
       let videoMsg = await createVideoMessage(v.nowm);
       if (!videoMsg) continue;
