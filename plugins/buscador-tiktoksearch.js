@@ -36,7 +36,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const data = res.data;
 
     if (!data?.status || !data?.result?.data?.length)
-      throw new Error("⚠️ No se encontraron resultados en TikTok.");
+      throw new Error("No se encontraron resultados en TikTok.");
 
     let results = data.result.data.slice(0, 6);
     let cards = [];
@@ -74,7 +74,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     }
 
     if (cards.length === 0)
-      throw new Error("⚠️ No se pudo procesar ningún video.");
+      throw new Error("No se pudo procesar ningún video.");
 
     const msg = generateWAMessageFromContent(
       m.chat,
@@ -87,7 +87,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
                 text: `🌿 *Resultados de TikTok para:* ${text}`,
               }),
               footer: proto.Message.InteractiveMessage.Footer.create({
-                text: "✨ Rin Itoshi Botq 🌼",
+                text: botname,
               }),
               header: proto.Message.InteractiveMessage.Header.create({
                 hasMediaAttachment: false,
@@ -107,7 +107,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
   } catch (e) {
     console.error(e);
-    conn.reply(m.chat, `❌ *Error al buscar en TikTok:*\n${e.message}`, m);
+    conn.reply(m.chat, `*Error al buscar en TikTok:*\n\`\`\`${e.message}\`\`\``, m, fake);
   }
 };
 
