@@ -68,9 +68,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
       cards.push({
         body: proto.Message.InteractiveMessage.Body.fromObject({ text: info }),
-        /*footer: proto.Message.InteractiveMessage.Footer.fromObject({
+        footer: proto.Message.InteractiveMessage.Footer.fromObject({
           text: "",
-        }),*/
+        }),
         header: proto.Message.InteractiveMessage.Header.fromObject({
           title: '────────────────────────',
           hasMediaAttachment: true,
