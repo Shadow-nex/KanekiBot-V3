@@ -42,7 +42,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     let cards = [];
 
     for (let v of results) {
-      let info = `🌱 *Título:* ${v.title || "Sin título"}
+      let info = `
 🦋 *Creador:* ${v.creator || "Desconocido"}
 🍃 *Región:* ${v.region || "N/A"}
 ⏱️ *Duración:* ${v.duration || 0} segundos
@@ -63,7 +63,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           text: dev,
         }),
         header: proto.Message.InteractiveMessage.Header.fromObject({
-          title: v.title || "Video TikTok",
+          title: v.title || "TikTok",
           hasMediaAttachment: true,
           videoMessage: videoMsg,
         }),
