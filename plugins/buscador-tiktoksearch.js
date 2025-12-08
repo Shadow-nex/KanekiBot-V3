@@ -1,4 +1,4 @@
-import axios from "axios";
+/*import axios from "axios";
 const {
   proto,
   generateWAMessageFromContent,
@@ -125,4 +125,4 @@ handler.tags = ["search"];
 handler.command = ["tiktoksearch", "ttsearch", "tiktoks"];
 handler.group = true;
 
-export default handler;
+export default handler;*/
