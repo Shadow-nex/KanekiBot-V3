@@ -116,7 +116,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
             mediaUrl: redes,
             sourceUrl: redes,
             thumbnail: image || Buffer.from([]),
-            renderLargerThumbnail: false
+            renderLargerThumbnail: true
           }
         }
       }, { quoted: fkontak })
