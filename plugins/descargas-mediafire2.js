@@ -4,7 +4,7 @@ import { lookup } from 'mime-types'
 let handler = async (m, { conn, text }) => {
   const user = global.db.data.users[m.sender] || {}
 
-  if (!text) return m.reply(`Ingresa un enlace válido de Mediafire.`)
+  if (!text) return m.reply(`*☘ Ingresa un enlace válido de Mediafire.*`)
 
   if (user.coin < 20) {
     return conn.reply(
@@ -15,7 +15,6 @@ let handler = async (m, { conn, text }) => {
   }
 
   await conn.sendMessage(m.chat, { react: { text: "⏳", key: m.key } })
-  m.reply(`Obteniendo información...`)
 
   try {
     let info = await fetch(
@@ -40,8 +39,11 @@ let handler = async (m, { conn, text }) => {
     // limite 500 MB
     if (!user.premium && sizeMB > 500) {
       return m.reply(
-        `Este archivo pesa (${sizeMB.toFixed(2)} MB.)\n` +
-        `(500 MB.)\n\n`
+        `*☘ ᴇsᴛᴇ ᴀʀᴄʜɪᴠᴏ sᴜᴘᴇʀᴀ ᴇʟ ʟɪᴍɪᴛᴇ ᴅᴇ ᴅᴇsᴄᴀʀɢᴀ.*
+✿ \`ʟɪᴍɪᴛᴇ:\` 500 MB
+✿ \`ᴘᴇsᴏ:\` ${sizeMB.toFixed(2)}
+
+> *★ ʜᴀsᴛᴇ ᴜɴ ᴜsᴜᴀʀɪᴏ ᴘʀᴇᴍɪᴜᴍ ᴘᴀʀᴀ ᴅᴇsᴄᴀʀɢᴀs ᴍᴀs ɢʀᴀɴᴅᴇs.*`
       )
     }
 
@@ -53,7 +55,7 @@ let handler = async (m, { conn, text }) => {
       `Subido: ${d.uploaded}\n\n` +
       `Descargando archivo...`
 
-    await conn.sendMessage(m.chat, { text: resumen }, { quoted: m })
+    await conn.sendMessage(m.chat, { text: resumen, ...rcanal }, { quoted: m })
 
     let dl = await fetch(
       `https://akirax-api.vercel.app/download/mediafire?url=${encodeURIComponent(text)}`
