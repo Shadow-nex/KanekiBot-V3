@@ -134,7 +134,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
         },
       },
     }
-    await conn.reply(m.chat, caption, m, JT)
+    await conn.reply(m.chat, caption, fkontak, JT)
     }
 
     if (
