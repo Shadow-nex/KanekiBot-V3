@@ -9,9 +9,12 @@ const handler = async (m, { conn }) => {
   const stikerxd = [
     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206411174_96183.webp',
     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206396554_438808.webp',
-    'https://raw.githubusercontent.com/El-brayan502/dat1/main/uploads/caf9ab-1762063306221.webp',
-    'https://raw.githubusercontent.com/El-brayan502/dat4/main/uploads/a96e48-1762063311159.webp',
-     'https://raw.githubusercontent.com/El-brayan502/dat1/main/uploads/ea45de-1762063545565.webp',
+    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206481646_48030.webp',
+    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206464183_411585.webp',
+    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206454397_333640.webp',
+  '',
+  '',
+  '',
   ]
   
   const url = pickRandom(stikerxd)
