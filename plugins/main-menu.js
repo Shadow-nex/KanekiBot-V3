@@ -122,7 +122,7 @@ ${readMore}
       }
     }
   }
-
+await m.react('🍁')
 await conn.sendMessage(m.chat, { 
 text: infoUser + menuTexto,
 contextInfo: {
