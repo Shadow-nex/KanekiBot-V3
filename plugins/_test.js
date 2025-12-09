@@ -1,29 +1,53 @@
-import fetch from 'node-fetch'
-import { sticker } from '../lib/sticker.js'
+import fetch from "node-fetch";
 
-function pickRandom(list) {
-  return list[Math.floor(Math.random() * list.length)]
-}
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text)
+    return conn.reply(
+      m.chat,
+      `🌟 *Ingresa un enlace de YouTube*\n\nEjemplo:\n${usedPrefix + command} https://youtu.be/TdrL3QxjyVw`,
+      m
+    );
 
-const handler = async (m, { conn }) => {
-  const stikerxd = [
-    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206411174_96183.webp',
-    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206396554_438808.webp',
-    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206481646_48030.webp',
-    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206464183_411585.webp',
-    'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206454397_333640.webp',
-  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206543565_175284.webp',
-  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206554456_58191.webp',
-  'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765206577983_237130.webp',
-  ]
-  
-  const url = pickRandom(stikerxd)
-  const imgBuffer = await fetch(url).then(res => res.buffer())
-  const webpBuffer = await sticker(imgBuffer, false, `ׄ 몽 ۪sһᥲძ᥆ᥕ.᥊ᥡz おịᰫ`)
+  try {
+    let api = `https://delirius-apiofc.vercel.app/download/ytmp4?url=${encodeURIComponent(text)}`;
 
-  await conn.sendMessage(m.chat, { sticker: webpBuffer }, { quoted: m })
-}
+    let res = await fetch(api);
+    if (!res.ok) throw new Error("Error al pedir datos de la API");
 
-handler.customPrefix = /Ayuda|ayuda|Puto|puto|xd|Xd|vrg/
-handler.command = new RegExp()
-export default handler
+    let json = await res.json();
+    if (!json.status || !json.data) throw new Error("La API no devolvió datos válidos");
+
+    let { title, image, download } = json.data;
+    let { url: downloadUrl, size, quality, filename } = download;
+
+    await conn.reply(
+      m.chat,
+      `📥 *Descargando video...*\n\n📌 *Título:* ${title}\n🎞️ *Calidad:* ${quality}\n💾 *Tamaño:* ${size}`,
+      m
+    );
+
+    let videoBuffer = await fetch(downloadUrl).then((v) => v.buffer());
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        video: videoBuffer,
+        caption: `🎬 *${title}*\n\nCalidad: ${quality}\nTamaño: ${size}`,
+        mimetype: "video/mp4",
+        jpegThumbnail: await (await fetch(image)).buffer()
+      },
+      { quoted: m }
+    );
+
+  } catch (e) {
+    console.error(e);
+    conn.reply(
+      m.chat,
+      `*Hubo un error al descargar el video*\nRevisa si el link es válido.`,
+      m
+    );
+  }
+};
+
+handler.command = ["ytmp"];
+export default handler;
