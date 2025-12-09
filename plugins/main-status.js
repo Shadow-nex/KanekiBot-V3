@@ -9,31 +9,7 @@ let totalChats = Object.keys(global.db.data.chats).length
 let totalPlugins = Object.values(global.plugins).filter((v) => v.help && v.tags).length
 let totalBots = global.conns.filter(conn => conn.user && conn.ws.socket && conn.ws.socket.readyState !== 3).length
 let totalCommands = Object.values(global.db.data.users).reduce((acc, user) => acc + (user.commands || 0), 0)
-
-let system = `*「☕」Estado del Sistema 7w7 🌿*
-
-ৎּٜ̊🌿ꨩ໋〪̥〭 \`Comandos ejecutados:\` \`\`\`${toNum(totalCommands)}\`\`\`
-ৎּٜ̊❄️ꨩ〪̥〭 \`Usuarios registrados:\` \`\`\`${totalUsers.toLocaleString()}\`\`\`
-ৎּٜ̊☕ꨩ໋〪̥〭 \`Grupos registrados:\` \`\`\`${totalChats.toLocaleString()}\`\`\`
-ৎּٜ̊🍃ꨩ໋〪̥〭 \`Plugins:\` \`\`\`${totalPlugins}\`\`\`
-ৎּٜ̊🍵ꨩ໋〪̥〭 \`Bots Activos:\` \`\`\`${totalBots}\`\`\`
-
-꒰꒰ ݊ᩞ *🌳 Estado del Servidor 🍃 ᗝᗝ*
-
-ৎּٜ̊🍄ꨩ〪̥〭 \`Sistema:\` \`\`\`${platform()}\`\`\`
-ৎּٜ̊✨ꨩ〪̥〭 \`CPU:\` \`\`\`${_cpus().length} cores\`\`\`
-ৎּٜ̊🎍ꨩ〪̥〭 \`RAM:\` \`\`\`${format(totalmem())}\`\`\`
-ৎּٜ̊🌳ꨩ〪̥〭 \`RAM Usado:\` \`\`\`${format(totalmem() - freemem())}\`\`\`
-ৎּٜ̊🚀ꨩ〪̥〭 \`Arquitectura:\` \`\`\`${process.arch}\`\`\`
-ৎּٜ̊🥥ꨩ〪̥〭 \`Host ID:\` \`\`\`${hostname().slice(0, 8)}...\`\`\`
-
-꒰꒰ ݊ᩞ *❑ 🎍 Uso de Memoria NODEJS 🥥 ᗝᗝ*
-
-ৎּٜ̊💐ꨩ〪̥〭 \`Ram Utilizada:\` \`\`\`${format(process.memoryUsage().rss)}\`\`\`
-ৎּٜ̊⭐ꨩ〪̥〭 \`Heap Reservado:\` \`\`\`${format(process.memoryUsage().heapTotal)}\`\`\`
-ৎּٜ̊🌴ꨩ〪̥〭 \`Heap Usado:\` \`\`\`${format(process.memoryUsage().heapUsed)}\`\`\`
-ৎּٜ̊💮ꨩ〪̥〭 \`Módulos Nativos:\` \`\`\`${format(process.memoryUsage().external)}\`\`\`
-ৎּٜ̊🍰ꨩ〪̥〭 \`Buffers de Datos:\` \`\`\`${format(process.memoryUsage().arrayBuffers)}\`\`\``
+let system = `*「✦」Estado del Sistema*\n\n◇ *Comandos ejecutados* » ${toNum(totalCommands)}\n◇ *Usuarios registrados* » ${totalUsers.toLocaleString()}\n◇ *Grupos registrados* » ${totalChats.toLocaleString()}\n◇ *Plugins* » ${totalPlugins}\n◇ *Bots Activos* » ${totalBots}\n\n❍ *Estado del Servidor*\n\n◆ *Sistema* » ${platform()}\n◆ *CPU* » ${_cpus().length} cores\n◆ *RAM* » ${format(totalmem())}\n◆ *RAM Usado* » ${format(totalmem() - freemem())}\n◆ *Arquitectura* » ${process.arch}\n◆ *Host ID* » ${hostname().slice(0, 8)}...\n\n*❑ Uso de Memoria NODEJS*\n\n◈ *Ram Utilizada* » ${format(process.memoryUsage().rss)}\n◈ *Heap Reservado* » ${format(process.memoryUsage().heapTotal)}\n◈ *Heap Usado* » ${format(process.memoryUsage().heapUsed)}\n◈ *Módulos Nativos* » ${format(process.memoryUsage().external)}\n◈ *Buffers de Datos* » ${format(process.memoryUsage().arrayBuffers)}`
 await conn.reply(m.chat, system, m, rcanal)
 }
 
