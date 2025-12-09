@@ -117,9 +117,9 @@ export default handler;
 async function getVid(url) {
   const apis = [
     {
-      api: 'Yupra',
-      endpoint: `https://api.yupra.my.id/api/downloader/ytmp4?url=${encodeURIComponent(url)}`,
-      extractor: res => res?.data?.download_url
+      api: 'Delirius',
+      endpoint: `https://api.delirius.store/download/ytmp4?url=${encodeURIComponent(url)}`,
+      extractor: res => res?.data?.download?.url
     }
   ];
 
