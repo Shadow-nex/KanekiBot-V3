@@ -90,7 +90,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
           video: { url: video.url },
           fileName: `${title}.mp4`,
           mimetype: 'video/mp4',
-          caption: `> 🍃 *${title}*`,
+          caption: `> 🍃 *${title}*\n> 🍒 *Tamaño:* ${video.size || 'Desconocido'}`,
           ...fake
         },
         { quoted: fkontak }
