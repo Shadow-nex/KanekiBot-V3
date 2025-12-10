@@ -134,7 +134,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
       contextInfo: {
       mentionedJid: [userId],
         externalAdReply: {
-          title: 'Welcome!',
+          title: '🌿 Welcome!',
           body: dev,
           mediaType: 1,
           previewType: 0,
