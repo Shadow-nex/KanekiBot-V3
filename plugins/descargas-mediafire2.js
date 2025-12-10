@@ -49,9 +49,9 @@ let handler = async (m, { conn, text }) => {
 
     let resumen =
       ` *MEDIAFIRE - DOWNLOAD*\n\n` +
-      ` *Nombre:* ${d.fileName}\n` +
-      ` *Tamaño:* ${d.fileSize}\n` +
-      ` *Tipo:* ${d.fileType}\n` +
+      `✿ *Nombre:* ${d.fileName}\n` +
+      `⎚ *Tamaño:* ${d.fileSize}\n` +
+      `★ *Tipo:* ${d.fileType}\n` +
       ` *Subido:* ${d.uploaded}\n\n` +
       ` *Estado:* Descargando archivo...`
 
