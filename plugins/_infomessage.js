@@ -36,11 +36,11 @@ const groupAdmins = participants.filter(p => p.admin)
             mimetype: "image/jpeg",
             jpegThumbnail: thumbnail
           },
-          title: "𐔌 . ⋮ 🪺 ᗩ ᐯ I Տ O 🎄 .ᐟ ֹ ₊ ꒱",
+          title: "",
           description: dev,
           currencyCode: "USD",
           priceAmount1000: 5000,
-          retailerId: "ShadowCore",
+          retailerId: "",
           productImageCount: 1
         },
         businessOwnerJid: "51919199620@s.whatsapp.net"
@@ -48,7 +48,7 @@ const groupAdmins = participants.filter(p => p.admin)
     }
   }
 
-const rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: '', newsletterName: channelRD.name }, externalAdReply: { title: '（🌴 🄺🄰🄽🄴🄺🄸 🄱🄾🅃 🄼🄳 ⃤꙰🥙꒱ ', body: dev, mediaUrl: null, description: null, previewType: "PHOTO", thumbnail: await (await fetch(icono)).buffer(), sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false }, mentionedJid: null }}
+const rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: '', newsletterName: channelRD.name }, externalAdReply: { title: '𐔌 . ⋮ ⌬ ᗩ ᐯ I Տ O ✰ .ᐟ ֹ ₊ ꒱', body: dev, mediaUrl: null, description: null, previewType: "PHOTO", thumbnail: await (await fetch(icono)).buffer(), sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false }, mentionedJid: null }}
 
 const pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || 'https://files.catbox.moe/xr2m6u.jpg'
 
@@ -66,14 +66,14 @@ const newlink = `> 🍄 El enlace del grupo ha sido restablecido.
 > 🚀 Acción hecha por:
 > » @${usuario.split('@')[0]}`
 
-const status = `> ❄️ El grupo ha sido ${m.messageStubParameters[0] == 'on' ? '*cerrado*' : '*abierto*'} Por @${usuario.split('@')[0]}
+const status = `> 🎋 El grupo ha sido ${m.messageStubParameters[0] == 'on' ? '*cerrado*' : '*abierto*'} Por @${usuario.split('@')[0]}
 > 🌳 Ahora ${m.messageStubParameters[0] == 'on' ? '*solo admins*' : '*todos*'} pueden enviar mensaje.`
 
 const admingp = `> 🍃 @${users.split('@')[0]} Ahora es admin del grupo.
 > 🎄 Acción hecha por:
 > » @${usuario.split('@')[0]}`
 
-const noadmingp = `> 🚀 @${users.split('@')[0]} Deja de ser admin del grupo.
+const noadmingp = `> 🌱 @${users.split('@')[0]} Deja de ser admin del grupo.
 > 🌾 Acción hecha por:
 > » @${usuario.split('@')[0]}`
 
