@@ -52,8 +52,8 @@ let handler = async (m, { conn, text }) => {
       `✿ *Nombre:* ${d.fileName}\n` +
       `⎚ *Tamaño:* ${d.fileSize}\n` +
       `★ *Tipo:* ${d.fileType}\n` +
-      ` *Subido:* ${d.uploaded}\n\n` +
-      ` *Estado:* Descargando archivo...`
+      `◇ *Subido:* ${d.uploaded}\n\n` +
+      `✐ *Estado:* Descargando archivo...`
 
     await conn.sendMessage(m.chat, { text: resumen, ...rcanal }, { quoted: m })
 
@@ -78,7 +78,7 @@ let handler = async (m, { conn, text }) => {
     )
 
     user.coin -= 20
-    conn.reply(m.chat, `Se descontaron 20 ${currency}`, m)
+    conn.reply(m.chat, `> 🍁 *Se descontaron 20 ${currency}*`, m)
 
     await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
 
