@@ -1,4 +1,4 @@
-import fs from 'fs'
+/*import fs from 'fs'
 import fetch from 'node-fetch'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
 
@@ -146,6 +146,156 @@ handler.before = async function (m, { conn, groupMetadata }) {
       },
     }
     await conn.reply(m.chat, caption, fkontak, JT)
+    }
+
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export { generarBienvenida, generarDespedida }
+export default handler*/
+
+import fs from 'fs'
+import fetch from 'node-fetch'
+import { WAMessageStubType } from '@whiskeysockets/baileys'
+
+let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
+  .then(res => res.arrayBuffer()).catch(() => null)
+
+const fkontak = {
+  key: {
+    participant: '0@s.whatsapp.net',
+    remoteJid: 'status@broadcast',
+    id: 'Halo'
+  },
+  message: {
+    locationMessage: {
+      name: botname,
+      jpegThumbnail: Buffer.from(thumb || [])
+    }
+  }
+}
+
+function fechaPeru() {
+  return new Date().toLocaleDateString("es-PE", {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: "America/Lima"
+  })
+}
+
+async function obtenerFoto(conn, userId) {
+  try {
+    const url = await conn.profilePictureUrl(userId, 'image')
+    const res = await fetch(url)
+    return Buffer.from(await res.arrayBuffer())
+  } catch {
+    const res = await fetch('https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+    return Buffer.from(await res.arrayBuffer())
+  }
+}
+
+async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
+  const username = `@${userId.split('@')[0]}`
+  const image = await obtenerFoto(conn, userId)
+
+  const groupSize = tipo === 'welcome'
+    ? groupMetadata.participants.length + 1
+    : groupMetadata.participants.length - 1
+
+  const fecha = fechaPeru()
+  const descGrupo = groupMetadata.desc || 'Sin descripción'
+
+  const texto = (tipo === 'welcome' ? chat.sWelcome : chat.sBye || '')
+    .replace(/{usuario}/g, username)
+    .replace(/{grupo}/g, groupMetadata.subject)
+    .replace(/{desc}/g, descGrupo)
+
+  const caption =
+`ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱* ㅤ֢ㅤ⸱ㅤᯭִ
+*${tipo === 'welcome' ? `¡𝐁𝐢𝐞𝐧𝐯𝐞𝐧𝐢𝐝𝐨/𝐚! ${username} ᴅɪsғʀᴜᴛᴀ ᴛᴜ ᴇsᴛᴀᴅɪᴀ` : `¡𝐀𝐝𝐢𝐨𝐬! ${username} ᴛᴇ ᴇsᴘᴇʀᴀᴍᴏs ᴘʀᴏɴᴛᴏ`}*
+
+ ׅㅤ𓏸𓈒ㅤׄ *Grupo ›* ${groupMetadata.subject}
+ ׅㅤ𓏸𓈒ㅤׄ *Miembros ›* ${groupSize}
+ ׅㅤ𓏸𓈒ㅤׄ *Fecha ›* ${fecha}
+
+> • .˚ *${texto || 'Ekizde'}*`
+
+  return { image, caption }
+}
+
+async function generarBienvenida(opts) {
+  return generarMensaje({ ...opts, tipo: 'welcome' })
+}
+
+async function generarDespedida(opts) {
+  return generarMensaje({ ...opts, tipo: 'bye' })
+}
+
+let handler = m => m
+
+handler.before = async function (m, { conn, groupMetadata }) {
+  try {
+    if (!m.isGroup || !m.messageStubType) return true
+
+    const chat = global.db.data.chats[m.chat]
+    const userId = m.messageStubParameters?.[0]
+    if (!userId) return true
+    if (!chat?.welcome) return true
+
+    if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+      const { image, caption } = await generarBienvenida({
+        conn, userId, groupMetadata, chat
+      })
+
+      const JT = {
+        contextInfo: {
+          mentionedJid: [userId],
+          externalAdReply: {
+            title: 'Welcome!',
+            body: dev,
+            mediaType: 1,
+            previewType: 0,
+            mediaUrl: redes,
+            sourceUrl: redes,
+            thumbnail: image,
+            renderLargerThumbnail: true,
+          }
+        }
+      }
+
+      await conn.sendMessage(m.chat, { image, caption, ...JT }, { quoted: fkontak })
+    }
+
+    // DESPEDIDA
+    if (
+      m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
+      m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE
+    ) {
+      const { image, caption } = await generarDespedida({
+        conn, userId, groupMetadata, chat
+      })
+
+      const JT = {
+        contextInfo: {
+          mentionedJid: [userId],
+          externalAdReply: {
+            title: 'Bye!',
+            body: dev,
+            mediaType: 1,
+            previewType: 0,
+            mediaUrl: redes,
+            sourceUrl: redes,
+            thumbnail: image,
+            renderLargerThumbnail: true,
+          }
+        }
+      }
+
+      await conn.sendMessage(m.chat, { image, caption, ...JT }, { quoted: fkontak })
     }
 
   } catch (err) {
