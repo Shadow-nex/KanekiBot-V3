@@ -38,17 +38,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       }
     };
 
-    const fkontak = {
-      key: { fromMe: false, participant: "0@s.whatsapp.net" },
-      message: {
-        documentMessage: {
-          title: `「 ${title} 」`,
-          fileName: `𝐃𝐞𝐬𝐜𝐚𝐫𝐠𝐚 𝐋𝐢𝐬𝐭𝐚` ,
-          jpegThumbnail: thumb3
-        }
-      }
-    };
-
     const info = `⌗ ᥫ᭡ *\`YᴏᴜTᴜʙᴇ – Dᴏᴡɴʟᴏᴀᴅ\`*. 🌾
 
 > . ﹡ ﹟ 🌴 ׄ ⬭ *Título:* ${title}
@@ -74,7 +63,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
           mimetype: 'audio/mpeg',
           fileName: audio.filename
         },
-        { quoted: fkontak }
+        { quoted: m }
       );
 
       await m.react('✔️');
@@ -94,7 +83,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
           caption: `> 🍃 *${title}*`,
           ...fake
         },
-        { quoted: fkontak }
+        { quoted: m }
       );
 
       await m.react('✔️');
