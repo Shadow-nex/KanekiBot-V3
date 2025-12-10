@@ -15,65 +15,73 @@ let handler = async (m, { conn }) => {
 
     if (!json || json.code !== 0 || !json.data) {
       await m.react('❌')
-      return conn.reply(m.chat, 'No se pudo obtener el video, intenta nuevamente.', m)
+      return conn.reply(m.chat, 'No se pudo obtener el video.', m)
     }
 
-    const data = json.data
-    const {
-      id, region, title, cover, origin_cover, duration,
-      play, wmplay, music, music_info, play_count, digg_count,
-      comment_count, share_count, download_count, author, images, create_time
-    } = data
+    const d = json.data
+    const { title, duration, play, cover, images, create_time } = d
 
-    const info = `> 🪺 *Título:* ${title || 'Sin título'}
-> 👤 *Autor:* ${author?.nickname || '-'} (@${author?.unique_id || '-'})
-> 🆔 *ID:* ${id || '-'}
-> 🌎 *Región:* ${region || '-'}
-> ⏱️ *Duración:* ${duration || 0}s
-> 🎵 *Música:* ${music_info?.title || 'Original'}
-> ❤️ *Likes:* ${digg_count || 0}
-> 💬 *Comentarios:* ${comment_count || 0}
-> 🔄 *Compartidos:* ${share_count || 0}
-> 📥 *Descargas:* ${download_count || 0}
-> 🗓️ *Publicado:* ${new Date(create_time * 1000).toLocaleString()}`.trim()
+    let sizeMB = 0
+    try {
+      let head = await fetch(play, { method: "HEAD" })
+      let size = head.headers.get("content-length")
+      if (size) sizeMB = (Number(size) / 1024 / 1024).toFixed(2)
+    } catch {}
 
-    // Si tiene varias imágenes (slideshow)
+    let info = `> 🌿 *${title || 'Sin título'}*
+> ⏱️ \`Duración:\` ${duration || 0}s
+> 🗓️ \`Publicado:\` ${new Date(create_time * 1000).toLocaleString()}
+> 🎋 \`Tamaño:\` ${sizeMB || 'Desconocido'} MB`
+
     if (images && images.length > 0) {
       await m.react('🖼️')
-      for (let i = 0; i < images.length; i++) {
-        await conn.sendMessage(
-          m.chat,
-          {
-            image: { url: images[i] },
-            caption: i === 0 ? info : `📷 Imagen ${i + 1}/${images.length} 🌿`
-          },
-          { quoted: m }
-        )
+
+      let mediaArray = []
+      for (let img of images) {
+        mediaArray.push({ image: { url: img } })
       }
-    } else {
-      await m.react('📥')
+ 
       await conn.sendMessage(
         m.chat,
         {
-          video: { url: play },
           caption: info,
-          gifPlayback: false,
-          jpegThumbnail: Buffer.from(await (await fetch(cover)).arrayBuffer())
+          image: { url: images[0] },
+          mediaUploadTimeoutMs: 100000
         },
         { quoted: m }
       )
+      for (let i = 1; i < images.length; i++) {
+        await conn.sendMessage(
+          m.chat,
+          { image: { url: images[i] } },
+          { quoted: m }
+        )
+      }
+
+      return await m.react('✔️')
     }
+
+    await m.react('📥')
+    await conn.sendMessage(
+      m.chat,
+      {
+        video: { url: play },
+        caption: info,
+        gifPlayback: false,
+        jpegThumbnail: Buffer.from(await (await fetch(cover)).arrayBuffer())
+      },
+      { quoted: m }
+    )
 
     await m.react('✔️')
 
-  } catch (err) {
-    console.error(err)
+  } catch (e) {
+    console.error(e)
     await m.react('❌')
-    conn.reply(m.chat, '❌ Ocurrió un error al procesar el video de TikTok.', m)
+    conn.reply(m.chat, '❌ Error al procesar el video.', m)
   }
 }
 
 handler.customPrefix = /https?:\/\/(?:www\.|vm\.|vt\.)?tiktok\.com\/[^\s]+/i
 handler.command = new RegExp
-handler.limit = true
 export default handler
