@@ -24,7 +24,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const { title = 'Desconocido', thumbnail, timestamp = 'N/A', views, ago = 'N/A', url = query, author = {} } = result
     const vistas = formatViews(views)
 
-    const res3 = await fetch("https://files.catbox.moe/wfd0ze.jpg");
+    const res3 = await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765365091026_69913.jpeg");
     const thumb3 = Buffer.from(await res3.arrayBuffer());
 
     const fkontak2 = {
@@ -32,7 +32,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       message: {
         documentMessage: {
           title: "𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... ..",
-          fileName: "🌹 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢....",
+          fileName: "🍁 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢....",
           jpegThumbnail: thumb3
         }
       }
