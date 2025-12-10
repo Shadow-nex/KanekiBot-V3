@@ -190,17 +190,15 @@ function fechaPeru() {
 async function obtenerFoto(conn, userId) {
   try {
     const url = await conn.profilePictureUrl(userId, 'image')
-    const res = await fetch(url)
-    return Buffer.from(await res.arrayBuffer())
+    return url
   } catch {
-    const res = await fetch('https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
-    return Buffer.from(await res.arrayBuffer())
+    return 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg'
   }
 }
 
 async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
   const username = `@${userId.split('@')[0]}`
-  const image = await obtenerFoto(conn, userId)
+  const pp = await obtenerFoto(conn, userId)
 
   const groupSize = tipo === 'welcome'
     ? groupMetadata.participants.length + 1
@@ -224,7 +222,7 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
 
 > • .˚ *${texto || 'Ekizde'}*`
 
-  return { image, caption }
+  return { pp, caption }
 }
 
 async function generarBienvenida(opts) {
@@ -247,55 +245,48 @@ handler.before = async function (m, { conn, groupMetadata }) {
     if (!chat?.welcome) return true
 
     if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
-      const { image, caption } = await generarBienvenida({
+      const { pp, caption } = await generarBienvenida({
         conn, userId, groupMetadata, chat
       })
 
-      const JT = {
+      await conn.sendMessage(m.chat, {
+        caption: caption,
         contextInfo: {
           mentionedJid: [userId],
-          externalAdReply: {
-            title: 'Welcome!',
-            body: dev,
-            mediaType: 1,
-            previewType: 0,
-            mediaUrl: redes,
+          externalAdReply: { 
+            title: `・⟡・ welcome ⿻ﾟ`,
+            body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
+            thumbnailUrl: pp,
             sourceUrl: redes,
-            thumbnail: image,
-            renderLargerThumbnail: true,
+            mediaType: 1,
+            renderLargerThumbnail: true
           }
         }
-      }
-
-      await conn.sendMessage(m.chat, { image, caption, ...JT }, { quoted: fkontak })
+      }, { quoted: fkontak })
     }
 
-    // DESPEDIDA
     if (
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
       m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE
     ) {
-      const { image, caption } = await generarDespedida({
+      const { pp, caption } = await generarDespedida({
         conn, userId, groupMetadata, chat
       })
 
-      const JT = {
+      await conn.sendMessage(m.chat, {
+        caption: caption,
         contextInfo: {
           mentionedJid: [userId],
-          externalAdReply: {
-            title: 'Bye!',
-            body: dev,
-            mediaType: 1,
-            previewType: 0,
-            mediaUrl: redes,
+          externalAdReply: { 
+            title: `・⟡・ welcome ⿻ﾟ`,
+            body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
+            thumbnailUrl: pp,
             sourceUrl: redes,
-            thumbnail: image,
-            renderLargerThumbnail: true,
+            mediaType: 1,
+            renderLargerThumbnail: true
           }
         }
-      }
-
-      await conn.sendMessage(m.chat, { image, caption, ...JT }, { quoted: fkontak })
+      }, { quoted: fkontak })
     }
 
   } catch (err) {
