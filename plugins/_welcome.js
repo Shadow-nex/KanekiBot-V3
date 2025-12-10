@@ -108,7 +108,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
       contextInfo: {
       mentionedJid: [userId],
         externalAdReply: {
-          title: botname,
+          title: 'Welcome!',
           body: dev,
           mediaType: 1,
           previewType: 0,
@@ -134,7 +134,7 @@ handler.before = async function (m, { conn, groupMetadata }) {
       contextInfo: {
       mentionedJid: [userId],
         externalAdReply: {
-          title: botname,
+          title: 'Welcome!',
           body: dev,
           mediaType: 1,
           previewType: 0,
