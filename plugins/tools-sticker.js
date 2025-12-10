@@ -24,13 +24,13 @@ stiker = await sticker(buffer, false, marca[0], marca[1])
 let buffer = await sticker(false, args[0], texto1, texto2)
 stiker = buffer
 } else {
-return conn.reply(m.chat, '🌿 *Por favor, envía una \`imagen\` o \`video\` para hacer un sticker.*', m, rcanal)
+return conn.reply(m.chat, '*Por favor, envía una \`imagen\` o \`video\` para hacer un sticker.*', m, rcanal)
 }} catch (e) {
 await conn.reply(m.chat, '⚠︎ Ocurrió un Error: ' + e.message, m)
 await m.react('✖️')
 } finally {
 if (stiker) {
-conn.sendFile(m.chat, stiker, 'sticker.webp', '', m, rcanal)
+conn.sendFile(m.chat, stiker, 'sticker.webp', '', m, ...rcanal)
 await m.react('✅')
 }}}
 
