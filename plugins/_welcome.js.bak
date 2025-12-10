@@ -158,141 +158,136 @@ export default handler*/
 
 import fs from 'fs'
 import fetch from 'node-fetch'
+import axios from 'axios'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
+
+async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
+const username = `@${userId.split('@')[0]}`
+const pp = await conn.profilePictureUrl(userId, 'image').catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+
+const fechaObj = new Date()
+const fecha = fechaObj.toLocaleDateString("es-ES", { timeZone: "America/Mexico_City", day: 'numeric', month: 'long', year: 'numeric' })
+const hora = fechaObj.toLocaleTimeString("es-ES", { timeZone: "America/Mexico_City", hour: '2-digit', minute: '2-digit', hour12: true })
 
 let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
   .then(res => res.arrayBuffer()).catch(() => null)
 
-const fkontak = {
+const getThumbnail = async () => {
+  const res = await axios.get("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274687365_458259.jpeg", { responseType: "arraybuffer" })
+  return Buffer.from(res.data, "binary")
+}
+const thumbnail = await getThumbnail()
+
+const shadow_xy = {
   key: {
-    participant: '0@s.whatsapp.net',
-    remoteJid: 'status@broadcast',
-    id: 'Halo'
+    fromMe: false,
+    participant: "0@s.whatsapp.net",
+    remoteJid: "status@broadcast"
   },
   message: {
-    locationMessage: {
-      name: botname,
-      jpegThumbnail: Buffer.from(thumb || [])
+    productMessage: {
+      product: {
+        productImage: {
+          mimetype: "image/jpeg",
+          jpegThumbnail: thumbnail
+        },
+        title: "",
+        description: "",
+        retailerId: "",
+        productImageCount: 1
+      },
+      businessOwnerJid: "51919199620@s.whatsapp.net"
     }
   }
 }
 
-function fechaPeru() {
-  return new Date().toLocaleDateString("es-PE", {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    timeZone: "America/Lima"
-  })
+const groupSize = groupMetadata.participants.length + 1
+const desc = groupMetadata.desc?.toString() || 'Sin descripción'
+
+const mensaje = (chat.sWelcome || 'Edita con el comando "setwelcome"')
+.replace(/{usuario}/g, `${username}`)
+.replace(/{grupo}/g, `*${groupMetadata.subject}*`)
+.replace(/{desc}/g, `${desc}`)
+
+const caption = `❀ Bienvenido a *"_${groupMetadata.subject}_"*
+✰ _Usuario_ » ${username}
+● ${mensaje}
+◆ _Ahora somos ${groupSize} Miembros._
+ꕥ Fecha » ${fecha} — ${hora}
+`
+
+return { pp, caption, mentions: [userId], shadow_xy }
 }
 
-async function obtenerFoto(conn, userId) {
-  try {
-    const url = await conn.profilePictureUrl(userId, 'image')
-    return url
-  } catch {
-    return 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg'
-  }
+
+
+async function generarDespedida({ conn, userId, groupMetadata, chat }) {
+const username = `@${userId.split('@')[0]}`
+const pp = await conn.profilePictureUrl(userId, 'image').catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+
+const fechaObj = new Date()
+const fecha = fechaObj.toLocaleDateString("es-ES", { timeZone: "America/Mexico_City", day: 'numeric', month: 'long', year: 'numeric' })
+const hora = fechaObj.toLocaleTimeString("es-ES", { timeZone: "America/Mexico_City", hour: '2-digit', minute: '2-digit', hour12: true })
+
+const groupSize = groupMetadata.participants.length - 1
+const desc = groupMetadata.desc?.toString() || 'Sin descripción'
+
+const mensaje = (chat.sBye || 'Edita con el comando "setbye"')
+.replace(/{usuario}/g, `${username}`)
+.replace(/{grupo}/g, `${groupMetadata.subject}`)
+.replace(/{desc}/g, `*${desc}*`)
+
+const caption = `❀ Adiós de *"_${groupMetadata.subject}_"*
+✰ _Usuario_ » ${username}
+● ${mensaje}
+◆ _Ahora somos ${groupSize} Miembros._
+ꕥ Fecha » ${fecha} — ${hora}
+`
+
+return { pp, caption, mentions: [userId] }
 }
 
-async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
-  const username = `@${userId.split('@')[0]}`
-  const pp = await obtenerFoto(conn, userId)
 
-  const groupSize = tipo === 'welcome'
-    ? groupMetadata.participants.length + 1
-    : groupMetadata.participants.length - 1
-
-  const fecha = fechaPeru()
-  const descGrupo = groupMetadata.desc || 'Sin descripción'
-
-  const texto = (tipo === 'welcome' ? chat.sWelcome : chat.sBye || '')
-    .replace(/{usuario}/g, username)
-    .replace(/{grupo}/g, groupMetadata.subject)
-    .replace(/{desc}/g, descGrupo)
-
-  const caption =
-`ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱* ㅤ֢ㅤ⸱ㅤᯭִ
-*${tipo === 'welcome' ? `¡𝐁𝐢𝐞𝐧𝐯𝐞𝐧𝐢𝐝𝐨/𝐚! ${username} ᴅɪsғʀᴜᴛᴀ ᴛᴜ ᴇsᴛᴀᴅɪᴀ` : `¡𝐀𝐝𝐢𝐨𝐬! ${username} ᴛᴇ ᴇsᴘᴇʀᴀᴍᴏs ᴘʀᴏɴᴛᴏ`}*
-
- ׅㅤ𓏸𓈒ㅤׄ *Grupo ›* ${groupMetadata.subject}
- ׅㅤ𓏸𓈒ㅤׄ *Miembros ›* ${groupSize}
- ׅㅤ𓏸𓈒ㅤׄ *Fecha ›* ${fecha}
-
-> • .˚ *${texto || 'Ekizde'}*`
-
-  return { pp, caption }
-}
-
-async function generarBienvenida(opts) {
-  return generarMensaje({ ...opts, tipo: 'welcome' })
-}
-
-async function generarDespedida(opts) {
-  return generarMensaje({ ...opts, tipo: 'bye' })
-}
 
 let handler = m => m
 
-handler.before = async function (m, { conn, groupMetadata }) {
-  try {
-    if (!m.isGroup || !m.messageStubType) return true
+handler.before = async function (m, { conn, participants, groupMetadata }) {
+if (!m.messageStubType || !m.isGroup) return !0
 
-    const chat = global.db.data.chats[m.chat]
-    const userId = m.messageStubParameters?.[0]
-    if (!userId) return true
-    if (!chat?.welcome) return true
+const primaryBot = global.db.data.chats[m.chat].primaryBot
+if (primaryBot && conn.user.jid !== primaryBot) throw !1
 
-    if (m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_ADD) {
-      const { pp, caption } = await generarBienvenida({
-        conn, userId, groupMetadata, chat
-      })
+const chat = global.db.data.chats[m.chat]
+const userId = m.messageStubParameters[0]
 
-      await conn.sendMessage(m.chat, {
-        caption: caption,
-        contextInfo: {
-          mentionedJid: [userId],
-          externalAdReply: { 
-            title: `・⟡・ welcome ⿻ﾟ`,
-            body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
-            thumbnailUrl: pp,
-            sourceUrl: redes,
-            mediaType: 1,
-            renderLargerThumbnail: true
-          }
-        }
-      }, { quoted: fkontak })
-    }
+if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+  const { pp, caption, mentions, shadow_xy } = await generarBienvenida({ conn, userId, groupMetadata, chat })
+  rcanal.contextInfo.mentionedJid = mentions
 
-    if (
-      m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
-      m.messageStubType === WAMessageStubType.GROUP_PARTICIPANT_LEAVE
-    ) {
-      const { pp, caption } = await generarDespedida({
-        conn, userId, groupMetadata, chat
-      })
+  await conn.sendMessage(
+    m.chat,
+    { image: { url: pp }, caption, ...rcanal },
+    { quoted: shadow_xy }
+  )
 
-      await conn.sendMessage(m.chat, {
-        caption: caption,
-        contextInfo: {
-          mentionedJid: [userId],
-          externalAdReply: { 
-            title: `・⟡・ welcome ⿻ﾟ`,
-            body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
-            thumbnailUrl: pp,
-            sourceUrl: redes,
-            mediaType: 1,
-            renderLargerThumbnail: true
-          }
-        }
-      }, { quoted: fkontak })
-    }
-
-  } catch (err) {
-    console.error(err)
-  }
+  try { fs.unlinkSync(img) } catch {}
 }
+
+if (chat.welcome && 
+  (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE || 
+   m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
+
+  const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
+  rcanal.contextInfo.mentionedJid = mentions
+
+  await conn.sendMessage(
+    m.chat,
+    { image: { url: pp }, caption, ...rcanal },
+    { quoted: shadow_xy }
+  )
+
+  try { fs.unlinkSync(img) } catch {}
+}}
 
 export { generarBienvenida, generarDespedida }
 export default handler
