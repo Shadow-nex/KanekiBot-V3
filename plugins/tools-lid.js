@@ -1,10 +1,7 @@
-import fetch from 'node-fetch'
-
 async function makeFkontak() {
   try {
     const res = await fetch('https://i.postimg.cc/rFfVL8Ps/image.jpg')
     const thumb2 = Buffer.from(await res.arrayBuffer())
-
     return {
       key: { participants: '0@s.whatsapp.net', remoteJid: 'status@broadcast', fromMe: false, id: 'Halo' },
       message: { locationMessage: { name: 'User Lid', jpegThumbnail: thumb2 } },
@@ -15,128 +12,98 @@ async function makeFkontak() {
   }
 }
 
-async function parseUserTargets(m, text, participants, conn) {
-  const targets = new Set()
-  text = text?.trim() || ''
 
-  if (m.mentionedJid?.length) {
-    for (let jid of m.mentionedJid) targets.add(jid)
-  }
-  
-  if (m.quoted?.sender) {
-    targets.add(m.quoted.sender)
-  }
 
-  const numberRegex = /\b\d{5,17}\b/g
-  const nums = text.match(numberRegex)
-  if (nums) {
-    for (let num of nums) {
-      let jid = num.replace(/\D/g, '') + '@s.whatsapp.net'
-      targets.add(jid)
-    }
-  }
-
-  if (participants?.length && text.length >= 3) {
-    const lowered = text.toLowerCase()
-    for (let p of participants) {
-      const name = conn.getName(p.id)?.toLowerCase() || ''
-      if (name.includes(lowered)) targets.add(p.id)
-    }
-  }
-
-  return [...targets]
-}
-
-async function getUserInfo(jid, participants, conn) {
-  const number = jid.split('@')[0]
-  const groupUser = participants?.find(u => u.id === jid)
-
-  return {
-    jid,
-    number,
-    name: conn.getName(jid) || number,
-    exists: Boolean(groupUser),
-    isAdmin: groupUser?.admin === 'admin' || groupUser?.admin === 'superadmin',
-    isSuperAdmin: groupUser?.admin === 'superadmin'
-  }
-}
-
-const handler = async (m, { conn, text, participants }) => {
+const handler = async (m, { conn, text, participants, parseUserTargets, getUserInfo }) => {
   try {
- 
     if (!m.mentionedJid?.length && !m.quoted && !text?.trim()) {
       return conn.reply(m.chat, `
 *🔧 Ejemplo de targeting optimizado*
 
 *Uso:*
-• \`.lid @usuario\`
-• \`.lid\` (responde a un mensaje)
-• \`.lid 123456789\`
-• \`.lid @user1 @user2 123456789\`
+• \`.ejemplo @usuario\` - Mencionar usuario
+• \`.ejemplo\` (responder mensaje) - Target del mensaje citado
+• \`.ejemplo 1234567890\` - Número directo
+• \`.ejemplo @user1 @user2 1234567890\` - Múltiples targets
+
+
       `, m, rcanal)
     }
 
-    let targets = await parseUserTargets(m, text, participants, conn)
-
+    const targets = await parseUserTargets(m, text, participants, conn)
+    
     if (!targets.length) {
-      return conn.reply(m.chat, '❌ No se encontraron usuarios válidos.', m, rcanalx)
+      return conn.reply(m.chat, '❌ No se encontraron usuarios válidos para procesar.', m, rcanalx)
     }
 
-    let results = []
-    for (const t of targets) results.push(await getUserInfo(t, participants, conn))
+    
 
-    async function resolveLidSafe(jid) {
-      try {
-        if (typeof conn.onWhatsApp !== 'function') return null
-        const res = await conn.onWhatsApp(jid)
-        const r = Array.isArray(res) ? res[0] : null
-        return r?.lid || null
-      } catch { return null }
+  let results = []
+    
+    for (let target of targets) {
+      const userInfo = await getUserInfo(target, participants, conn)
+      results.push(userInfo)
     }
-
-    if (results.length <= 5) {
-      for (let u of results) u.lid = await resolveLidSafe(u.jid)
-    }
-
+    
+  async function resolveLidSafe(jid) {
     try {
-      const lidDigits = new Set(
-        results.map(u => (u.lid ? String(u.lid).replace(/\D/g, '') : null)).filter(Boolean)
-      )
-      const filtered = results.filter(u => !lidDigits.has(String(u.number)))
-      if (filtered.length) results = filtered
-    } catch {}
+      if (typeof conn.onWhatsApp !== 'function') return null
+      const res = await conn.onWhatsApp(jid)
+      const r = Array.isArray(res) ? res[0] : null
+      return r?.lid || null
+    } catch { return null }
+  }
 
-    let msg = `*🎯 Usuarios procesados: ${results.length}*\n\n`
+  if (results.length && results.length <= 5) {
+    for (const u of results) {
+      u.lid = await resolveLidSafe(u.jid)
+    }
+  }
 
+  try {
+    const lidDigitsSet = new Set(
+      results
+        .map(u => (u?.lid ? String(u.lid).replace(/[^0-9]/g, '') : null))
+        .filter(Boolean)
+    )
+    const filtered = results.filter(u => !lidDigitsSet.has(String(u.number)))
+    if (filtered.length) results = filtered
+  } catch {}
+
+  let response = `*🎯 Usuarios procesados: ${results.length}*\n\n`
+    
     for (let i = 0; i < results.length; i++) {
-      const u = results[i]
+      const user = results[i]
       const badges = []
       
-      if (u.isSuperAdmin) badges.push('CREADOR')
-      else if (u.isAdmin) badges.push('ADMIN')
-      else if (u.exists) badges.push('MIEMBRO')
-      else badges.push('FUERA DEL GRUPO')
-
-      msg += `*${i + 1}.* ${u.name}\n`
-      msg += `   🪪 JID: ${u.jid}\n`
-      msg += `   🧩 LID: ${u.lid || '—'}\n`
-      msg += `   📱 Número: ${u.number}\n`
-      msg += `   🏷️ ${badges.join(', ')}\n`
-      msg += `   🔗 @${u.number}\n\n`
+  if (user.isSuperAdmin) badges.push('Creador')
+  else if (user.isAdmin) badges.push('ADMIN')
+  else if (user.exists) badges.push('MIEMBRO')
+  if (!user.exists) badges.push('NO EN GRUPO')
+      
+  response += `*${i + 1}.* ${user.name}\n`
+  response += `   🪪 ID: ${user.jid}\n`
+  response += `   🧩 LID: ${user.lid || '—'}\n`
+  response += `   📱 ${user.number}\n`
+  if (badges.length) response += `   🏷️ ${badges.join(', ')}\n`
+  response += `   🔗 @${user.number}\n\n`
     }
+    
+  const fkontak = await makeFkontak().catch(() => null)
+  const mentionJids = results.map(u => u.jid).filter(Boolean)
 
-    const fkontak = await makeFkontak()
-    const mentions = results.map(u => u.jid)
-
-    try {
-      await conn.reply(m.chat, msg.trim(), fkontak || m, { ...(rcanalr || {}), mentions })
-    } catch {
-      await conn.reply(m.chat, msg.trim(), fkontak || m, { ...(rcanalx || {}), mentions })
-    }
-
+  try {
+    const optsOk = (typeof rcanalr === 'object') ? { ...rcanalr, mentions: mentionJids } : { mentions: mentionJids }
+    await conn.reply(m.chat, response.trim(), fkontak || m, optsOk)
   } catch (e) {
-    console.error('Error en LID:', e)
-    return conn.reply(m.chat, '❌ Error en el comando: ' + e.message, m, rcanalx)
+    const optsErr = (typeof rcanalx === 'object') ? { ...rcanalx, mentions: mentionJids } : { mentions: mentionJids }
+    await conn.reply(m.chat, response.trim(), fkontak || m, optsErr)
+  }
+
+
+  } catch (error) {
+    console.error('Error en ejemplo-optimized-user-targeting:', error)
+    conn.reply(m.chat, '❌ Error al procesar usuarios: ' + error.message, m, rcanalx)
   }
 }
 
