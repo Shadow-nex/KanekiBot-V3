@@ -1,4 +1,4 @@
-/*import fs from 'fs'
+import fs from 'fs'
 import fetch from 'node-fetch'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
 
@@ -154,7 +154,9 @@ handler.before = async function (m, { conn, groupMetadata }) {
 }
 
 export { generarBienvenida, generarDespedida }
-export default handler*/
+export default handler
+
+/*
 
 import fs from 'fs'
 import fetch from 'node-fetch'
@@ -334,4 +336,4 @@ handler.before = async function (m, { conn, groupMetadata }) {
 }
 
 export { generarBienvenida, generarDespedida }
-export default handler
+export default handler*/
