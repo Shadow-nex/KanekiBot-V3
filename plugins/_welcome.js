@@ -73,7 +73,7 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
  ׅㅤ𓏸𓈒ㅤׄ *Miembros ›* ${groupSize}
  ׅㅤ𓏸𓈒ㅤׄ *Fecha ›* ${fecha}
 
-> • .˚ *${texto}*`
+> • .˚ *${texto || 'Ekizde'}*`
 
   const image = await generarImagen({
     title: tipo === 'welcome' ? '🌹 Bienvenido/a al grupo' : '🌳 Hasta pronto',
