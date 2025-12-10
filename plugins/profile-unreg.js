@@ -44,9 +44,9 @@ let handler = async (m, { conn, usedPrefix }) => {
       mentionedJid: [mentionedJid],
       externalAdReply: { 
         title: `𓈒𓏸 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐎 𝐄𝐋𝐈𝐌𝐈𝐍𝐀𝐃𝐎 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐀𝐌𝐄𝐍𝐓𝐄 ⿻`,
-        body: `Registro eliminado.`,
+        body: dev,
         thumbnail: thumb,
-        sourceUrl: `https://youtube.com`,
+        sourceUrl: redes,
         mediaType: 1,
         renderLargerThumbnail: true
       }
