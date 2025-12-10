@@ -48,12 +48,12 @@ let handler = async (m, { conn, text }) => {
     }
 
     let resumen =
-      `MEDIAFIRE - INFORMACIÓN DEL ARCHIVO\n\n` +
-      `Nombre: ${d.fileName}\n` +
-      `Tamaño: ${d.fileSize}\n` +
-      `Tipo: ${d.fileType}\n` +
-      `Subido: ${d.uploaded}\n\n` +
-      `Descargando archivo...`
+      ` *MEDIAFIRE - DOWNLOAD*\n\n` +
+      ` *Nombre:* ${d.fileName}\n` +
+      ` *Tamaño:* ${d.fileSize}\n` +
+      ` *Tipo:* ${d.fileType}\n` +
+      ` *Subido:* ${d.uploaded}\n\n` +
+      ` *Estado:* Descargando archivo...`
 
     await conn.sendMessage(m.chat, { text: resumen, ...rcanal }, { quoted: m })
 
