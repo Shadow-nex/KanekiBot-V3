@@ -80,8 +80,8 @@ async function generarMensaje({ conn, userId, groupMetadata, chat, tipo }) {
     desc: tipo === 'welcome' ? '¡Disfruta tu estadía!' : '¡Te esperamos de nuevo!',
     avatar: pp,
     background: tipo === 'welcome'
-      ? 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764381430380_705529.jpeg'
-      : 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764382807653_64665.jpeg'
+      ? 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765379008015_718175.jpeg'
+      : 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765379008015_718175.jpeg'
   })
 
   return { image, caption }
