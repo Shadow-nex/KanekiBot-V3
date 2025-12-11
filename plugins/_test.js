@@ -1,6 +1,20 @@
-import fetch from 'node-fetch'
+import fetch from "node-fetch"
+
+async function fixUrl(url) {
+  try {
+    const res = await fetch(url, {
+      method: "GET",
+      redirect: "follow"
+    })
+    return res.url || url   // URL final después de seguir todos los redirects
+  } catch (e) {
+    console.log("FixURL Error:", e)
+    return url
+  }
+}
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
+
   if (!text)
     return conn.reply(
       m.chat,
@@ -15,45 +29,21 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const res = await fetch(api)
     const json = await res.json()
 
-    if (!json.status) throw `❌ No se pudo obtener información del video.`
+    if (!json.status) throw "❌ La API no devolvió datos."
 
     const data = json.data
     const dl = data.download
 
-    // Formatear duración
-    const formatDur = secs => {
-      const min = Math.floor(secs / 60)
-      const sec = secs % 60
-      return `${min} minutos, ${sec} segundos`
-    }
+    
+    const finalUrl = await fixUrl(dl.url)
 
-    // Mensaje resumen
-    const info = `
-🎬 *${data.title}*
-👤 Autor: ${data.author}
-📌 Categoría: ${data.category}
-⏱ Duración: ${formatDur(data.duration)}
-👁‍🗨 Vistas: ${data.views}
-👍 Likes: ${data.likes}
-💬 Comentarios: ${data.comments}
-
-📥 *Descarga:* ${dl.quality}
-📦 Tamaño: ${dl.size}
-    `.trim()
-
+    
     await conn.sendMessage(
       m.chat,
       {
-        image: { url: data.image_max_resolution || data.image },
-        caption: info,
-        buttons: [
-          {
-            buttonId: `.ytmp4dl ${dl.url}`,
-            buttonText: { text: "⬇ Descargar MP4" },
-            type: 1
-          }
-        ],
-        footer: "Delirius API • Shadow Xyz Bot"
+        document: { url: finalUrl },
+        mimetype: "video/mp4",
+        fileName: dl.filename || "video.mp4"
       },
       { quoted: m }
     )
@@ -61,9 +51,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     await m.react('✅')
 
   } catch (err) {
-    console.error(err)
-    m.react('❌')
-    conn.reply(m.chat, `⚠️ Ocurrió un error.\n${err}`, m)
+    console.log(err)
+    await m.react('❌')
+    conn.reply(m.chat, "⚠️ No pude enviar el video.", m)
   }
 }
 
