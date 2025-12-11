@@ -112,7 +112,7 @@ export { generarBienvenida, generarDespedida }
 export default handler
 */
 
-// me dió paja seguir 
+// me dió paja seguir otro digo lo ago
 
 import fs from 'fs'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
@@ -249,7 +249,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
       {
         image: { url: pp },
         document: documentBuffer,
-        fileName: 'welcome.jpg',
+        fileName: '⌗ֶㅤ֯𝅄⿻ 🌟 ׄ ⬭ 𝐖𝐞𝐥𝐜𝐨𝐦𝐞! ✿',
         mimetype: 'image/jpeg',
         jpegThumbnail: iconBuffer,
         caption,
@@ -295,7 +295,7 @@ handler.before = async function (m, { conn, participants, groupMetadata }) {
       {
         image: { url: pp },
         document: documentBuffer,
-        fileName: 'goodbye.jpg',
+        fileName: '⌗ֶㅤ֯𝅄⿻ 🌿 ׄ ⬭ 𝐖𝐞𝐥𝐜𝐨𝐦𝐞! ✿',
         mimetype: 'image/jpeg',
         jpegThumbnail: iconBuffer,
         caption,
