@@ -41,15 +41,16 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const sizeMB = size / 1024 / 1024
 
-    let caption = `🍃 *Título:* ${meta.title}
-📺 *Canal:* ${meta.author?.name}
-⏳ *Duración:* ${meta.duration?.timestamp}
-👀 *Vistas:* ${meta.views?.toLocaleString()}
-📅 *Publicado:* ${meta.ago}
-🌈 *Calidad Seleccionada:* ${down.quality}
-📦 *Tamaño:* ${size ? formatSize(size) : "No disponible"}
+    let caption = `
+*Y O U T U B E - D O W L O A D*
 
-> ✨ *Descarga completada con éxito onichan 💚*`
+> • *Título:* ${meta.title}
+> • *Canal:* ${meta.author?.name}
+> • *Duración:* ${meta.duration?.timestamp}
+> • *Vistas:* ${meta.views?.toLocaleString()}
+> • *Publicado:* ${meta.ago}
+> • *Calidad Seleccionada:* ${down.quality}
+> • *Tamaño:* ${size ? formatSize(size) : "No disponible"}`
 
    
     let sendType = sizeMB > 100 ? "document" : "video"
