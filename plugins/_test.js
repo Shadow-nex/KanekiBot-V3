@@ -23,7 +23,6 @@ function convertirDuracion(timestamp) {
   return arr.join(", ")
 }
 
-// 🔧 Ahora calcula el tamaño real en 128 kbps (MP3)
 function calcularTamano(duracionSeg) {
   const kbps = 128
   const mb = (duracionSeg * kbps) / 8 / 1024

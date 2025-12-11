@@ -60,15 +60,15 @@ let handler = async (m, { conn, text, command }) => {
 
     const info = `  *▥ Y O U T U B E - D O W N L O A D*
 
-*• ᴛɪᴛᴜʟᴏ »* ${v.title}
-*• ɪᴅ »* ${v.videoId}
-*• ᴄᴀʟɪᴅᴀᴅ »* 128kbps
-*• ᴄᴀɴᴀʟ »* ${v.author.name}
-*• ᴠɪsᴛᴀs »* ${v.views.toLocaleString()}
-*• ᴅᴜʀᴀᴄɪᴏɴ »* ${duracionBonita}
-*• ᴘᴜʙʟɪᴄᴀᴅᴏ »* ${v.ago}
-*• ᴛᴀᴍᴀɴ̃ᴏ »* ${tamaño}
-*• ʟɪɴᴋ »* ${v.url}`.trim()
+> *• ᴛɪᴛᴜʟᴏ »* ${v.title}
+> *• ɪᴅ »* ${v.videoId}
+> *• ᴄᴀʟɪᴅᴀᴅ »* 128kbps
+> *• ᴄᴀɴᴀʟ »* ${v.author.name}
+> *• ᴠɪsᴛᴀs »* ${v.views.toLocaleString()}
+> *• ᴅᴜʀᴀᴄɪᴏɴ »* ${duracionBonita}
+> *• ᴘᴜʙʟɪᴄᴀᴅᴏ »* ${v.ago}
+> *• ᴛᴀᴍᴀɴ̃ᴏ »* ${tamaño}
+> *• ʟɪɴᴋ »* ${v.url}`.trim()
 
     await conn.sendMessage(
       m.chat,

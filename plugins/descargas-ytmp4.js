@@ -1,89 +1,97 @@
+import yts from "yt-search"
 import fetch from "node-fetch"
 
-function formatSize(bytes) {
-  if (bytes === 0 || isNaN(bytes)) return '0 B'
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+function convertirDuracion(timestamp) {
+  const partes = timestamp.split(":").map(Number)
+
+  let horas = 0, minutos = 0, segundos = 0
+
+  if (partes.length === 3) {
+    horas = partes[0]
+    minutos = partes[1]
+    segundos = partes[2]
+  } else if (partes.length === 2) {
+    minutos = partes[0]
+    segundos = partes[1]
+  }
+
+  const arr = []
+  if (horas) arr.push(`${horas} hora${horas > 1 ? 's' : ''}`)
+  if (minutos) arr.push(`${minutos} minuto${minutos > 1 ? 's' : ''}`)
+  if (segundos) arr.push(`${segundos} segundo${segundos > 1 ? 's' : ''}`)
+
+  return arr.join(", ")
 }
 
-const handler = async (m, { conn, text, usedPrefix, command }) => {
+function calcularTamano(duracionSeg) {
+  const kbps = 380
+  const mb = (duracionSeg * kbps) / 8 / 1024
+  return mb.toFixed(2) + " MB"
+}
+
+let handler = async (m, { conn, text, command }) => {
+  if (!text)
+    return conn.reply(
+      m.chat,
+      `*❀ Ingresa el nombre del video o un enlace de YouTube.*`,
+      m
+    )
+
+  await m.react("🔎")
+
   try {
-    if (!text?.trim()) {
-      return conn.reply(
-        m.chat,
-        `🎋 *Ingresa el enlace del video que deseas descargar.*\nEjemplo:\n${usedPrefix + command} https://youtu.be/HWjCStB6k4o`,
-        m
-      )
+    const r = await yts(text)
+    if (!r.videos.length)
+      return conn.reply(m.chat, "*No encontré nada.*", m)
+
+    const v = r.videos[0]
+
+    const partes = v.timestamp.split(":").map(Number)
+    let duracionSeg = 0
+
+    if (partes.length === 3) {
+      duracionSeg = partes[0] * 3600 + partes[1] * 60 + partes[2]
+    } else {
+      duracionSeg = partes[0] * 60 + partes[1]
     }
 
-    await m.react('🕒')
-    await conn.reply(m.chat, '*Procesando descarga...*', m)
+    const tamaño = calcularTamano(duracionSeg)
+    const duracionBonita = convertirDuracion(v.timestamp)
 
-    let info = null
-    let downloadUrl = null
-    let meta = null
-    let caption = null
+    const info = `  *▥ Y O U T U B E - D O W N L O A D*
 
-    try {
-      const api1 = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(text)}&quality=360`
-      const r1 = await fetch(api1)
-      const j1 = await r1.json()
+> *• ᴛɪᴛᴜʟᴏ »* ${v.title}
+> *• ɪᴅ »* ${v.videoId}
+> *• ᴄᴀʟɪᴅᴀᴅ »* 128kbps
+> *• ᴄᴀɴᴀʟ »* ${v.author.name}
+> *• ᴠɪsᴛᴀs »* ${v.views.toLocaleString()}
+> *• ᴅᴜʀᴀᴄɪᴏɴ »* ${duracionBonita}
+> *• ᴘᴜʙʟɪᴄᴀᴅᴏ »* ${v.ago}
+> *• ᴛᴀᴍᴀɴ̃ᴏ »* ${tamaño}
+> *• ʟɪɴᴋ »* ${v.url}`.trim()
 
-      if (j1?.result?.download?.url) {
-        info = j1
-        meta = j1.result.metadata
-        downloadUrl = j1.result.download.url
+    await conn.sendMessage(
+      m.chat,
+      {
+        image: { url: v.thumbnail },
+        caption: info
+      },
+      { quoted: m }
+    )
 
-        caption = `
-*Y O U T U B E - D O W N L O A D*
+    const api = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(v.url)}&quality=360`
 
-> • *Título:* ${meta.title}
-> • *Canal:* ${meta.author?.name}
-> • *Duración:* ${meta.duration?.timestamp}
-> • *Vistas:* ${meta.views?.toLocaleString()}
-> • *Publicado:* ${meta.ago}
-> • *Calidad:* ${j1.result.download.quality}
-        `
-      }
+    const res = await fetch(api)
+    const json = await res.json()
 
-    } catch {
-      info = null
-    }
+    if (!json?.result?.download?.url)
+      return conn.reply(m.chat, "> *No pude obtener el video.*", m)
 
-    if (!downloadUrl) {
-      try {
-        const api2 = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(text)}`
-        const r2 = await fetch(api2)
-        const j2 = await r2.json()
+    const downloadUrl = json.result.download.url
+    const meta = json.result.metadata
 
-        if (j2?.data?.url) {
-          downloadUrl = j2.data.url
-
-          caption = `🎬 *${j2.data.title || "Video encontrado"}*\n(Usando servidor 2)`
-        }
-
-      } catch {
-        downloadUrl = null
-      }
-    }
-
-    
-    if (!downloadUrl) {
-      return conn.reply(m.chat, `❌ *No se pudo descargar el video desde ninguno de los servidores.*`, m)
-    }
-
-    
-    let size = 0
-    try {
-      const head = await fetch(downloadUrl, { method: "HEAD" })
-      size = Number(head.headers.get("content-length") || 0)
-    } catch {}
-
-    const sizeMB = size / 1024 / 1024
-    caption += `\n> • *Tamaño:* ${size ? formatSize(size) : "No disponible"}`
-
+    const kbps = 1000
+    const sizeMB = ((meta.seconds * kbps) / 8 / 1024).toFixed(2)
 
     const sendAs = sizeMB > 100 ? "document" : "video"
 
@@ -93,22 +101,22 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         [sendAs]: { url: downloadUrl },
         mimetype: "video/mp4",
         fileName: `${meta?.title || "video"}.mp4`,
-        caption
+        caption: null
       },
       { quoted: m }
     )
 
-    await m.react('✔️')
+    await m.react("✅")
 
   } catch (e) {
-    console.log(e)
-    conn.reply(m.chat, `⚠️ *Error inesperado:* ${e}`, m)
+    console.error(e)
+    conn.reply(m.chat, "⚠ Error al buscar o descargar el video.", m)
   }
 }
 
-handler.help = ["ytmp4 <url>"]
-handler.tags = ["download"]
-handler.command = ["ytmp4", "playmp4"]
+handler.command = ['ytmp4']
+handler.tags = ['download']
+handler.help = ['ytmp4 <texto o link>']
 handler.group = true
 handler.register = true
 
