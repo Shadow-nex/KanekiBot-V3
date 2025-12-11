@@ -274,11 +274,9 @@ export { generarBienvenida, generarDespedida }
 export default handler*/
 
 import fs from 'fs'
-import fetch from 'node-fetch'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
-import Jimp from 'jimp' // JIMP USADO PARA TODO
+import Jimp from 'jimp'
 
-// GENERA DOCUMENTO FALSO JPG CON ICON PEQUEÑO + CAPTION
 async function generarDoc(iconUrl, caption) {
   const icon = await Jimp.read(iconUrl)
   icon.resize(120, 120)
@@ -289,36 +287,39 @@ async function generarDoc(iconUrl, caption) {
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK)
   image.print(font, 30, 200, caption, 840)
 
-  const temp = './temp_doc.jpg'
+  const temp = './doc_welcome_fake.jpg'
   await image.writeAsync(temp)
   return temp
 }
 
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
+  const username = `@${userId.split('@')[0]}`
+  const pp = await conn.profilePictureUrl(userId, 'image')
+    .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-const username = `@${userId.split('@')[0]}`
-const pp = await conn.profilePictureUrl(userId, 'image')
-  .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+  const fecha = new Date().toLocaleDateString("es-ES", { 
+    timeZone: "America/Lima",
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
 
-const fecha = new Date().toLocaleDateString("es-ES", { 
-  timeZone: "America/Lima",
-  day: 'numeric', month: 'long', year: 'numeric'
-})
+  const hora = new Date().toLocaleTimeString("es-ES", { 
+    timeZone: "America/Lima",
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true 
+  })
 
-const hora = new Date().toLocaleTimeString("es-ES", { 
-  timeZone: "America/Lima",
-  hour: 'numeric', minute: 'numeric', hour12: true 
-})
+  const groupSize = groupMetadata.participants.length + 1
+  const desc = groupMetadata.desc?.toString() || 'Sin descripción'
 
-const groupSize = groupMetadata.participants.length + 1
-const desc = groupMetadata.desc?.toString() || 'Sin descripción'
+  const mensaje = (chat.sWelcome || 'Edita con el comando "setwelcome"')
+    .replace(/{usuario}/g, `${username}`)
+    .replace(/{grupo}/g, `*${groupMetadata.subject}*`)
+    .replace(/{desc}/g, `${desc}`)
 
-const mensaje = (chat.sWelcome || 'Edita con el comando "setwelcome"')
-.replace(/{usuario}/g, `${username}`)
-.replace(/{grupo}/g, `*${groupMetadata.subject}*`)
-.replace(/{desc}/g, `${desc}`)
-
-const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎𝐌𝐄! * ㅤ֢ㅤ⸱ㅤᯭִ
+  const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎𝐌𝐄! * ㅤ֢ㅤ⸱ㅤᯭִ
 *✎ Bienvenido/a* ${username} *Disfruta tu estadía en el grupo uwu*
 
  ׅㅤ𓏸𓈒ㅤׄ *ɢʀᴜᴘᴏ* › \`\`\`${groupMetadata.subject}\`\`\`
@@ -329,34 +330,37 @@ const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎�
 > ● ${mensaje}
 `
 
-return { pp, caption, mentions: [userId] }
+  return { pp, caption, mentions: [userId] }
 }
 
 async function generarDespedida({ conn, userId, groupMetadata, chat }) {
+  const username = `@${userId.split('@')[0]}`
+  const pp = await conn.profilePictureUrl(userId, 'image')
+    .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-const username = `@${userId.split('@')[0]}`
-const pp = await conn.profilePictureUrl(userId, 'image')
-  .catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+  const fecha = new Date().toLocaleDateString("es-ES", { 
+    timeZone: "America/Lima",
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
 
-const fecha = new Date().toLocaleDateString("es-ES", { 
-  timeZone: "America/Lima",
-  day: 'numeric', month: 'long', year: 'numeric'
-})
+  const hora = new Date().toLocaleTimeString("es-ES", { 
+    timeZone: "America/Lima",
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true 
+  })
 
-const hora = new Date().toLocaleTimeString("es-ES", { 
-  timeZone: "America/Lima",
-  hour: 'numeric', minute: 'numeric', hour12: true 
-})
+  const groupSize = groupMetadata.participants.length - 1
+  const desc = groupMetadata.desc?.toString() || 'Sin descripción'
 
-const groupSize = groupMetadata.participants.length - 1
-const desc = groupMetadata.desc?.toString() || 'Sin descripción'
+  const mensaje = (chat.sBye || 'Edita con el comando "setbye"')
+    .replace(/{usuario}/g, `${username}`)
+    .replace(/{grupo}/g, `${groupMetadata.subject}`)
+    .replace(/{desc}/g, `*${desc}*`)
 
-const mensaje = (chat.sBye || 'Edita con el comando "setbye"')
-.replace(/{usuario}/g, `${username}`)
-.replace(/{grupo}/g, `${groupMetadata.subject}`)
-.replace(/{desc}/g, `*${desc}*`)
-
-const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎𝐌𝐄! * ㅤ֢ㅤ⸱ㅤᯭִ
+  const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎𝐌𝐄! * ㅤ֢ㅤ⸱ㅤᯭִ
 
 *✎ Adiós!* ${username} *Te esperamos pronto 7w7*
 
@@ -367,71 +371,121 @@ const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎�
 
 > ● ${mensaje}`
 
-return { pp, caption, mentions: [userId] }
+  return { pp, caption, mentions: [userId] }
 }
 
 let handler = m => m
-handler.before = async function (m, { conn, groupMetadata }) {
 
-if (!m.messageStubType || !m.isGroup) return !0
+handler.before = async function (m, { conn, participants, groupMetadata }) {
 
-const primaryBot = global.db.data.chats[m.chat].primaryBot
-if (primaryBot && conn.user.jid !== primaryBot) throw !1
+  if (!m.messageStubType || !m.isGroup) return !0
 
-const chat = global.db.data.chats[m.chat]
-const userId = m.messageStubParameters[0]
+  const primaryBot = global.db.data.chats[m.chat].primaryBot
+  if (primaryBot && conn.user.jid !== primaryBot) throw !1
 
-const iconMini = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg"
+  const chat = global.db.data.chats[m.chat]
+  const userId = m.messageStubParameters[0]
 
-// WELCOME
-if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+  const iconMini = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg"
 
-const { pp, caption, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
-rcanal.contextInfo.mentionedJid = mentions
+  // ============================
+  //       W E L C O M E
+  // ============================
 
-// documento falso JPG
-const fakeDoc = await generarDoc(iconMini, caption)
-const docBuffer = fs.readFileSync(fakeDoc)
+  if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 
-// imagen del usuario como thumbnail
-const thumbUser = await (await fetch(pp)).buffer()
+    const { pp, caption, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
+    rcanal.contextInfo.mentionedJid = mentions
 
-await conn.sendMessage(m.chat, {
-  document: docBuffer,
-  mimetype: 'image/jpeg',
-  fileName: 'welcome.jpg',
-  caption,
-  jpegThumbnail: thumbUser,
-  contextInfo: rcanal.contextInfo
-}, { quoted: null })
+    const fakeDoc = await generarDoc(iconMini, caption)
 
-try { fs.unlinkSync(fakeDoc) } catch {}
+    // NUEVO ENVÍO COMPLETO
+    const docImage = await Jimp.read(fakeDoc)
+    const documentBuffer = await docImage.getBufferAsync(Jimp.MIME_JPEG)
+
+    const iconImg = await Jimp.read(iconMini)
+    iconImg.resize(200,200)
+    const iconBuffer = await iconImg.getBufferAsync(Jimp.MIME_JPEG)
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        image: { url: pp },              // FOTO REAL DEL USER
+        document: documentBuffer,        // DOCUMENTO
+        fileName: 'Rin-Itoshi-Document.jpg',
+        mimetype: 'image/jpeg',
+        jpegThumbnail: iconBuffer,
+        caption,
+        headerType: 1,
+        viewOnce: true,
+        contextInfo: {
+          mentionedJid: mentions,
+          externalAdReply: {
+            title: '',
+            body: '',
+            thumbnail: iconBuffer,
+            mediaType: 1,
+            renderLargerThumbnail: true
+          }
+        },
+        ...rcanal
+      },
+      { quoted: null }
+    )
+
+    try { fs.unlinkSync(fakeDoc) } catch {}
+  }
+
+
+  // ============================
+  //          B Y E
+  // ============================
+
+  if (chat.welcome && (
+    m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
+    m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
+
+    const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
+    rcanal.contextInfo.mentionedJid = mentions
+
+    const fakeDoc = await generarDoc(iconMini, caption)
+
+    const docImage = await Jimp.read(fakeDoc)
+    const documentBuffer = await docImage.getBufferAsync(Jimp.MIME_JPEG)
+
+    const iconImg = await Jimp.read(iconMini)
+    iconImg.resize(200,200)
+    const iconBuffer = await iconImg.getBufferAsync(Jimp.MIME_JPEG)
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        image: { url: pp },
+        document: documentBuffer,
+        fileName: 'goodbye.jpg',
+        mimetype: 'image/jpeg',
+        jpegThumbnail: iconBuffer,
+        caption,
+        headerType: 1,
+        viewOnce: true,
+        contextInfo: {
+          mentionedJid: mentions,
+          externalAdReply: {
+            title: '',
+            body: '',
+            thumbnail: iconBuffer,
+            mediaType: 1,
+            renderLargerThumbnail: true
+          }
+        },
+        ...rcanal
+      },
+      { quoted: null }
+    )
+
+    try { fs.unlinkSync(fakeDoc) } catch {}
+  }
 }
-
-// DESPEDIDA
-if (chat.welcome && (
-  m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
-  m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE
-)) {
-
-const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
-rcanal.contextInfo.mentionedJid = mentions
-
-const fakeDoc = await generarDoc(iconMini, caption)
-const docBuffer = fs.readFileSync(fakeDoc)
-const thumbUser = await (await fetch(pp)).buffer()
-
-await conn.sendMessage(m.chat, {
-  document: docBuffer,
-  mimetype: 'image/jpeg',
-  fileName: 'goodbye.jpg',
-  caption,
-  jpegThumbnail: thumbUser,
-  contextInfo: rcanal.contextInfo
-}, { quoted: null })
-
-try { fs.unlinkSync(fakeDoc) } catch {}
-}}
 
 export { generarBienvenida, generarDespedida }
 export default handler
