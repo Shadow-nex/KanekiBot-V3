@@ -86,7 +86,7 @@ global.rcanal = {
       mediaUrl: null,
       description: null,
       previewType: "PHOTO",
-      thumbnailUrl: icono,
+      thumbnail: await (await fetch(icono)).buffer(),
       mediaType: 1,
       renderLargerThumbnail: false
     },
