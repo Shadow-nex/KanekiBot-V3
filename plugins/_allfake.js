@@ -20,7 +20,7 @@ global.año = d.toLocaleDateString('es', {year: 'numeric'})
 global.tiempo = d.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true})
 
 var canal = 'https://whatsapp.com/channel/0029VbC34Nt42DchIWA0q11f'  
-var comunidad = 'https://whatsapp.com/channel/0029VbC34Nt42DchIWA0q11f'
+var comunidad = ''
 var git = 'https://github.com/shadox-xyz'
 var github = 'https://github.com/shadox-xyz/KanekiBot-V3' 
 var correo = 'shadowcore.xyz@gmail.com'
