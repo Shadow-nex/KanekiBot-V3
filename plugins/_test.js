@@ -1,53 +1,69 @@
-import fetch from "node-fetch";
+import fs from 'fs'
+import fetch from 'node-fetch'
+import Jimp from 'jimp'
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text)
-    return conn.reply(
-      m.chat,
-      `🌟 *Ingresa un enlace de YouTube*\n\nEjemplo:\n${usedPrefix + command} https://youtu.be/TdrL3QxjyVw`,
-      m
-    );
-
+let handler = async (m, { conn }) => {
   try {
-    let api = `https://delirius-apiofc.vercel.app/download/ytmp4?url=${encodeURIComponent(text)}`;
 
-    let res = await fetch(api);
-    if (!res.ok) throw new Error("Error al pedir datos de la API");
+    // FOTO DEL USUARIO
+    const userPp = await conn.profilePictureUrl(m.sender, 'image')
+      .catch(() => 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg')
 
-    let json = await res.json();
-    if (!json.status || !json.data) throw new Error("La API no devolvió datos válidos");
+    const userImg = await Jimp.read(userPp)
+    const userBuffer = await userImg.getBufferAsync(Jimp.MIME_JPEG)
 
-    let { title, image, download } = json.data;
-    let { url: downloadUrl, size, quality, filename } = download;
+    // ICONO PEQUEÑO PARA EL DOCUMENTO
+    const iconUrl = 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg'
+    const iconImg = await Jimp.read(iconUrl)
+    iconImg.resize(200, 200) // icono pequeño
+    const iconBuffer = await iconImg.getBufferAsync(Jimp.MIME_JPEG)
 
-    await conn.reply(
-      m.chat,
-      `📥 *Descargando video...*\n\n📌 *Título:* ${title}\n🎞️ *Calidad:* ${quality}\n💾 *Tamaño:* ${size}`,
-      m
-    );
+    // DOCUMENTO (Jimp crea un JPG vacío con tu icono)
+    const docBase = new Jimp(600, 600, '#000000') // fondo negro
+    docBase.composite(iconImg.resize(150,150), 225, 225) // centrar icono
+    const documentBuffer = await docBase.getBufferAsync(Jimp.MIME_JPEG)
 
-    let videoBuffer = await fetch(downloadUrl).then((v) => v.buffer());
+    // CAPTION (NO MODIFIQUÉ TUS TEXTOS)
+    const caption = `
+╭━━━〔 𝙍𝙞𝙣 𝙄𝙩𝙤𝙨𝙝𝙞 〕━━⬣
+│ Bienvenido causa 😼🔥
+│ Todo junto como pediste 😈
+╰━━━━━━━━━━━━━━⬣
+`
 
+    // ENVÍO TODO JUNTO
     await conn.sendMessage(
       m.chat,
       {
-        video: videoBuffer,
-        caption: `🎬 *${title}*\n\nCalidad: ${quality}\nTamaño: ${size}`,
-        mimetype: "video/mp4",
-        jpegThumbnail: await (await fetch(image)).buffer()
+        image: { url: userPp }, // 1️⃣ Imagen del usuario
+        document: documentBuffer, // 2️⃣ Documento con icono pequeño
+        fileName: 'Rin-Itoshi-Document.jpg',
+        mimetype: 'image/jpeg',
+        jpegThumbnail: iconBuffer, // icono en miniatura
+        caption, // 3️⃣ Texto decorado
+        headerType: 1,
+        viewOnce: true,
+        contextInfo: {
+          mentionedJid: [m.sender],
+          externalAdReply: {
+            title: '',
+            body: '',
+            thumbnail: iconBuffer,
+            mediaType: 1,
+            renderLargerThumbnail: true
+          }
+        }
       },
       { quoted: m }
-    );
+    )
 
   } catch (e) {
-    console.error(e);
-    conn.reply(
-      m.chat,
-      `*Hubo un error al descargar el video*\nRevisa si el link es válido.`,
-      m
-    );
+    console.error(e)
   }
-};
+}
 
-handler.command = ["ytmp"];
-export default handler;
+handler.help = ['test']
+handler.tags = ['main']
+handler.command = ['test']
+
+export default handler
