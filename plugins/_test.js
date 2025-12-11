@@ -61,3 +61,93 @@ handler.command = ['test']
 
 export default handler*/
 
+import fs from 'fs';
+import fetch from 'node-fetch';
+
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+
+  if (command === 'apk2') {
+    if (!text)
+      return conn.sendMessage(
+        m.chat,
+        { text: `[🌿] Ingresa un término de búsqueda.\n\n🌵 Ejemplo:\n${usedPrefix}apk2 WhatsApp` },
+        { quoted: m }
+      );
+
+    try {
+      await m.react('🔍');
+
+      const response = await fetch(`https://delirius-apiofc.vercel.app/download/apk?query=${encodeURIComponent(text)}`);
+      const data = await response.json();
+
+      if (!data.status || !data.data)
+        throw new Error("No se encontró la aplicación.");
+
+      const app = data.data;
+
+      let description = `• *Nombre:* ${app.name}
+• *Desarrollador:* ${app.developer}
+• *Paquete:* ${app.id}
+• *Tamaño:* ${app.size}
+• *Rating:* ${app.stats?.rating?.average || "N/A"} (${app.stats?.rating?.total || 0} votos)
+• *Publicado:* ${app.publish}
+• *Descargas:* ${app.stats?.downloads?.toLocaleString() || "N/A"}
+• *Tienda:* ${app.store?.name || "Desconocida"}`;
+
+     
+      await conn.sendMessage(
+        m.chat,
+        {
+          image: { url: app.image },
+          caption: description.trim(),
+          viewOnce: false
+        },
+        { quoted: m }
+      );
+
+      await m.react('⬇️');
+
+     
+      await conn.sendMessage(
+        m.chat,
+        {
+          document: { url: app.download },
+          fileName: `${app.name}.apk`,
+          mimetype: 'application/vnd.android.package-archive',
+          jpegThumbnail: app.image ? await (await fetch(app.image)).buffer() : null,
+          caption: `📦 *${app.name}*\nAquí tienes tu APK.`,
+          contextInfo: {
+            externalAdReply: {
+              title: botname,
+              body: dev,
+              thumbnailUrl: app.image,
+              mediaType: 1,
+              renderLargerThumbnail: true
+            }
+          }
+        },
+        { quoted: m }
+      );
+
+      await m.react('✅');
+
+    } catch (error) {
+      console.error("Error:", error);
+      await m.react('❌');
+      await conn.sendMessage(
+        m.chat,
+        { text: `❌ Ocurrió un error: ${error.message}` },
+        { quoted: m }
+      );
+    }
+
+    return;
+  }
+};
+
+handler.tags = ['descargas'];
+handler.help = ['apk2'];
+handler.command = ['apk2'];
+
+export default handler;
+
