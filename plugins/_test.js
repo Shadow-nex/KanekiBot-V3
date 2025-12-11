@@ -23,8 +23,9 @@ function convertirDuracion(timestamp) {
   return arr.join(", ")
 }
 
+// 🔧 Ahora calcula el tamaño real en 128 kbps (MP3)
 function calcularTamano(duracionSeg) {
-  const kbps = 256
+  const kbps = 128
   const mb = (duracionSeg * kbps) / 8 / 1024
   return mb.toFixed(2) + " MB"
 }
@@ -46,7 +47,6 @@ let handler = async (m, { conn, text, command }) => {
 
     const v = r.videos[0]
 
-    // Convertir duración a segundos
     const partes = v.timestamp.split(":").map(Number)
     let duracionSeg = 0
 
@@ -83,7 +83,6 @@ let handler = async (m, { conn, text, command }) => {
       { quoted: m }
     )
 
-    
     const api = `https://api-adonix.ultraplus.click/download/ytaudio?apikey=the.shadow&url=${encodeURIComponent(v.url)}`
 
     const res = await fetch(api)
