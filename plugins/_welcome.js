@@ -111,9 +111,11 @@ try { fs.unlinkSync(img) } catch {}
 export { generarBienvenida, generarDespedida }
 export default handler
 */
+
+
 import fs from 'fs'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
-import Jimp from 'jimp' // ← agregado sin tocar nada
+import Jimp from 'jimp' // ← agregado
 
 async function generarDoc(iconUrl, caption) {
   const icon = await Jimp.read(iconUrl)
@@ -125,7 +127,7 @@ async function generarDoc(iconUrl, caption) {
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK)
   image.print(font, 30, 200, caption, 840)
 
-  const temp = './README.md'
+  const temp = './doc_welcome_fake.jpg'
   await image.writeAsync(temp)
   return temp
 }
@@ -212,6 +214,7 @@ return { pp, caption, mentions: [userId] }
 
 let handler = m => m
 handler.before = async function (m, { conn, participants, groupMetadata }) {
+
 if (!m.messageStubType || !m.isGroup) return !0
 
 const primaryBot = global.db.data.chats[m.chat].primaryBot
@@ -224,26 +227,30 @@ const iconMini = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploa
 
 // WELCOME
 if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
+
 const { pp, caption, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
 rcanal.contextInfo.mentionedJid = mentions
 
-// GENERA DOCUMENTO (IMAGEN JIMP)
 const fakeDoc = await generarDoc(iconMini, caption)
 
-// ENVÍA TODO EN UN SOLO MENSAJE (DOCUMENTO + THUMBNAIL + CAPTION)
 await conn.sendMessage(m.chat, {
   document: fs.readFileSync(fakeDoc),
   mimetype: 'image/jpeg',
   fileName: 'welcome.jpg',
   caption,
-  thumbnail: await (await fetch(pp)).arrayBuffer()
+  image: { url: pp }, // ← FOTO REAL DEL USUARIO
+  jpegThumbnail: Buffer.from(await (await fetch(pp)).arrayBuffer()),
+  ...rcanal
 }, { quoted: null })
 
 try { fs.unlinkSync(fakeDoc) } catch {}
 }
 
 // BYE
-if (chat.welcome && (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE || m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
+if (chat.welcome && (
+m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE ||
+m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
+
 const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
 rcanal.contextInfo.mentionedJid = mentions
 
@@ -254,7 +261,9 @@ await conn.sendMessage(m.chat, {
   mimetype: 'image/jpeg',
   fileName: 'goodbye.jpg',
   caption,
-  thumbnail: await (await fetch(pp)).arrayBuffer()
+  image: { url: pp }, // ← FOTO DEL USER
+  jpegThumbnail: Buffer.from(await (await fetch(pp)).arrayBuffer()),
+  ...rcanal
 }, { quoted: null })
 
 try { fs.unlinkSync(fakeDoc) } catch {}
