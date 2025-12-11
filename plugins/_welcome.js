@@ -188,12 +188,15 @@ const mensaje = (chat.sWelcome || 'Edita con el comando "setwelcome"')
 .replace(/{grupo}/g, `*${groupMetadata.subject}*`)
 .replace(/{desc}/g, `${desc}`)
 
-const caption = `❀ Bienvenido a *"_${groupMetadata.subject}_"*
-✰ _Usuario_ » ${username}
-● ${mensaje}
-◆ _Ahora somos ${groupSize} Miembros._
-ꕥ Fecha » ${fecha}
-ꕥ Hora » ${hora}
+const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎𝐌𝐄! * ㅤ֢ㅤ⸱ㅤᯭִ
+*✎ Bienvenido/a ${username}*
+
+ ׅㅤ𓏸𓈒ㅤׄ *ɢʀᴜᴘᴏ* › ${groupMetadata.subject}
+ ׅㅤ𓏸𓈒ㅤׄ *ᴍɪᴇɴʙʀᴏs* › ${groupSize}
+ ׅㅤ𓏸𓈒ㅤׄ *ʜᴏʀᴀ* › ${hora}
+ ׅㅤ𓏸𓈒ㅤׄ *ғᴇᴄʜᴀ* › ${fecha}
+
+> ● ${mensaje}
 `
 
 return { pp, caption, mentions: [userId] }
@@ -225,13 +228,16 @@ const mensaje = (chat.sBye || 'Edita con el comando "setbye"')
 .replace(/{grupo}/g, `${groupMetadata.subject}`)
 .replace(/{desc}/g, `*${desc}*`)
 
-const caption = `❀ Adiós de *"_${groupMetadata.subject}_"*
-✰ _Usuario_ » ${username}
-● ${mensaje}
-◆ _Ahora somos ${groupSize} Miembros._
-ꕥ Fecha » ${fecha}
-ꕥ Hora » ${hora}
-`
+const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎𝐌𝐄! * ㅤ֢ㅤ⸱ㅤᯭִ
+
+*✎ Adiós! ${username}
+
+ ׅㅤ𓏸𓈒ㅤׄ *ɢʀᴜᴘᴏ* › ${groupMetadata.subject}
+ ׅㅤ𓏸𓈒ㅤׄ *ᴍɪᴇɴʙʀᴏs* › ${groupSize}
+ ׅㅤ𓏸𓈒ㅤׄ *ʜᴏʀᴀ* › ${hora}
+ ׅㅤ𓏸𓈒ㅤׄ *ғᴇᴄʜᴀ* › ${fecha}
+
+> ● ${mensaje}`
 
 return { pp, caption, mentions: [userId] }
 }
