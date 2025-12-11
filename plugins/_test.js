@@ -6,7 +6,7 @@ async function fixUrl(url) {
       method: "GET",
       redirect: "follow"
     })
-    return res.url || url   // URL final después de seguir todos los redirects
+    return res.url || url
   } catch (e) {
     console.log("FixURL Error:", e)
     return url
