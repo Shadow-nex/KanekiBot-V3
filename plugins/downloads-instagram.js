@@ -1,0 +1,106 @@
+/*
+> Instagram DL *(imagen|video)*
+By *JTxs*
+
+> ₊·( ✿ ) *cα𝗇α𝗅𝖾s »*
+*🜸 hαsumꪱ - bᦅł - Chα𝗇𝗇𝖾𝗅 ✿ »* https://whatsapp.com/channel/0029VaeQcFXEFeXtNMHk0D0n
+*🜸 hαsumꪱ - bᦅł  木 Cᦅdᧉs - Chα𝗇𝗇𝖾𝗅 ✿ »* https://whatsapp.com/channel/0029VbC5WdJAu3aUfqRb091e
+*/
+
+
+import axios from 'axios'
+
+let HS = async (m, { conn, args, text, usedPrefix, command }) => {
+if (!args[0]) return conn.reply(m.chat, `\`»\` Ingresa un *Link* de *Instagram*`, m)
+if (!args[0].match(/instagram/gi)) return conn.reply(m.chat, `\`»\` Verifica que el *link* sea de *Instagram*`, m)
+
+try {
+let res = await igdl(args[0])
+let txt = `*» ${res.caption ? res.caption : "-"}*
+
+*❀ Creador »* ${res.username}
+*❀ Likes »* ${res.likes}
+*❀ Comentarios »* ${res.comments}
+*❀ Subido hace »* ${res.time}`
+
+if (res.type === 'video') {
+await conn.sendMessage(m.chat, { video: { url: res.video_url }, caption: txt }, { quoted: m })
+} else {
+for (let img of res.images) {
+await conn.sendMessage(m.chat, { image: { url: img }, caption: txt }, { quoted: m })
+txt = null
+}}
+
+} catch (error) {
+console.log(error)
+await m.react("❌")
+}}
+
+HS.help = ["igdl <link>"]
+HS.tags = ['dl']
+HS.command = ['instagram', 'ig', 'igdl']
+
+export default HS
+
+
+async function ig(url) {
+try {
+let e = 'https://igram.website/content.php?url=' + encodeURIComponent(url)
+let { data } = await axios.post(e, '', {
+headers: {
+authority: 'igram.website',
+accept: '*/*',
+'accept-language': 'id-ID,id;q=0.9',
+'content-type': 'application/x-www-form-urlencoded',
+cookie: '',
+referer: 'https://igram.website/',
+'sec-ch-ua': '"Chromium";v="139", "Not;A=Brand";v="99"',
+'sec-ch-ua-mobile': '?1',
+'sec-ch-ua-platform': '"Android"',
+'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36'
+}
+})
+return data
+} catch (e) {
+return { error: e.message }
+}}
+
+function parse(html) {
+let clean = html.replace(/\n|\t/g, '')
+let videoMatch = [...clean.matchAll(/<source src="([^"]+)/g)].map(x => x[1])
+let imageMatch = [...clean.matchAll(/<img src="([^"]+)/g)].map(x => x[1])
+if (imageMatch.length > 0) imageMatch = imageMatch.slice(1)
+let captionRaw = clean.match(/<p class="text-sm"[^>]*>(.*?)<\/p>/)
+let caption = captionRaw ? captionRaw[1].replace(/<br ?\/?>/g, '\n') : ''
+let likes = clean.match(/far fa-heart"[^>]*><\/i>\s*([^<]+)/)
+let comments = clean.match(/far fa-comment"[^>]*><\/i>\s*([^<]+)/)
+let time = clean.match(/far fa-clock"[^>]*><\/i>\s*([^<]+)/)
+
+  return {
+    is_video: videoMatch.length > 0,
+    videos: videoMatch,
+    images: imageMatch,
+    caption,
+    likes: likes ? likes[1] : null,
+    comments: comments ? comments[1] : null,
+    time: time ? time[1] : null
+  }
+}
+
+async function igdl(url) {
+let raw = await ig(url)
+if (!raw || !raw.html) return { error: 'error' }
+let parsed = parse(raw.html)
+
+  return {
+    status: raw.status,
+    username: raw.username,
+    type: parsed.is_video ? 'video' : 'image',
+    video_url: parsed.is_video && parsed.videos.length > 0 ? parsed.videos[0] : null,
+    images: parsed.is_video ? [] : parsed.images,
+    caption: parsed.caption,
+    likes: parsed.likes,
+    comments: parsed.comments,
+    time: parsed.time
+  }
+}
