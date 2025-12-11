@@ -45,18 +45,9 @@ export async function before(m, { conn }) {
 ${sugerencias}`
 
   await conn.sendMessage(m.chat, {
-    document: fs.readFileSync('./package.json'),
-    fileName: `.`,
-    mimetype: 'application/pdf',
-    caption: texto,
+    text: texto,
     contextInfo: {
-      /*isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channelRD.id,
-        serverMessageId: '',
-        newsletterName: channelRD.name
-      },*/
-      externalAdReply: { 
+      externalAdReply: {
         title: `・⟡・ 🄺𝐀𝐍𝐄𝐊𝐈 𓈒𓏸 🄰𝐒𝐒𝐈𝐒𝐓𝐄𝐍𝐓 ⿻ﾟ`,
         body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
         thumbnailUrl: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg',
