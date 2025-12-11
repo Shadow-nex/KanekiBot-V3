@@ -28,9 +28,9 @@ await m.react('✖️')
 await conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${error.message}`, m, rcanal)
 }}
 
-handler.command = ['instagram', 'ig', 'facebook', 'fb']
+handler.command = ['facebook', 'fb']
 handler.tags = ['download']
-handler.help = ['instagram', 'ig', 'facebook', 'fb']
+handler.help = ['facebook', 'fb']
 handler.group = true
 
 export default handler
