@@ -19,55 +19,90 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     }
 
     await m.react('🕒')
-    await conn.reply(m.chat, '*Procesando descarga...*', m, rcanal)
+    await conn.reply(m.chat, '*Procesando descarga...*', m)
 
-    const apiUrl = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(text)}&quality=360`
-    const response = await fetch(apiUrl)
-    if (!response.ok) throw `No se pudo obtener información del video.`
+    let info = null
+    let downloadUrl = null
+    let meta = null
+    let caption = null
 
-    const data = await response.json()
-    const meta = data?.result?.metadata
-    const down = data?.result?.download
-
-    if (!down?.url) throw `No se pudo obtener el enlace de descarga.`
-
-    let size = 0
     try {
-      const head = await fetch(down.url, { method: "HEAD" })
-      size = Number(head.headers.get("content-length") || 0)
-    } catch {
-      size = 0 // Si falla, sigue normal
-    }
+      const api1 = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(text)}&quality=360`
+      const r1 = await fetch(api1)
+      const j1 = await r1.json()
 
-    const sizeMB = size / 1024 / 1024
+      if (j1?.result?.download?.url) {
+        info = j1
+        meta = j1.result.metadata
+        downloadUrl = j1.result.download.url
 
-    let caption = `
-*Y O U T U B E - D O W L O A D*
+        caption = `
+*Y O U T U B E - D O W N L O A D*
 
 > • *Título:* ${meta.title}
 > • *Canal:* ${meta.author?.name}
 > • *Duración:* ${meta.duration?.timestamp}
 > • *Vistas:* ${meta.views?.toLocaleString()}
 > • *Publicado:* ${meta.ago}
-> • *Calidad Seleccionada:* ${down.quality}
-> • *Tamaño:* ${size ? formatSize(size) : "No disponible"}`
+> • *Calidad:* ${j1.result.download.quality}
+        `
+      }
 
-   
-    let sendType = sizeMB > 100 ? "document" : "video"
+    } catch {
+      info = null
+    }
 
-    await conn.sendMessage(m.chat, {
-      [sendType]: { url: down.url },
-      mimetype: "video/mp4",
-      fileName: `${meta.title}.mp4`,
-      caption,
-      thumbnail: meta?.thumbnail ? await (await fetch(meta.thumbnail)).buffer() : null
-    }, { quoted: m })
+    if (!downloadUrl) {
+      try {
+        const api2 = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(text)}`
+        const r2 = await fetch(api2)
+        const j2 = await r2.json()
+
+        if (j2?.data?.url) {
+          downloadUrl = j2.data.url
+
+          caption = `🎬 *${j2.data.title || "Video encontrado"}*\n(Usando servidor 2)`
+        }
+
+      } catch {
+        downloadUrl = null
+      }
+    }
+
+    
+    if (!downloadUrl) {
+      return conn.reply(m.chat, `❌ *No se pudo descargar el video desde ninguno de los servidores.*`, m)
+    }
+
+    
+    let size = 0
+    try {
+      const head = await fetch(downloadUrl, { method: "HEAD" })
+      size = Number(head.headers.get("content-length") || 0)
+    } catch {}
+
+    const sizeMB = size / 1024 / 1024
+    caption += `\n> • *Tamaño:* ${size ? formatSize(size) : "No disponible"}`
+
+
+    const sendAs = sizeMB > 100 ? "document" : "video"
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        [sendAs]: { url: downloadUrl },
+        mimetype: "video/mp4",
+        fileName: `${meta?.title || "video"}.mp4`,
+        caption
+      },
+      { quoted: m }
+    )
 
     await m.react('✔️')
 
   } catch (e) {
-    console.error(e)
-    conn.reply(m.chat, `⚠️ *Error:*\n\`\`\`${e}\`\`\``, m)
+    console.log(e)
+    conn.reply(m.chat, `⚠️ *Error inesperado:* ${e}`, m)
   }
 }
 
