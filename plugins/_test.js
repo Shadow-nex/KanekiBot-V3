@@ -1,8 +1,5 @@
 import fetch from "node-fetch"
 
-// ===========================
-//   FUNCIÓN FIX URL (Anti-403)
-// ===========================
 async function fixUrl(url) {
   try {
     const res = await fetch(url, {
@@ -21,9 +18,6 @@ async function fixUrl(url) {
   }
 }
 
-// ===================================
-//          PLUGIN YTMP4 COMPLETO
-// ===================================
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text)
     return conn.reply(
@@ -35,9 +29,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     await m.react('⏳')
 
-    // ===========================
-    //   PETICIÓN A LA API (Fix UA)
-    // ===========================
+    
     const api = `https://api.delirius.store/download/ytmp4?url=${encodeURIComponent(text)}`
 
     const res = await fetch(api, {
@@ -56,14 +48,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const data = json.data
     const dl = data.download
 
-    // ===========================
-    //    ARREGLAR LINK FINAL
-    // ===========================
+    
     const finalUrl = await fixUrl(dl.url)
 
-    // ===========================
-    //      ENVIAR EL VIDEO
-    // ===========================
+    
     await conn.sendMessage(
       m.chat,
       {
@@ -83,5 +71,5 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 }
 
-handler.command = ["ytmp4", "ytv"]
+handler.command = ["yt", "ytv"]
 export default handler
