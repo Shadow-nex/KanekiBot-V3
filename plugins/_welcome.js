@@ -79,7 +79,7 @@ const caption = `ׅㅤꨶ〆⁾ ㅤׄㅤ⸼ㅤׄ *͜🌱 𝐖𝐄𝐋𝐂𝐎�
  ׅㅤ𓏸𓈒ㅤׄ *ʜᴏʀᴀ* › \`\`\`${hora}\`\`\`
  ׅㅤ𓏸𓈒ㅤׄ *ғᴇᴄʜᴀ* › \`\`\`${fecha}\`\`\`
 
-> ● ${mensaje}`
+> ● *${mensaje}*`
 
 return { pp, caption, mentions: [userId] }
 }
@@ -168,7 +168,7 @@ async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
  ׅㅤ𓏸𓈒ㅤׄ *ʜᴏʀᴀ* › \`\`\`${hora}\`\`\`
  ׅㅤ𓏸𓈒ㅤׄ *ғᴇᴄʜᴀ* › \`\`\`${fecha}\`\`\`
 
-> ● ${mensaje}
+> ● *${mensaje}*
 `
 
   return { pp, caption, mentions: [userId] }
@@ -210,7 +210,7 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
  ׅㅤ𓏸𓈒ㅤׄ *ʜᴏʀᴀ* › \`\`\`${hora}\`\`\`
  ׅㅤ𓏸𓈒ㅤׄ *ғᴇᴄʜᴀ* › \`\`\`${fecha}\`\`\`
 
-> ● ${mensaje}`
+> ● *${mensaje}*`
 
   return { pp, caption, mentions: [userId] }
 }
