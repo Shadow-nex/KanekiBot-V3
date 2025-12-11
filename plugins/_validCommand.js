@@ -50,7 +50,7 @@ ${sugerencias}`
       externalAdReply: {
         title: `・⟡・ 🄺𝐀𝐍𝐄𝐊𝐈 𓈒𓏸 🄰𝐒𝐒𝐈𝐒𝐓𝐄𝐍𝐓 ⿻ﾟ`,
         body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
-        thumbnail: await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg")).buffer(),
+        thumbnail: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg', // await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg")).buffer(),
         sourceUrl: redes,
         mediaType: 1,
         renderLargerThumbnail: true
