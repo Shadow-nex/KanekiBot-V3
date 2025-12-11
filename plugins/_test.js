@@ -1,140 +1,60 @@
-import yts from "yt-search"
+import fetch from "node-fetch";
 
-// Descargar video usando la API (NO toca estructura)
-async function descargarVideo(url) {
-  const api = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(url)}`
-
-  try {
-    const res = await fetch(api)
-    const json = await res.json()
-
-    if (!json || !json.status || !json.data?.url) return null
-
-    return json.data.url
-  } catch {
-    return null
-  }
-}
-
-// Convertir timestamp a texto bonito
-function convertirDuracion(timestamp) {
-  const partes = timestamp.split(":").map(Number)
-
-  let horas = 0, minutos = 0, segundos = 0
-
-  if (partes.length === 3) {
-    horas = partes[0]
-    minutos = partes[1]
-    segundos = partes[2]
-  } else if (partes.length === 2) {
-    minutos = partes[0]
-    segundos = partes[1]
-  }
-
-  const arr = []
-  if (horas) arr.push(`${horas} hora${horas > 1 ? 's' : ''}`)
-  if (minutos) arr.push(`${minutos} minuto${minutos > 1 ? 's' : ''}`)
-  if (segundos) arr.push(`${segundos} segundo${segundos > 1 ? 's' : ''}`)
-
-  return arr.join(", ")
-}
-
-// Tamaño estimado (solo informativo)
-function calcularTamano(duracionSeg) {
-  const kbps = 256
-  const mb = (duracionSeg * kbps) / 8 / 1024
-  return mb.toFixed(2) + " MB"
-}
-
-let handler = async (m, { conn, text, command }) => {
+let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text)
     return conn.reply(
       m.chat,
-      `📌 *Ingresa el nombre del video/audio*\nEjemplo:\n${command} Quevedo Bzrp`,
+      `⚠️ *Ingresa el link de YouTube*\n\nEjemplo:\n${usedPrefix + command} https://youtu.be/xxxx`,
       m
-    )
-
-  await m.react("🔎")
+    );
 
   try {
-    const r = await yts(text)
-    if (!r.videos.length)
-      return conn.reply(m.chat, "❌ No encontré nada.", m)
+    await m.react("🔎");
 
-    const v = r.videos[0]
+    const api = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(text)}`;
 
-    const partes = v.timestamp.split(":").map(Number)
-    let duracionSeg = 0
+    const res = await fetch(api);
+    if (!res.ok)
+      return conn.reply(m.chat, "❌ Error al conectar con la API.", m);
 
-    if (partes.length === 3) {
-      duracionSeg = partes[0] * 3600 + partes[1] * 60 + partes[2]
-    } else {
-      duracionSeg = partes[0] * 60 + partes[1]
-    }
+    const json = await res.json();
+    if (!json.status || !json.data?.url)
+      return conn.reply(m.chat, "❌ No se pudo obtener el video.", m);
 
-    const tamaño = calcularTamano(duracionSeg)
-    const duracionBonita = convertirDuracion(v.timestamp)
+    const { title, url } = json.data;
 
-    const info = `
-✨ *RESULTADO ENCONTRADO*
+    await m.react("⬇️");
 
-🎬 *Título:* ${v.title}
-👤 *Autor:* ${v.author.name}
-👁 *Vistas:* ${v.views.toLocaleString()}
-📅 *Publicado:* ${v.ago}
+    let caption = `🎬 *VIDEO DESCARGADO*\n\n` +
+      `📌 *Título:* ${title}\n` +
+      `🔗 *Fuente:* YouTube\n` +
+      `📥 *Descarga:* Enviando archivo...\n`;
 
-⏳ *Duración:* ${duracionBonita}
-📦 *Tamaño estimado:* ${tamaño}
+    await conn.sendMessage(m.chat, { text: caption }, { quoted: m });
 
-🔗 *Enlace:* ${v.url}
-🆔 *ID:* ${v.videoId}
-`.trim()
+    // Descargar el archivo desde el enlace de la API
+    const buffer = await fetch(url).then((a) => a.arrayBuffer());
 
     await conn.sendMessage(
       m.chat,
       {
-        image: { url: v.thumbnail },
-        caption: info
+        document: Buffer.from(buffer),
+        fileName: `${title}.mp4`,
+        mimetype: "video/mp4"
       },
       { quoted: m }
-    )
+    );
 
-    // ==========================
-    //   DESCARGA RÁPIDA VIDEO
-    // ==========================
-    try {
-      await m.reply("📹 *Descargando video...*")
-
-      const linkVideo = await descargarVideo(v.url)
-
-      if (!linkVideo)
-        return m.reply("⚠ No pude obtener el video.")
-
-      await conn.sendMessage(
-        m.chat,
-        {
-          video: { url: linkVideo },
-          fileName: v.title + ".mp4",
-          mimetype: "video/mp4"
-        },
-        { quoted: m }
-      )
-
-      await m.react("✅")
-
-    } catch (err) {
-      console.error(err)
-      m.reply("⚠ Ocurrió un error descargando el video.")
-    }
+    await m.react("✅");
 
   } catch (e) {
-    console.error(e)
-    conn.reply(m.chat, "⚠ Error al buscar el video.", m)
+    console.error(e);
+    await conn.reply(m.chat, "❌ Ocurrió un error descargando el video.", m);
   }
-}
+};
 
-handler.help = ["yt <texto>"]
-handler.tags = ["buscador"]
-handler.command = ['yt']
+handler.help = ["ytvideo <url>"];
+handler.tags = ["downloader"];
+handler.command = ["ytvideo", "ytv2", "video2"];
 
-export default handler
+export default handler;
