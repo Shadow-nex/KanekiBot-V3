@@ -113,32 +113,17 @@ export default handler
 */
 import fs from 'fs'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
-import Jimp from 'jimp' // ← AGREGADO SIN MOVER NADA
+import Jimp from 'jimp' // ← agregado sin tocar nada
 
-async function generarDocumentoBienvenida(iconUrl, texto) {
+async function generarDoc(iconUrl, caption) {
   const icon = await Jimp.read(iconUrl)
-  icon.resize(150, 150)
+  icon.resize(120, 120)
 
-  const image = new Jimp(800, 800, '#FFFFFF')
-  image.composite(icon, 20, 20)
+  const image = new Jimp(900, 900, '#FFFFFF')
+  image.composite(icon, 30, 30)
 
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK)
-  image.print(font, 20, 200, texto, 760)
-
-  const temp = './README.md'
-  await image.writeAsync(temp)
-  return temp
-}
-
-async function generarDocumentoDespedida(iconUrl, texto) {
-  const icon = await Jimp.read(iconUrl)
-  icon.resize(150, 150)
-
-  const image = new Jimp(800, 800, '#FFFFFF')
-  image.composite(icon, 20, 20)
-
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK)
-  image.print(font, 20, 200, texto, 760)
+  image.print(font, 30, 200, caption, 840)
 
   const temp = './README.md'
   await image.writeAsync(temp)
@@ -162,9 +147,6 @@ const hora = new Date().toLocaleTimeString("es-ES", {
   minute: 'numeric',
   hour12: true 
 })
-
-let thumb = await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763586769709_495967.jpeg')
-  .then(res => res.arrayBuffer()).catch(() => null)
 
 const groupSize = groupMetadata.participants.length + 1
 const desc = groupMetadata.desc?.toString() || 'Sin descripción'
@@ -238,43 +220,44 @@ if (primaryBot && conn.user.jid !== primaryBot) throw !1
 const chat = global.db.data.chats[m.chat]
 const userId = m.messageStubParameters[0]
 
+const iconMini = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg"
+
+// WELCOME
 if (chat.welcome && m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_ADD) {
 const { pp, caption, mentions } = await generarBienvenida({ conn, userId, groupMetadata, chat })
 rcanal.contextInfo.mentionedJid = mentions
-await conn.sendMessage(m.chat, { image: { url: pp }, caption, ...rcanal }, { quoted: null })
 
-const iconWelcome = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg"
-const docWelcome = await generarDocumentoBienvenida(iconWelcome, caption)
+// GENERA DOCUMENTO (IMAGEN JIMP)
+const fakeDoc = await generarDoc(iconMini, caption)
 
-await conn.sendMessage(m.chat, { 
-  document: fs.readFileSync(docWelcome),
+// ENVÍA TODO EN UN SOLO MENSAJE (DOCUMENTO + THUMBNAIL + CAPTION)
+await conn.sendMessage(m.chat, {
+  document: fs.readFileSync(fakeDoc),
   mimetype: 'image/jpeg',
-  fileName: 'welcome.jpg'
+  fileName: 'welcome.jpg',
+  caption,
+  thumbnail: await (await fetch(pp)).arrayBuffer()
 }, { quoted: null })
 
-try { fs.unlinkSync(docWelcome) } catch {}
-
-try { fs.unlinkSync(img) } catch {}
+try { fs.unlinkSync(fakeDoc) } catch {}
 }
 
+// BYE
 if (chat.welcome && (m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_REMOVE || m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE)) {
 const { pp, caption, mentions } = await generarDespedida({ conn, userId, groupMetadata, chat })
 rcanal.contextInfo.mentionedJid = mentions
-await conn.sendMessage(m.chat, { image: { url: pp }, caption, ...rcanal }, { quoted: null })
 
-const iconBye = "https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765413098347_567654.jpeg"
-const docBye = await generarDocumentoDespedida(iconBye, caption)
+const fakeDoc = await generarDoc(iconMini, caption)
 
-await conn.sendMessage(m.chat, { 
-  document: fs.readFileSync(docBye),
+await conn.sendMessage(m.chat, {
+  document: fs.readFileSync(fakeDoc),
   mimetype: 'image/jpeg',
-  fileName: 'goodbye.jpg'
+  fileName: 'goodbye.jpg',
+  caption,
+  thumbnail: await (await fetch(pp)).arrayBuffer()
 }, { quoted: null })
 
-try { fs.unlinkSync(docBye) } catch {}
-
-
-try { fs.unlinkSync(img) } catch {}
+try { fs.unlinkSync(fakeDoc) } catch {}
 }}
 
 export { generarBienvenida, generarDespedida }

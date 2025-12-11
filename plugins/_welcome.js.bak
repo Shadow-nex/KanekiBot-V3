@@ -125,7 +125,7 @@ async function generarDocumentoBienvenida(iconUrl, texto) {
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK)
   image.print(font, 20, 200, texto, 760)
 
-  const temp = './welcome_doc.jpg'
+  const temp = './README.md'
   await image.writeAsync(temp)
   return temp
 }
@@ -140,7 +140,7 @@ async function generarDocumentoDespedida(iconUrl, texto) {
   const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK)
   image.print(font, 20, 200, texto, 760)
 
-  const temp = './bye_doc.jpg'
+  const temp = './README.md'
   await image.writeAsync(temp)
   return temp
 }
