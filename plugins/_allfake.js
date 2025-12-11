@@ -65,13 +65,8 @@ global.saludo = hour
 global.fkontak = { key: { participants:"0@s.whatsapp.net", "remoteJid": "status@broadcast", "fromMe": false, "id": "Halo" }, "message": { "contactMessage": { "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:Sy;Bot;;;\nFN:y\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD` }}, "participant": "0@s.whatsapp.net" }
 
 global.icono = [
-'https://i.pinimg.com/originals/b3/67/d5/b367d513d861de468305c32c6cd22756.jpg', 
-'https://cdn.yupra.my.id/yp/mmuj995h.jpg', 
-'https://cdn.yupra.my.id/yp/ey5l5cct.jpg',
-'https://cdn.yupra.my.id/yp/o720p39m.jpg',
-'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764274989061_832350.jpeg',
-'https://cdn.yupra.my.id/yp/uwx1azzu.jpg',
-'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763311856541_363781.jpeg'
+'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765493573630_569729.jpeg',
+'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765493513276_511755.jpeg'
 ].getRandom()
 
 /*global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: '', newsletterName: channelRD.name }, externalAdReply: { title: botname, body: dev, mediaUrl: null, description: null, previewType: "PHOTO", thumbnail: await (await fetch(icono)).buffer(), sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false }, mentionedJid: null }}
