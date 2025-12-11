@@ -19,9 +19,9 @@ let res = await igdl(args[0])
 let txt = `*» ${res.caption ? res.caption : "-"}*
 
 *❀ Creador »* ${res.username}
-*❀ Likes »* ${res.likes}
-*❀ Comentarios »* ${res.comments}
-*❀ Subido hace »* ${res.time}`
+*♧ Likes »* ${res.likes}
+*✎ Comentarios »* ${res.comments}
+*➩ Subido hace »* ${res.time}`
 
 if (res.type === 'video') {
 await conn.sendMessage(m.chat, { video: { url: res.video_url }, caption: txt }, { quoted: m })
