@@ -8,9 +8,9 @@ async function descargarVideo(url) {
     const res = await fetch(api)
     const json = await res.json()
 
-    if (!json || !json.downloadUrl) return null
+    if (!json || !json.status || !json.data?.url) return null
 
-    return json.downloadUrl
+    return json.data.url
   } catch {
     return null
   }
@@ -63,7 +63,6 @@ let handler = async (m, { conn, text, command }) => {
 
     const v = r.videos[0]
 
-    // Convertir duración a segundos
     const partes = v.timestamp.split(":").map(Number)
     let duracionSeg = 0
 
