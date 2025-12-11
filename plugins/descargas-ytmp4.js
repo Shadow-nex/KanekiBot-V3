@@ -19,7 +19,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     }
 
     await m.react('🕒')
-    await conn.reply(m.chat, '*🍃 Preparando la descarga onichan...*', m, rcanal)
+    await conn.reply(m.chat, '*Procesando descarga...*', m, rcanal)
 
     const apiUrl = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(text)}&quality=360`
     const response = await fetch(apiUrl)
