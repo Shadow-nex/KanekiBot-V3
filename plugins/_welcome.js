@@ -157,13 +157,14 @@ export { generarBienvenida, generarDespedida }
 export default handler*/
 
 import fs from 'fs'
+import fetch from 'node-fetch'
 import { WAMessageStubType } from '@whiskeysockets/baileys'
 
 async function generarBienvenida({ conn, userId, groupMetadata, chat }) {
 const username = `@${userId.split('@')[0]}`
 const pp = await conn.profilePictureUrl(userId, 'image').catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-// ⬇️ AGREGADO FECHA + HORA DE PERÚ SIN MOVER ESTRUCTURA
+
 const opcionesFecha = { day: 'numeric', month: 'long', year: 'numeric' }
 const opcionesHora = { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: "America/Lima" }
 const fecha = `${new Date().toLocaleDateString("es-ES", opcionesFecha)} — ${new Date().toLocaleTimeString("es-ES", opcionesHora)}`
@@ -217,7 +218,6 @@ async function generarDespedida({ conn, userId, groupMetadata, chat }) {
 const username = `@${userId.split('@')[0]}`
 const pp = await conn.profilePictureUrl(userId, 'image').catch(() => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-// ⬇️ AGREGADO FECHA + HORA DE PERÚ SIN MOVER ESTRUCTURA
 const opcionesFecha = { day: 'numeric', month: 'long', year: 'numeric' }
 const opcionesHora = { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: "America/Lima" }
 const fecha = `${new Date().toLocaleDateString("es-ES", opcionesFecha)} — ${new Date().toLocaleTimeString("es-ES", opcionesHora)}`
