@@ -115,7 +115,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           fileName: `${app.name}.apk`,
           mimetype: 'application/vnd.android.package-archive',
           jpegThumbnail: app.image ? await (await fetch(app.image)).buffer() : null,
-          caption: `📦 *${app.name}*\nAquí tienes tu APK.`,
+          caption: `⚡ Aquí tienes tu APK.`,
           contextInfo: {
             externalAdReply: {
               title: botname,
