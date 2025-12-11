@@ -1,5 +1,21 @@
 import yts from "yt-search"
 
+// Descargar video usando la API (NO toca estructura)
+async function descargarVideo(url) {
+  const api = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(url)}`
+
+  try {
+    const res = await fetch(api)
+    const json = await res.json()
+
+    if (!json || !json.downloadUrl) return null
+
+    return json.downloadUrl
+  } catch {
+    return null
+  }
+}
+
 // Convertir timestamp a texto bonito
 function convertirDuracion(timestamp) {
   const partes = timestamp.split(":").map(Number)
@@ -23,7 +39,7 @@ function convertirDuracion(timestamp) {
   return arr.join(", ")
 }
 
-// Tamaño estimado
+// Tamaño estimado (solo informativo)
 function calcularTamano(duracionSeg) {
   const kbps = 256
   const mb = (duracionSeg * kbps) / 8 / 1024
@@ -47,7 +63,7 @@ let handler = async (m, { conn, text, command }) => {
 
     const v = r.videos[0]
 
-    // duración en segundos
+    // Convertir duración a segundos
     const partes = v.timestamp.split(":").map(Number)
     let duracionSeg = 0
 
@@ -84,24 +100,23 @@ let handler = async (m, { conn, text, command }) => {
       { quoted: m }
     )
 
-    // ⬇⬇ *AQUÍ AGREGO LA DESCARGA DEL AUDIO* ⬇⬇
+    // ==========================
+    //   DESCARGA RÁPIDA VIDEO
+    // ==========================
     try {
-      const apiUrl = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(v.url)}`
+      await m.reply("📹 *Descargando video...*")
 
-      await m.reply("🎶 *Descargando audio...*")
+      const linkVideo = await descargarVideo(v.url)
 
-      const audioRes = await fetch(apiUrl)
-      const audioJson = await audioRes.json()
-
-      if (!audioJson || !audioJson.downloadUrl)
-        return m.reply("⚠ No pude obtener el audio.")
+      if (!linkVideo)
+        return m.reply("⚠ No pude obtener el video.")
 
       await conn.sendMessage(
         m.chat,
         {
-          audio: { url: audioJson.downloadUrl },
-          mimetype: "audio/mpeg",
-          fileName: v.title + ".mp3"
+          video: { url: linkVideo },
+          fileName: v.title + ".mp4",
+          mimetype: "video/mp4"
         },
         { quoted: m }
       )
@@ -110,7 +125,7 @@ let handler = async (m, { conn, text, command }) => {
 
     } catch (err) {
       console.error(err)
-      m.reply("⚠ Hubo un error al descargar el audio.")
+      m.reply("⚠ Ocurrió un error descargando el video.")
     }
 
   } catch (e) {
