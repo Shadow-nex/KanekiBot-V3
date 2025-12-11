@@ -79,7 +79,7 @@ let handler = async (m, { conn, text, command }) => {
       { quoted: m }
     )
 
-    const api = `https://api-adonix.ultraplus.click/download/ytaudio?apikey=the.shadow&url=${encodeURIComponent(v.url)}`
+    const api = `${global.APIs.adonix.url}/download/ytaudio?apikey=${global.APIs.adonix.key}&url=${encodeURIComponent(v.url)}`
 
     const res = await fetch(api)
     const json = await res.json()

@@ -79,7 +79,7 @@ let handler = async (m, { conn, text, command }) => {
       { quoted: m }
     )
 
-    const api = `https://api.vreden.my.id/api/v1/download/youtube/video?url=${encodeURIComponent(v.url)}&quality=360`
+    const api = `${global.APIs.vreden.url}/api/v1/download/youtube/video?url=${encodeURIComponent(v.url)}&quality=360`
 
     const res = await fetch(api)
     const json = await res.json()
