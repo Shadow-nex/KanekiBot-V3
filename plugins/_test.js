@@ -23,7 +23,7 @@ function convertirDuracion(timestamp) {
   return arr.join(", ")
 }
 
-// Tamaño estimado (solo informativo)
+// Tamaño estimado
 function calcularTamano(duracionSeg) {
   const kbps = 256
   const mb = (duracionSeg * kbps) / 8 / 1024
@@ -47,7 +47,7 @@ let handler = async (m, { conn, text, command }) => {
 
     const v = r.videos[0]
 
-    // Convertir duración a segundos
+    // duración en segundos
     const partes = v.timestamp.split(":").map(Number)
     let duracionSeg = 0
 
@@ -84,7 +84,34 @@ let handler = async (m, { conn, text, command }) => {
       { quoted: m }
     )
 
-    await m.react("✅")
+    // ⬇⬇ *AQUÍ AGREGO LA DESCARGA DEL AUDIO* ⬇⬇
+    try {
+      const apiUrl = `https://api-adonix.ultraplus.click/download/ytvideo?apikey=the.shadow&url=${encodeURIComponent(v.url)}`
+
+      await m.reply("🎶 *Descargando audio...*")
+
+      const audioRes = await fetch(apiUrl)
+      const audioJson = await audioRes.json()
+
+      if (!audioJson || !audioJson.downloadUrl)
+        return m.reply("⚠ No pude obtener el audio.")
+
+      await conn.sendMessage(
+        m.chat,
+        {
+          audio: { url: audioJson.downloadUrl },
+          mimetype: "audio/mpeg",
+          fileName: v.title + ".mp3"
+        },
+        { quoted: m }
+      )
+
+      await m.react("✅")
+
+    } catch (err) {
+      console.error(err)
+      m.reply("⚠ Hubo un error al descargar el audio.")
+    }
 
   } catch (e) {
     console.error(e)
