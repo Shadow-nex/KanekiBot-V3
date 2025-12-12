@@ -83,13 +83,14 @@ var handler = async (m, { text, conn }) => {
 
     for (let i = 0; i < videos.length; i++) {
       const v = videos[i]
-      caption += `✿ *${i + 1}.* ${v.title}\n`
-      caption += `🫛 𝐂𝐚𝐧𝐚𝐥: *${v.author.name}*\n`
-      caption += `🍁 𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧: *${v.timestamp || 'Desconocida'}*\n`
-      caption += `🗓️ 𝐒𝐮𝐛𝐢𝐝𝐨: *${v.ago || '--'}*\n`
-      caption += `🪽 𝐕𝐢𝐬𝐭𝐚𝐬: *${formatNumber(v.views)}*\n`
-      caption += `🍃 𝐋𝐢𝐧𝐤: ${v.url}\n`
-      caption += `\n${'•'.repeat(38)}\n\n`
+      caption += `*✿ RESULTADO #${i + 1}*\n`
+      caption += `> ❐ 𝐓𝐢𝐭𝐮𝐥𝐨: ${v.title}\n`
+      caption += `> ❐ 𝐂𝐚𝐧𝐚𝐥: *${v.author.name}*\n`
+      caption += `> ❐ 𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧: *${v.timestamp || 'Desconocida'}*\n`
+      caption += `> ❐ 𝐒𝐮𝐛𝐢𝐝𝐨: *${v.ago || '--'}*\n`
+      caption += `> ❐ 𝐕𝐢𝐬𝐭𝐚𝐬: *${formatNumber(v.views)}*\n`
+      caption += `> ❐ 𝐋𝐢𝐧𝐤: ${v.url}\n`
+      caption += `\n${'━'.repeat(38)}\n\n`
     }
 
     caption += `🪷 *Responde con:*
