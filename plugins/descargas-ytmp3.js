@@ -98,10 +98,9 @@ let handler = async (m, { conn, text, command }) => {
     )*/
     const audioBuffer = await (await fetch(json.data.url)).buffer()
     
-    await conn.sendMessage(m.chat, {
+     await conn.sendMessage(m.chat, {
         audio: audioBuffer,
         fileName: `${json.data.title}.mp3`,
-        ptt: false,
         contextInfo: {
           externalAdReply: {
             title: '◁◁   ↻    ▐ ▌    ↺   ▷▷',
