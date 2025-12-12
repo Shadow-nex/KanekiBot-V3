@@ -1,153 +1,86 @@
 import fetch from "node-fetch"
-import yts from "yt-search"
-import crypto from "crypto"
-import axios from "axios"
+import yts from 'yt-search'
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
-  try {
-    if (!text?.trim())
-      return conn.reply(m.chat, `*🍃 Por favor, ingresa el nombre o enlace del video.*`, m, rcanal)
+try {
+if (!text.trim()) return conn.reply(m.chat, `❀ Por favor, ingresa el nombre de la música a descargar.`, m)
+await m.react('🕒')
+const videoMatch = text.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/|v\/))([a-zA-Z0-9_-]{11})/)
+const query = videoMatch ? 'https://youtu.be/' + videoMatch[1] : text
+const search = await yts(query)
+const result = videoMatch ? search.videos.find(v => v.videoId === videoMatch[1]) || search.all[0] : search.all[0]
+if (!result) throw 'ꕥ No se encontraron resultados.'
+const { title, thumbnail, timestamp, views, ago, url, author, seconds } = result
+if (seconds > 1800) throw '⚠ El contenido supera el límite de duración (10 minutos).'
+const vistas = formatViews(views)
+const info = `「✦」Descargando *<${title}>*\n\n> ❑ Canal » *${author.name}*\n> ♡ Vistas » *${vistas}*\n> ✧︎ Duración » *${timestamp}*\n> ☁︎ Publicado » *${ago}*\n> ➪ Link » ${url}`
+const thumb = (await conn.getFile(thumbnail)).data
+await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
+if (['play', 'yta', 'ytmp3', 'playaudio'].includes(command)) {
+const audio = await getAud(url)
+if (!audio?.url) throw '⚠ No se pudo obtener el audio.'
+m.reply(`> ❀ *Audio procesado. Servidor:* \`${audio.api}\``)
+await conn.sendMessage(m.chat, { audio: { url: audio.url }, fileName: `${title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
+await m.react('✔️')
+} else if (['play2', 'ytv', 'ytmp4', 'mp4'].includes(command)) {
+const video = await getVid(url)
+if (!video?.url) throw '⚠ No se pudo obtener el video.'
+m.reply(`> ❀ *Vídeo procesado. Servidor:* \`${video.api}\``)
+await conn.sendFile(m.chat, video.url, `${title}.mp4`, `> ❀ ${title}`, m)
+await m.react('✔️')
+}} catch (e) {
+await m.react('✖️')
+return conn.reply(m.chat, typeof e === 'string' ? e : '⚠︎ Se ha producido un problema.\n> Usa *' + usedPrefix + 'report* para informarlo.\n\n' + e.message, m)
+}}
 
-    await m.react('🕒')
+handler.command = handler.help = ['play', 'yta', 'ytmp3', 'play2', 'ytv', 'ytmp4', 'playaudio', 'mp4']
+handler.tags = ['descargas']
+handler.group = true
 
-    const videoMatch = text.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|shorts\/|v\/)?([a-zA-Z0-9_-]{11})/)
-    const query = videoMatch ? `https://youtu.be/${videoMatch[1]}` : text
+export default handler
 
-    const search = await yts(query)
-    const allItems = (search?.videos?.length ? search.videos : search.all) || []
-    const result = videoMatch
-      ? allItems.find(v => v.videoId === videoMatch[1]) || allItems[0]
-      : allItems[0]
-
-    if (!result) throw 'No se encontraron resultados.'
-
-    const { title = 'Desconocido', thumbnail, timestamp = 'N/A', views, ago = 'N/A', url = query, author = {} } = result
-    const vistas = formatViews(views)
-
-    const res3 = await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765365091026_69913.jpeg");
-    const thumb3 = Buffer.from(await res3.arrayBuffer());
-
-    const fkontak2 = {
-      key: { fromMe: false, participant: "0@s.whatsapp.net" },
-      message: {
-        documentMessage: {
-          title: "𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢.... ..",
-          fileName: "🍁 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔𝗡𝗗𝗢....",
-          jpegThumbnail: thumb3
-        }
-      }
-    };
-
-    const info = `⌗ ᥫ᭡ *\`YᴏᴜTᴜʙᴇ – Dᴏᴡɴʟᴏᴀᴅ\`*. 🌾
-
-> . ﹡ ﹟ 🌴 ׄ ⬭ *Título:* ${title}
-> . ﹡ ﹟ 🌹 ׄ ⬭ *Canal:* ${author.name || '🌨️ Unknown'}
-> . ﹡ ﹟ 🌿 ׄ ⬭ *Vistas:* ${vistas}
-> . ﹡ ﹟ ⌛ ׄ ⬭ *Duración:* ${timestamp}
-> . ﹡ ﹟ 🗓️ ׄ ⬭ *Publicado:* ${ago}
-> . ﹡ ﹟ 🎋 ׄ ⬭ *Link:* ${url}`;
-
-    const thumb = (await conn.getFile(thumbnail)).data
-    await conn.sendMessage(m.chat, { image: thumb, caption: info, ...fake }, { quoted: fkontak2 })
-
- 
-    if (['play', 'mp3'].includes(command)) {
-
-      const audio = await getAudio(url);
-      if (!audio) throw `Error al obtener el audio`;
-
-      await conn.sendMessage(
-        m.chat,
-        {
-          audio: { url: audio.url },
-          mimetype: 'audio/mpeg',
-          fileName: audio.filename
-        },
-        { quoted: m }
-      );
-
-      await m.react('✔️');
-    }
-
-    else if (['play2', 'mp4'].includes(command)) {
-
-      const video = await getVid(url);
-      if (!video?.url) throw 'No se pudo obtener el video.';
-
-      await conn.sendMessage(
-        m.chat,
-        {
-          video: { url: video.url },
-          fileName: `${title}.mp4`,
-          mimetype: 'video/mp4',
-          caption: `> 🍃 *${title}*`,
-          ...fake
-        },
-        { quoted: m }
-      );
-
-      await m.react('✔️');
-    }
-
-  } catch (e) {
-    await m.react('✖️');
-    console.error(e);
-    const msg = typeof e === 'string'
-      ? e
-      : `🎄 Ocurrió un error inesperado.\n> Usa *${usedPrefix}report* para informarlo.\n\n${e?.message || JSON.stringify(e)}`;
-    return conn.reply(m.chat, msg, m, fake);
-  }
-};
-
-handler.command = handler.help = ['play', 'play2', 'mp3', 'mp4'];
-handler.tags = ['download'];
-export default handler;
-
-
-const getAudio = async (ytUrl) => {
-  try {
-    const endpoint = `https://api.vreden.my.id/api/v1/download/youtube/audio?url=${encodeURIComponent(ytUrl)}&quality=128`;
-
-    const r = await fetch(endpoint);
-    const json = await r.json();
-
-    if (!json?.result?.download?.url) return null;
-
-    return {
-      status: true,
-      url: json.result.download.url,
-      filename: json.result.download.filename || "audio.mp3"
-    };
-
-  } catch (e) {
-    return null;
-  }
-};
-
-async function getVid(url) {
-  const api = `https://api.soymaycol.icu/ytdl?url=${encodeURIComponent(url)}&type=mp4&quality=720&apikey=may-1a3ecc37`;
-
-  try {
-    const r = await fetch(api);
-    const json = await r.json();
-
-    if (!json?.result?.url) return null;
-
-    return {
-      url: json.result.url,
-      size: json.result.quality || "Desconocido",
-      api: "Maycol"
-    };
-
-  } catch (e) {
-    return null;
-  }
+async function getAud(url) {
+const apis = [
+{ api: 'Adonix', endpoint: `${global.APIs.adonix.url}/download/ytaudio?apikey=${global.APIs.adonix.key}&url=${encodeURIComponent(url)}`, extractor: res => res.data?.url },
+{ api: 'ZenzzXD', endpoint: `${global.APIs.zenzxz.url}/downloader/ytmp3?url=${encodeURIComponent(url)}`, extractor: res => res.data?.download_url },
+{ api: 'ZenzzXD v2', endpoint: `${global.APIs.zenzxz.url}/downloader/ytmp3v2?url=${encodeURIComponent(url)}`, extractor: res => res.data?.download_url },
+{ api: 'Yupra', endpoint: `${global.APIs.yupra.url}/api/downloader/ytmp3?url=${encodeURIComponent(url)}`, extractor: res => res.result?.link },
+{ api: 'Vreden', endpoint: `${global.APIs.vreden.url}/api/v1/download/youtube/audio?url=${encodeURIComponent(url)}&quality=128`, extractor: res => res.result?.download?.url },
+{ api: 'Vreden v2', endpoint: `${global.APIs.vreden.url}/api/v1/download/play/audio?query=${encodeURIComponent(url)}`, extractor: res => res.result?.download?.url },
+{ api: 'Xyro', endpoint: `${global.APIs.xyro.url}/download/youtubemp3?url=${encodeURIComponent(url)}`, extractor: res => res.result?.download }
+]
+return await fetchFromApis(apis)
 }
-
+async function getVid(url) {
+const apis = [
+{ api: 'Adonix', endpoint: `${global.APIs.adonix.url}/download/ytvideo?apikey=${global.APIs.adonix.key}&url=${encodeURIComponent(url)}`, extractor: res => res.data?.url },
+{ api: 'ZenzzXD', endpoint: `${global.APIs.zenzxz.url}/downloader/ytmp4?url=${encodeURIComponent(url)}&resolution=360p`, extractor: res => res.data?.download_url },
+{ api: 'ZenzzXD v2', endpoint: `${global.APIs.zenzxz.url}/downloader/ytmp4v2?url=${encodeURIComponent(url)}&resolution=360`, extractor: res => res.data?.download_url },
+{ api: 'Yupra', endpoint: `${global.APIs.yupra.url}/api/downloader/ytmp4?url=${encodeURIComponent(url)}`, extractor: res => res.result?.formats?.[0]?.url },
+{ api: 'Vreden', endpoint: `${global.APIs.vreden.url}/api/v1/download/youtube/video?url=${encodeURIComponent(url)}&quality=360`, extractor: res => res.result?.download?.url },
+{ api: 'Vreden v2', endpoint: `${global.APIs.vreden.url}/api/v1/download/play/video?query=${encodeURIComponent(url)}`, extractor: res => res.result?.download?.url },
+{ api: 'Xyro', endpoint: `${global.APIs.xyro.url}/download/youtubemp4?url=${encodeURIComponent(url)}&quality=360`, extractor: res => res.result?.download }
+]
+return await fetchFromApis(apis)
+}
+async function fetchFromApis(apis) {
+for (const { api, endpoint, extractor } of apis) {
+try {
+const controller = new AbortController()
+const timeout = setTimeout(() => controller.abort(), 10000)
+const res = await fetch(endpoint, { signal: controller.signal }).then(r => r.json())
+clearTimeout(timeout)
+const link = extractor(res)
+if (link) return { url: link, api }
+} catch (e) {}
+await new Promise(resolve => setTimeout(resolve, 500))
+}
+return null
+}
 function formatViews(views) {
-  if (views === undefined) return "No disponible"
-  if (views >= 1e9) return `${(views / 1e9).toFixed(1)}B (${views.toLocaleString()})`
-  if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M (${views.toLocaleString()})`
-  if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K (${views.toLocaleString()})`
-  return views.toString()
+if (views === undefined) return "No disponible"
+if (views >= 1_000_000_000) return `${(views / 1_000_000_000).toFixed(1)}B (${views.toLocaleString()})`
+if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M (${views.toLocaleString()})`
+if (views >= 1_000) return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`
+return views.toString()
 }
