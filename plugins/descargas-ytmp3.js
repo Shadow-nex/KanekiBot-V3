@@ -111,7 +111,7 @@ let handler = async (m, { conn, text, command }) => {
           mediaType: 2,
           renderLargerThumbnail: true,
           mediaUrl: v.url,
-          sourceUrl: v.url
+          sourceUrl: null
         }
       }
     }, { quoted: m })
