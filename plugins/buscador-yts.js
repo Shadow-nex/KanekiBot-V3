@@ -77,7 +77,7 @@ var handler = async (m, { text, conn }) => {
 
     ytCache[m.sender] = { results: videos, timestamp: Date.now() }
 
-    let caption = ` 🌠 𝚁𝙴𝚂𝚄𝙻𝚃𝙰𝙳𝙾𝚂 𝙳𝙴 𝙱𝚄𝚂𝚀𝚄𝙴𝙳𝙰\n`
+    let caption = `🌵 𝚁𝙴𝚂𝚄𝙻𝚃𝙰𝙳𝙾𝚂 𝙳𝙴 𝙱𝚄𝚂𝚀𝚄𝙴𝙳𝙰\n`
     caption += `🌱 *Término:* ${text}\n`
     caption += `🌾 *Mostrando:* \`15\`\n\n`
 
@@ -90,7 +90,7 @@ var handler = async (m, { text, conn }) => {
       caption += `> ❐ 𝐒𝐮𝐛𝐢𝐝𝐨: *${v.ago || '--'}*\n`
       caption += `> ❐ 𝐕𝐢𝐬𝐭𝐚𝐬: *${formatNumber(v.views)}*\n`
       caption += `> ❐ 𝐋𝐢𝐧𝐤: ${v.url}\n`
-      caption += `\n${'━'.repeat(30)}\n\n`
+      caption += `\n${'━'.repeat(25)}\n\n`
     }
 
     caption += `🪷 *Responde con:*
