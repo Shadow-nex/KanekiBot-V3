@@ -16,13 +16,13 @@ const vistas = formatViews(views)
 const info = `「✦」Descargando *<${title}>*\n\n> ❑ Canal » *${author.name}*\n> ♡ Vistas » *${vistas}*\n> ✧︎ Duración » *${timestamp}*\n> ☁︎ Publicado » *${ago}*\n> ➪ Link » ${url}`
 const thumb = (await conn.getFile(thumbnail)).data
 await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
-if (['play', 'yta', 'ytmp3', 'playaudio'].includes(command)) {
+if (['play', 'mp3'].includes(command)) {
 const audio = await getAud(url)
 if (!audio?.url) throw '⚠ No se pudo obtener el audio.'
 //m.reply(`> ❀ *Audio procesado. Servidor:* \`${audio.api}\``)
 await conn.sendMessage(m.chat, { audio: { url: audio.url }, fileName: `${title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
 await m.react('✔️')
-} else if (['play2', 'ytv', 'ytmp4', 'mp4'].includes(command)) {
+} else if (['play2', 'mp4'].includes(command)) {
 const video = await getVid(url)
 if (!video?.url) throw '⚠ No se pudo obtener el video.'
 m.reply(`> ❀ *Vídeo procesado. Servidor:* \`${video.api}\``)
