@@ -114,7 +114,7 @@ let handler = async (m, { conn, text, command }) => {
           sourceUrl: v.url
         }
       }
-    }, { quoted: null })
+    }, { quoted: m })
 
     await m.react("✅")
 
