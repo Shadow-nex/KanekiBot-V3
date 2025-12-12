@@ -101,7 +101,6 @@ let handler = async (m, { conn, text, command }) => {
     await conn.sendMessage(m.chat, {
         audio: audioBuffer,
         fileName: `${json.data.title}.mp3`,
-        fileName: `${titulo}.mp3`,
         ptt: false,
         contextInfo: {
           externalAdReply: {
