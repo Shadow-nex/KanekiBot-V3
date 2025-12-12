@@ -15,7 +15,10 @@ if (seconds > 1800) throw '⚠ El contenido supera el límite de duración (10 m
 const vistas = formatViews(views)
 const info = `「✦」Descargando *<${title}>*\n\n> ❑ Canal » *${author.name}*\n> ♡ Vistas » *${vistas}*\n> ✧︎ Duración » *${timestamp}*\n> ☁︎ Publicado » *${ago}*\n> ➪ Link » ${url}`
 const thumb = (await conn.getFile(thumbnail)).data
-await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
+//await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
+const JT = { contextInfo: { externalAdReply: { title: botname, body: dev, mediaType: 1, previewType: 0, mediaUrl: url, sourceUrl: url, thumbnail: thumb, renderLargerThumbnail: true, }, }, }
+ await conn.reply(m.chat, info, m, JT)
+
 if (['play', 'yta', 'ytmp3', 'playaudio'].includes(command)) {
 const audio = await getAud(url)
 if (!audio?.url) throw '⚠ No se pudo obtener el audio.'
