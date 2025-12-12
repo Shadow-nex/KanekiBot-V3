@@ -87,7 +87,7 @@ let handler = async (m, { conn, text, command }) => {
     if (!json?.data?.url)
       return conn.reply(m.chat, "> *No pude obtener el audio.*", m)
 
-    await conn.sendMessage(
+   /* await conn.sendMessage(
       m.chat,
       {
         audio: { url: json.data.url },
@@ -95,7 +95,26 @@ let handler = async (m, { conn, text, command }) => {
         mimetype: "audio/mpeg"
       },
       { quoted: m }
-    )
+    )*/
+    const audioBuffer = await (await fetch(json.data.url)).buffer()
+    await conn.sendMessage(m.chat, {
+      audio: audioBuffer,
+      fileName: `${json.data.title}.mp3`,
+      mimetype: "audio/mpeg",
+      ptt: false,
+      contextInfo: {
+        externalAdReply: {
+          showAdAttribution: true,
+          title: '◁◁   ↻    ▐ ▌    ↺   ▷▷',
+          body: `1:15 ━━━━━•───── 3:26`,
+          thumbnailUrl: v.thumbnail,
+          mediaType: 2,
+          renderLargerThumbnail: true,
+          mediaUrl: v.url,
+          sourceUrl: v.url
+        }
+      }
+    }, { quoted: null })
 
     await m.react("✅")
 
