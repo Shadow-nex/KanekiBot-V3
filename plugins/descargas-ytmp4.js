@@ -121,3 +121,25 @@ handler.group = true
 handler.register = true
 
 export default handler
+
+
+mano cambia la api de arriba x esta 
+api
+https://api.nekolabs.web.id/downloader/youtube/v1?url=https%3A%2F%2Fyoutube.com%2Fwatch%3Fv%3DnQim5_82_No&format=480
+
+descripción 
+
+{
+  "success": true,
+  "result": {
+    "title": "Ganja Mafia - Hola (Prod. PSR)",
+    "type": "video",
+    "format": "480",
+    "quality": "480",
+    "duration": "03:58",
+    "cover": "https://i.ytimg.com/vi/nQim5_82_No/maxresdefault.jpg",
+    "downloadUrl": "https://cdn401.savetube.vip/media/nQim5_82_No/ganja-mafia-hola-prod-psr-480-ytshorts.savetube.me.mp4"
+  },
+  "timestamp": "2025-12-12T20:00:30.833Z",
+  "responseTime": "7875ms"
+}
