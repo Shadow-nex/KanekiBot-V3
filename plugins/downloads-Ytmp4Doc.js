@@ -225,7 +225,7 @@ const savetube = {
       const dl = await savetube.request(`https://${cdn}${savetube.api.download}`, {
         id,
         downloadType: "video",
-        quality: "360",
+        quality: "720",
         key: decrypted.key
       });
 
