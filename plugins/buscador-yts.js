@@ -90,7 +90,7 @@ var handler = async (m, { text, conn }) => {
       caption += `> ❐ 𝐒𝐮𝐛𝐢𝐝𝐨: *${v.ago || '--'}*\n`
       caption += `> ❐ 𝐕𝐢𝐬𝐭𝐚𝐬: *${formatNumber(v.views)}*\n`
       caption += `> ❐ 𝐋𝐢𝐧𝐤: ${v.url}\n`
-      caption += `\n${'━'.repeat(38)}\n\n`
+      caption += `\n${'━'.repeat(30)}\n\n`
     }
 
     caption += `🪷 *Responde con:*
