@@ -143,3 +143,29 @@ descripción
   "timestamp": "2025-12-12T20:00:30.833Z",
   "responseTime": "7875ms"
 }
+
+
+api2
+
+pe (String)
+mp4
+quality (Number)
+480
+Ejecutar Petición
+200
+https://api.soymaycol.icu/ytdl?url=https%3A%2F%2Fyoutube.com%2Fwatch%3Fv%3Dco-TFLbaZAE&type=mp4&quality=480&apikey=may-1a3ecc37
+Tiempo: 35706ms
+{
+  "status": true,
+  "type": "mp4",
+  "result": {
+    "title": "“Gabriela” Performance Video | KATSEYE",
+    "quality": "480p",
+    "url": "https://s4.ytcontent.net/v3/d/video/co-TFLbaZAE/1755344114966224/YTDown.com_YouTube_Gabriela-Performance-Video-KATSEYE_Media_co-TFLbaZAE_004_360p.mp4?token=1765570216329ec8f9603b47beece20ebdb7592c12"
+  },
+  "user": {
+    "username": "Shadow.xyz",
+    "requests_made_today": 7,
+    "limit": 1000
+  }
+}
