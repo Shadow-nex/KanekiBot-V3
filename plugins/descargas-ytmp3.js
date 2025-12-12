@@ -97,24 +97,23 @@ let handler = async (m, { conn, text, command }) => {
       { quoted: m }
     )*/
     const audioBuffer = await (await fetch(json.data.url)).buffer()
+    
     await conn.sendMessage(m.chat, {
-      audio: audioBuffer,
-      fileName: `${json.data.title}.mp3`,
-      mimetype: "audio/mpeg",
-      ptt: false,
-      contextInfo: {
-        externalAdReply: {
-          showAdAttribution: true,
-          title: '◁◁   ↻    ▐ ▌    ↺   ▷▷',
-          body: `1:15 ━━━━━•───── 3:26`,
-          thumbnailUrl: v.thumbnail,
-          mediaType: 2,
-          renderLargerThumbnail: true,
-          mediaUrl: v.url,
-          sourceUrl: null
+        audio: audioBuffer,
+        fileName: `${json.data.title}.mp3`,
+        fileName: `${titulo}.mp3`,
+        ptt: false,
+        contextInfo: {
+          externalAdReply: {
+            title: '◁◁   ↻    ▐ ▌    ↺   ▷▷',
+            body: `1:15 ━━━━━•───── 3:26`,
+            mediaType: 1,
+            thumbnailUrl: v.thumbnail,
+            sourceUrl: v.url,
+            renderLargerThumbnail: true
+          }
         }
-      }
-    }, { quoted: m })
+      }, { quoted: m })
 
     await m.react("✅")
 
