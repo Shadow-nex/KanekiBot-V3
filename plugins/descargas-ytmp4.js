@@ -207,7 +207,7 @@ let handler = async (m, { conn, text, command }) => {
     const apis = [
       {
         api: "NekoLabs",
-        endpoint: `https://api.nekolabs.web.id/downloader/youtube/v1?url=${encodeURIComponent(v.url)}&format=480`,
+        endpoint: `https://api.nekolabs.web.id/downloader/youtube/v1?url=${encodeURIComponent(v.url)}&format=720`,
         extractor: res => res.result?.downloadUrl,
         title: res => res.result?.title
       },
@@ -216,18 +216,6 @@ let handler = async (m, { conn, text, command }) => {
         endpoint: `https://api.soymaycol.icu/ytdl?url=${encodeURIComponent(v.url)}&type=mp4&quality=480&apikey=may-1a3ecc37`,
         extractor: res => res.result?.url,
         title: res => res.result?.title
-      },
-      {
-        api: "Yupra",
-        endpoint: `${global.APIs.yupra.url}/api/downloader/ytmp3?url=${encodeURIComponent(v.url)}`,
-        extractor: res => res.result?.link,
-        title: res => res.result?.title
-      },
-      {
-        api: "Vreden",
-        endpoint: `${global.APIs.vreden.url}/api/v1/download/youtube/video?url=${encodeURIComponent(v.url)}&quality=480`,
-        extractor: res => res.result?.download?.url,
-        title: res => res.result?.metadata?.title
       }
     ]
 
@@ -249,14 +237,14 @@ let handler = async (m, { conn, text, command }) => {
         }
 
       } catch (e) {
-        console.log(`❌ Error en API ${api.api}`)
+        console.log(`> Error en API ${api.api}`)
       }
     }
 
     if (!finalUrl)
       return conn.reply(m.chat, "> *No pude obtener el video con ninguna API.*", m)
 
-    const captionFinal = `🎬 *${metaTitle}*\n🌐 *API:* ${apiUsada}`
+    const captionFinal = `🌾 *${metaTitle}*\n🎋 *API:* ${apiUsada}`
 
     await conn.sendMessage(
       m.chat,
