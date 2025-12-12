@@ -7,11 +7,11 @@ const cooldown = 2 * 60 * 1000
 user.lastwork = user.lastwork || 0
 if (Date.now() < user.lastwork) {
 const tiempoRestante = formatTime(user.lastwork - Date.now())
-return conn.reply(m.chat, `ꕥ Debes esperar *${tiempoRestante}* para usar *${usedPrefix + command}* de nuevo.`, m, rcanal)
+return conn.reply(m.chat, `ꕥ Debes esperar *${tiempoRestante}* para usar *${usedPrefix + command}* de nuevo.`, m)
 }
 user.lastwork = Date.now() + cooldown
 let rsl = Math.floor(Math.random() * 1501) + 2000
-await conn.reply(m.chat, `❀ ${pickRandom(trabajo)} *¥${rsl.toLocaleString()} ${currency}*.`, m, rcanal)
+await conn.reply(m.chat, `❀ ${pickRandom(trabajo)} *¥${rsl.toLocaleString()} ${currency}*.`, m)
 user.coin += rsl
 }
 
