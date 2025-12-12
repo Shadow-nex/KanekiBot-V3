@@ -1,60 +1,26 @@
-import fetch from 'node-fetch'
-import fs from 'fs'
-
-export async function before(m, { conn }) {
-  if (!m.text || !global.prefix.test(m.text)) return
-
-  const usedPrefix = global.prefix.exec(m.text)[0]
-  const command = m.text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase()
-  if (!command || command === 'bot') return
-
-  const similarity = (a, b) => {
-    let matches = 0
-    for (let i = 0; i < Math.min(a.length, b.length); i++) {
-      if (a[i] === b[i]) matches++
-    }
-    return Math.floor((matches / Math.max(a.length, b.length)) * 100)
-  }
-
-  const allCommands = Object.values(global.plugins)
-    .flatMap(p => Array.isArray(p.command) ? p.command : [p.command])
-    .filter(v => typeof v === 'string')
-
-  if (allCommands.includes(command)) {
-    let user = global.db.data.users[m.sender]
-    if (!user.commands) user.commands = 0
-    user.commands++
-    return
-  }
-
-  const similares = allCommands
-    .map(cmd => ({ cmd, score: similarity(command, cmd) }))
-    .filter(o => o.score >= 40)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3)
-
-  let sugerencias = similares.length
-    ? similares.map(s => `> ⤷• .\`${s.cmd}\` (${s.score}%)`).join('\n')
-    : '• No se encontraron coincidencias.'
-
-  const texto = `°𓏲🌿 ɴᴏ sᴇ ʜᴀ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ: *"${command}"* 🝰
-
-꒰𓂂𓏸🌷 ᴜsᴀ *${usedPrefix}ᴍᴇɴᴜ* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴄᴏᴍᴘʟᴇᴛᴀ. 🪴
-
-*! ׁ ׅ 🥗 ᴘᴏsɪʙʟᴇs ᴄᴏɪɴᴄɪᴅᴇɴᴄɪᴀs: 🪽°𖥻*
-${sugerencias}`
-
-  await conn.sendMessage(m.chat, {
-    text: texto,
-    contextInfo: {
-      externalAdReply: {
-        title: `・⟡・ 🄺𝐀𝐍𝐄𝐊𝐈 𓈒𓏸 🄰𝐒𝐒𝐈𝐒𝐓𝐄𝐍𝐓 ⿻ﾟ`,
-        body: '₊˚🌱 ₊˚  ᥴrᥱᥲ𝗍ᥱძ ᑲᥡ sʜᴀᴅᴏᴡ.xʏᴢ 🌾𖥻ﾟ',
-        thumbnail: await (await fetch("https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764537439905_644417.jpeg")).buffer(),
-        sourceUrl: redes,
-        mediaType: 1,
-        renderLargerThumbnail: true
-      }
-    }
-  }, { quoted: m })
+export async function before(m, { groupMetadata }) {
+if (!m.text || !global.prefix.test(m.text)) return
+const usedPrefix = global.prefix.exec(m.text)[0]
+const command = m.text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase()
+if (!command || command.length === 0) return
+const validCommand = (command, plugins) => {
+for (let plugin of Object.values(plugins)) {
+if (plugin.command && (Array.isArray(plugin.command) ? plugin.command : [plugin.command]).includes(command)) {
+return true
+}}
+return false
 }
+let chat = global.db.data.chats[m.chat]
+let settings = global.db.data.settings[this.user.jid]
+let owner = [...global.owner.map(([number]) => number)].map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").includes(m.sender)
+if (chat.modoadmin) return
+if (settings.self) return
+if (command === 'mute') return
+if (chat.isMute && !owner) return
+if (command === 'bot') return
+if (chat.isBanned && !owner) return
+if (validCommand(command, global.plugins)) {
+} else {
+const comando = command
+await m.reply(`> 🌿 El comando *<${comando}>* no existe.\n> Usa *${usedPrefix}help* para ver la lista de comandos disponibles.`)
+}}
