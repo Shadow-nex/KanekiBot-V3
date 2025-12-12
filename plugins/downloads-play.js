@@ -125,7 +125,7 @@ const getAudio = async (ytUrl) => {
 };
 
 async function getVid(url) {
-  const api = `https://api.soymaycol.icu/ytdl?url=${encodeURIComponent(url)}&type=mp4&quality=460&apikey=may-1a3ecc37`;
+  const api = `https://api.soymaycol.icu/ytdl?url=${encodeURIComponent(url)}&type=mp4&quality=720&apikey=may-1a3ecc37`;
 
   try {
     const r = await fetch(api);
