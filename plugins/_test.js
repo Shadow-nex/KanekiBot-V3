@@ -36,7 +36,6 @@ let handler = async (m, { conn, args }) => {
     return m.reply('🍃 Responde o envía una imagen o video.')
   }
 
-  // URL directa
   if (value.startsWith('http')) {
     global.banner = value
     return m.reply(`🌿 Banner actualizado correctamente`)
@@ -51,11 +50,11 @@ let handler = async (m, { conn, args }) => {
     ''
 
   if (!/^(image\/(png|jpe?g|gif)|video\/mp4)$/.test(mime)) {
-    return m.reply('💣 Solo imágenes (jpg/png/gif) o video mp4.')
+    return m.reply('🌿 Solo imágenes (jpg/png/gif) o video mp4.')
   }
 
   const media = await q.download()
-  if (!media) return m.reply('💣 No se pudo descargar el archivo.')
+  if (!media) return m.reply('🍃 No se pudo descargar el archivo.')
 
   const link = await uploadToCatbox(media, mime)
   global.banner = link
