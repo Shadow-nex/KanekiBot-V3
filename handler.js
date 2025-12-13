@@ -379,8 +379,8 @@ const rcanalx = {
       mediaUrl: null, 
       description: null, 
       previewType: "PHOTO", 
-      //thumbnail: await (await fetch(icono)).buffer(),
-      thumbnailUrl: global.icono,
+      thumbnail: await (await fetch(global.icono)).buffer(),
+     // thumbnailUrl: global.icono,
       sourceUrl: global.redes, 
       mediaType: 1, 
       renderLargerThumbnail: false 
