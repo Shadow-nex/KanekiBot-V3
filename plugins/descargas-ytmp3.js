@@ -109,7 +109,7 @@ let handler = async (m, { conn, text, command }) => {
             title: '◁◁   ↻    ▐ ▌    ↺   ▷▷',
             body: `1:15 ━━━━━•───── 3:26`,
             sourceUrl: v.url,
-            thumbnailUrl: v.thumbnail,
+            thumbnail: await (await fetch(v.thumbnail)).buffer(),
             mediaType: 1,
             renderLargerThumbnail: true
           }
