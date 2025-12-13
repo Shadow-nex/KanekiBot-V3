@@ -1,11 +1,19 @@
 import ws from 'ws'
 
-const handler = async (m, { conn }) => {
+const handler = async (m, { conn, command, usedPrefix }) => {
 const subBots = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn.user.jid)])]
 if (global.conn?.user?.jid && !subBots.includes(global.conn.user.jid)) {
 subBots.push(global.conn.user.jid)
 }
 const chat = global.db.data.chats[m.chat]
+
+if (command === 'delprimary') {
+if (!chat.primaryBot) return conn.reply(m.chat, `ꕥ No hay ningún Bot primario establecido en este grupo.`, m)
+const old = chat.primaryBot
+delete chat.primaryBot
+return conn.reply(m.chat, `❀ Se ha eliminado el Bot primario del grupo.\n> @${old.split`@`[0]} ya no es Bot principal.`, m, { mentions: [old] })
+}
+
 const mentionedJid = await m.mentionedJid
 const who = mentionedJid[0] ? mentionedJid[0] : m.quoted ? await m.quoted.sender : false
 if (!who) return conn.reply(m.chat, `❀ Por favor, menciona a un Socket para hacerlo Bot principal del grupo.`, m)
@@ -20,9 +28,9 @@ conn.reply(m.chat, `❀ Se ha establecido a @${who.split`@`[0]} como Bot primari
 conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${e.message}`, m)
 }}
 
-handler.help = ['setprimary']
+handler.help = ['setprimary', 'delprimary']
 handler.tags = ['group']
-handler.command = ['setprimary']
+handler.command = ['setprimary', 'delprimary']
 handler.group = true
 handler.admin = true
 
