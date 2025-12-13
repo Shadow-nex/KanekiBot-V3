@@ -96,7 +96,7 @@ ${Object.keys(modelos).join(', ')}`,
     await conn.sendMessage(m.chat, {
       audio: tts.buffer,
       mimetype: 'audio/mpeg',
-      ptt: true
+      ptt: false
     }, { quoted: m });
 
   } catch (e) {
