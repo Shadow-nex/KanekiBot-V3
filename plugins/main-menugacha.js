@@ -96,7 +96,7 @@ let handler = async (m, { conn, usedPrefix }) => {
         externalAdReply: { 
           title: `『 🌴 𝐆𝐀𝐂𝐇𝐀 .𝐖𝐀𝐈𝐅𝐔𝐒 ❄️ 』`,
           body: `🌸 𝘓𝘢𝘴 𝘸𝘢𝘪𝘧𝘶𝘴 𝘭𝘭𝘦𝘨𝘢𝘯 𝘢 𝘴𝘶 𝘭𝘭𝘢𝘮𝘢𝘥𝘰... :D 💘`,
-          thumbnailUrl: icono2,
+          thumbnailUrl: banner,
           sourceUrl: redes,
           mediaType: 1,
           renderLargerThumbnail: true
