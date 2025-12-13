@@ -16,13 +16,13 @@ const vistas = formatViews(views)
 const info = `「✦」Descargando *<${title}>*\n\n> ❑ Canal » *${author.name}*\n> ♡ Vistas » *${vistas}*\n> ✧︎ Duración » *${timestamp}*\n> ☁︎ Publicado » *${ago}*\n> ➪ Link » ${url}`
 const thumb = (await conn.getFile(thumbnail)).data
 await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
-if (['play'].includes(command)) {
+if (['play', 'mp3'].includes(command)) {
 const audio = await getAud(url)
 if (!audio?.url) throw '⚠ No se pudo obtener el audio.'
-//m.reply(`> ❀ *Audio procesado. Servidor:* \`${audio.api}\``)
+m.reply(`> ❀ *Audio procesado. Servidor:* \`${audio.api}\``)
 await conn.sendMessage(m.chat, { audio: { url: audio.url }, fileName: `${title}.mp3`, mimetype: 'audio/mpeg' }, { quoted: m })
 await m.react('✔️')
-} else if (['play2'].includes(command)) {
+} else if (['play2', 'mp4'].includes(command)) {
 const video = await getVid(url)
 if (!video?.url) throw '⚠ No se pudo obtener el video.'
 m.reply(`> ❀ *Vídeo procesado. Servidor:* \`${video.api}\``)
@@ -33,7 +33,7 @@ await m.react('✖️')
 return conn.reply(m.chat, typeof e === 'string' ? e : '⚠︎ Se ha producido un problema.\n> Usa *' + usedPrefix + 'report* para informarlo.\n\n' + e.message, m)
 }}
 
-handler.command = handler.help = ['play', 'yta', 'ytmp3', 'play2', 'ytv', 'ytmp4', 'playaudio', 'mp4']
+handler.command = handler.help = ['play', 'mp3', 'play2', 'mp4']
 handler.tags = ['descargas']
 handler.group = true
 
@@ -53,7 +53,7 @@ return await fetchFromApis(apis)
 }
 async function getVid(url) {
 const apis = [
-{ api: 'Adonix', endpoint: `https://api.nekolabs.web.id/downloader/youtube/v1?url=${encodeURIComponent(url)}&format=720`, extractor: res => res.result?.downloadUrl },
+{ api: 'Adonix', endpoint: `https://api.nekolabs.web.id/downloader/youtube/v1?url=${encodeURIComponent(url)}&format=720`,
 { api: 'ZenzzXD', endpoint: `${global.APIs.zenzxz.url}/downloader/ytmp4?url=${encodeURIComponent(url)}&resolution=360p`, extractor: res => res.data?.download_url },
 { api: 'ZenzzXD v2', endpoint: `${global.APIs.zenzxz.url}/downloader/ytmp4v2?url=${encodeURIComponent(url)}&resolution=360`, extractor: res => res.data?.download_url },
 { api: 'Yupra', endpoint: `${global.APIs.yupra.url}/api/downloader/ytmp4?url=${encodeURIComponent(url)}`, extractor: res => res.result?.formats?.[0]?.url },
