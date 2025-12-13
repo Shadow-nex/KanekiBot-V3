@@ -276,7 +276,7 @@ let handler = async (m, { conn, text }) => {
 
     await conn.sendMessage(
       m.chat,
-      { document: buffer, mimetype: 'video/mp4', fileName },
+      { video: buffer, mimetype: 'video/mp4', fileName },
       { quoted: m }
     )
 
