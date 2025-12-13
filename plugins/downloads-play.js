@@ -10,8 +10,10 @@ const query = videoMatch ? 'https://youtu.be/' + videoMatch[1] : text
 const search = await yts(query)
 const result = videoMatch ? search.videos.find(v => v.videoId === videoMatch[1]) || search.all[0] : search.all[0]
 if (!result) throw 'ꕥ No se encontraron resultados.'
-const { title, thumbnail, timestamp, views, ago, url, author, seconds } = result
-if (seconds > 1800) throw '⚠ El contenido supera el límite de duración (10 minutos).'
+const { title, thumbnail, timestamp, views, ago, url, author } = result
+
+/*if (seconds > 1800) throw '⚠ El contenido supera el límite de duración (10 minutos).'*/
+
 const vistas = formatViews(views)
 const info = `> 🥕 Título » *${title}*
 > 🌱 Canal » *${author.name}*
