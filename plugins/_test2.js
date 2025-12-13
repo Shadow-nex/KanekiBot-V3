@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 const modelos = {
@@ -27,7 +26,7 @@ function getRandomIp() {
 }
 
 async function generarTTS(texto, modelo) {
-  if (!modelos[modelo]) throw `❌ Modelo "${modelo}" no encontrado!\n\nModelos disponibles:\n` + Object.keys(modelos).join(', ');
+  if (!modelos[modelo]) throw new Error('Modelo no válido');
 
   const agent = userAgents[Math.floor(Math.random() * userAgents.length)];
   const { voice_id, voice_name } = modelos[modelo];
@@ -45,74 +44,70 @@ async function generarTTS(texto, modelo) {
     }]
   };
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': '*/*',
-      'X-Forwarded-For': getRandomIp(),
-      'User-Agent': agent
+  const res = await axios.post(
+    'https://voxbox-tts-api.imyfone.com/pc/v1/voice/tts',
+    payload,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': '*/*',
+        'X-Forwarded-For': getRandomIp(),
+        'User-Agent': agent
+      }
     }
-  };
+  );
 
-  const res = await axios.post('https://voxbox-tts-api.imyfone.com/pc/v1/voice/tts', payload, config);
-  const result = res.data?.data?.convert_result?.[0];
+  const audioUrl = res.data?.data?.convert_result?.[0]?.oss_url;
+  if (!audioUrl) throw new Error('No se generó el audio');
+
+  const audioBuffer = await axios.get(audioUrl, {
+    responseType: 'arraybuffer'
+  });
 
   return {
-    audio: result?.oss_url,
+    buffer: audioBuffer.data,
     voice_name
   };
 }
 
 const handler = async (m, { text, conn, command }) => {
-  if (!text.includes('|')) return conn.reply(m.chat, `⌬┄┄┄┄┄┄┄┄┄┄┄┄┄┄⌬
-       *L I S T A - D E - M O D E L O S*
-⌬┄┄┄┄┄┄┄┄┄┄┄┄┄┄⌬
+  if (!text.includes('|')) {
+    return conn.reply(m.chat,
+`🎙️ *Text To Speech*
 
-• *miku* - Hatsune Miku 🌀
-• *nahida* - Nahida (Exclusivo) 🌿
-• *nami* - Nami de One Piece 🌊
-• *ana* - Ana (Voz femenina general) 🎙️
-• *optimus_prime* - Optimus Prime 🤖
-• *goku* - Goku (Dragon Ball) 🟠
-• *taylor_swift* - Taylor Swift 🎤
-• *elon_musk* - Elon Musk 🧠
-• *mickey_mouse* - Mickey Mouse 🐭
-• *kendrick_lamar* - Kendrick Lamar 🎶
-• *angela_adkinsh* - Angela Adkinsh 👩‍💼
-• *eminem* - Eminem 🎧
-
-Usa el formato:
-*.tts3 texto|modelo*
+Usa:
+.${command} texto|modelo
 
 Ejemplo:
-*.tts3 hola mundo|miku*`, m, rcanal, {
-    mentions: [m.sender]
-  })
+.${command} hola mundo|miku
+
+Modelos:
+${Object.keys(modelos).join(', ')}`,
+    m);
+  }
 
   let [contenido, modelo] = text.split('|').map(v => v.trim().toLowerCase());
 
-  if (!contenido || !modelo) throw `❌ Asegúrate de usar el formato correcto: .${command} texto|modelo\n\nModelos disponibles:\n` + Object.keys(modelos).join(', ');
-
-  let proceso = await conn.sendMessage(m.chat, { text: '🎙️ Generando audio, espera...' }, { quoted: fkontak });
+  let msg = await conn.sendMessage(m.chat, { text: '🎧 Generando voz...' }, { quoted: m });
 
   try {
-    const resultado = await generarTTS(contenido, modelo);
+    const tts = await generarTTS(contenido, modelo);
+
     await conn.sendMessage(m.chat, {
-      audio: { url: resultado.audio },
+      audio: tts.buffer,
       mimetype: 'audio/mpeg',
       ptt: true
-    }, { quoted: fkontak });
+    }, { quoted: m });
+
   } catch (e) {
-    throw `❌ Error\nLog del error: ${e.message || e}`;
+    await conn.reply(m.chat, `❌ Error:\n${e.message}`, m);
   } finally {
-    if (proceso.key) await conn.sendMessage(m.chat, { delete: proceso.key });
+    if (msg?.key) await conn.sendMessage(m.chat, { delete: msg.key });
   }
 };
 
 handler.command = ['tts2'];
-handler.help = ['tts2 <texto>|<modelo>'];
 handler.tags = ['herramientas'];
-handler.group = false;
-handler.register = true;
+handler.help = ['tts2 texto|modelo'];
 
 export default handler;
