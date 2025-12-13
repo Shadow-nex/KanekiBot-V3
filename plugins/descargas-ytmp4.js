@@ -265,11 +265,11 @@ let handler = async (m, { conn, text }) => {
       { quoted: m }
     )
 
-    const waitMsg = await conn.sendMessage(
+    /*const waitMsg = await conn.sendMessage(
       m.chat,
       { text: '🎥 Descargando video en 480p, espera...' },
       { quoted: m }
-    )
+    )*/
 
     let { buffer, fileName } = await yt.download(v.url)
     buffer = await convertToFast(buffer)
