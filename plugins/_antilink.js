@@ -1,93 +1,21 @@
-/* eslint-disable */
-let linkRegex = /chat.whatsapp.com\/([0-9A-Za-z]{20,24})/i
-let linkRegex1 = /whatsapp.com\/channel\/([0-9A-Za-z]{20,24})/i
+const linkRegex = /(chat\.whatsapp\.com\/[0-9A-Za-z]{20,24})|(z?https:\/\/whatsapp\.com\/channel\/[0-9A-Za-z]{20,24})/i
+const allowedLinks = ['https://whatsapp.com/channel/0029VbC34Nt42DchIWA0q11f']
 
-export async function before(m, { conn, isAdmin, isBotAdmin, isOwner, isROwner, participants }) {
-  if (!m.isGroup) return 
-
-  let chat = global.db.data.chats[m.chat]
-  if (!chat.antiLink) return
-  if (isAdmin || isOwner || m.fromMe || isROwner) return
-
-  const delet = m.key.participant
-  const bang = m.key.id
-  const user = `@${m.sender.split`@`[0]}`
-  const groupAdmins = participants.filter(p => p.admin)
-  const isGroupLink = linkRegex.exec(m.text) || linkRegex1.exec(m.text)
-
-  if (m?.msg?.contextInfo?.forwardedNewsletterMessageInfo && !isAdmin) {
-    try {
-      await conn.sendMessage(m.chat, { 
-        text: `*「 ENLACE DETECTADO 」*
-
-🥗 ${user} Rompiste las reglas del 
-Grupo serás eliminado...`, 
-        mentions: [m.sender] 
-      }, { quoted: m })
-
-      if (!isBotAdmin) {
-        await conn.sendMessage(m.chat, { 
-          text: `🥗 El bot no tiene permisos de administrador para eliminar al usuario.`,
-          mentions: groupAdmins.map(v => v.id) 
-        }, { quoted: fkontak })
-        return
-      }
-
-      await delay(300)
-      await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: delet } })
-      await delay(700)
-      await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-
-    } catch (e) {
-      if (e?.data === 429) {
-        console.log('⚠️ Rate limit detectado, esperando 10s...')
-        await delay(10000)
-      } else {
-        console.error('❌ Error en antilink canal:', e.message)
-      }
-    }
-    return !0
-  }
-
-  if (isGroupLink && !isAdmin) {
-    try {
-      if (isBotAdmin) {
-        const linkThisGroup = `https://chat.whatsapp.com/${await conn.groupInviteCode(m.chat)}`
-        if (m.text.includes(linkThisGroup)) return !0
-      }
-
-      await conn.sendMessage(m.chat, { 
-        text: ` *「 ENLACE DETECTADO 」*
-
-🐥 ${user} Rompiste las reglas del 
-Grupo serás eliminado...`,
-        mentions: [m.sender] 
-      }, { quoted: m })
-
-      if (!isBotAdmin) {
-        await conn.sendMessage(m.chat, { 
-          text: `🥙 El antilink está activo pero no puedo eliminarte porque no soy admin.`,
-          mentions: groupAdmins.map(v => v.id) 
-        }, { quoted: fkontak })
-        return
-      }
-
-      await delay(300)
-      await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: delet } })
-      await delay(700)
-      await conn.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-
-    } catch (e) {
-      if (e?.data === 429) {
-        console.log('⚠️ Rate limit detectado, esperando 10s...')
-        await delay(10000)
-      } else {
-        console.error('❌ Error en antilink grupo:', e.message)
-      }
-    }
-  }
-
-  return !0
+export async function before(m, { conn, isAdmin, isBotAdmin, isROwner, participants }) {
+if (!m.isGroup) return
+if (!m || !m.text) return
+const chat = global?.db?.data?.chats[m.chat]
+const isGroupLink = linkRegex.test(m.text)
+const isChannelLink = /whatsapp\.com\/channel\//i.test(m.text)
+const hasAllowedLink = allowedLinks.some(link => m.text.includes(link))
+if (hasAllowedLink) return
+if ((isGroupLink || isChannelLink) && !isAdmin) {
+if (isBotAdmin) {
+const linkThisGroup = `https://chat.whatsapp.com/${await conn.groupInviteCode(m.chat)}`
+if (isGroupLink && m.text.includes(linkThisGroup)) return !0
 }
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+if (chat.antilink && isGroupLink && !isAdmin && !isROwner && isBotAdmin && m.key.participant !== conn.user.jid) {
+await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: m.key.id, participant: m.key.participant }})
+await conn.reply(m.chat, `> ꕥ Se ha eliminado a *${global.db.data.users[m.key.participant].name || 'Usuario'}* del grupo por \`Anti-Link\`, no permitimos enlaces de *${isChannelLink ? 'canales' : 'otros grupos'}*.`, null)
+await conn.groupParticipantsUpdate(m.chat, [m.key.participant], 'remove')
+}}}
