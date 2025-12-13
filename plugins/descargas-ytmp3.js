@@ -102,7 +102,7 @@ let handler = async (m, { conn, text, command }) => {
       {
         audio: { url: json.data.url },
         fileName: `${json.data.title}.mp3`,
-        mimetype: "audio/mpeg"
+        mimetype: "audio/mpeg",
         ptt: false,
         contextInfo: {
           externalAdReply: {
