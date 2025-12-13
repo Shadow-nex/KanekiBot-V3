@@ -11,40 +11,48 @@ async function uploadToCatbox(buffer, mime) {
 
   const res = await fetch('https://catbox.moe/user/api.php', {
     method: 'POST',
-    body: form
+    body: form,
+    headers: form.getHeaders() // 🔥 CLAVE
   })
 
-  const url = await res.text()
+  const text = await res.text()
 
-  if (!url.startsWith('https://')) {
-    throw new Error('Falló la subida a Catbox: ' + url)
+  if (!text.startsWith('https://')) {
+    throw new Error('Catbox error: ' + text)
   }
 
-  return url
+  return text.trim()
 }
 
 let handler = async (m, { conn, args }) => {
   const idBot = conn.user.id.split(':')[0] + '@s.whatsapp.net'
-  const config = global.db.data.settings[idBot]
+  const isOwner = [idBot, ...global.owner.map(v => v + '@s.whatsapp.net')].includes(m.sender)
 
-  const isOwner2 = [idBot, ...global.owner.map(v => v + '@s.whatsapp.net')].includes(m.sender)
-  if (!isOwner2) return m.reply('*🌿 El comando solo puede ser usado por un socket*')
+  if (!isOwner) return m.reply('*🌿 Solo el owner puede usar este comando*')
 
   const value = args.join(' ').trim()
 
-  if (!value && !m.quoted && !m.message?.imageMessage && !m.message?.videoMessage)
-    return m.reply('💣 Debes enviar o citar una imagen o video para cambiar el banner del bot.')
+  if (!value && !m.quoted && !m.message?.imageMessage && !m.message?.videoMessage) {
+    return m.reply('💣 Responde o envía una imagen o video.')
+  }
 
+  // URL directa
   if (value.startsWith('http')) {
     global.banner = value
-    return m.reply(`🌿 Se ha actualizado el banner de *${global.botname}*!`)
+    return m.reply(`🌿 Banner actualizado correctamente`)
   }
 
   const q = m.quoted || m
-  const mime = (q.msg || q).mimetype || q.mediaType || ''
 
-  if (!/image\/(png|jpe?g|gif)|video\/mp4/.test(mime))
-    return m.reply('💣 Responde a una imagen o video válido.')
+  const mime =
+    q.msg?.mimetype ||
+    q.message?.imageMessage?.mimetype ||
+    q.message?.videoMessage?.mimetype ||
+    ''
+
+  if (!/^(image\/(png|jpe?g|gif)|video\/mp4)$/.test(mime)) {
+    return m.reply('💣 Solo imágenes (jpg/png/gif) o video mp4.')
+  }
 
   const media = await q.download()
   if (!media) return m.reply('💣 No se pudo descargar el archivo.')
@@ -52,11 +60,11 @@ let handler = async (m, { conn, args }) => {
   const link = await uploadToCatbox(media, mime)
   global.banner = link
 
-  m.reply(`🌿 Se ha actualizado el banner de *${global.botname}*!`)
+  m.reply(`🌿 Banner actualizado con éxito`)
 }
 
-handler.help = ['setbanner', 'setmenubanner']
-handler.tags = ['socket']
+handler.help = ['setbanner']
+handler.tags = ['owner']
 handler.command = ['setbanner', 'setmenubanner']
 handler.owner = true
 
