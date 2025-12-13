@@ -35,13 +35,11 @@ let handler = async (m, { conn, args }) => {
   if (!value && !m.quoted && !m.message?.imageMessage && !m.message?.videoMessage)
     return m.reply('💣 Debes enviar o citar una imagen o video para cambiar el banner del bot.')
 
-  // 👉 Si es URL directa
   if (value.startsWith('http')) {
     global.banner = value
-    return m.reply(`💥 Se ha actualizado el banner de *${config.namebot2}*!`)
+    return m.reply(`🌿 Se ha actualizado el banner de *${global.botname}*!`)
   }
 
-  // 👉 Imagen o video citado/enviado
   const q = m.quoted || m
   const mime = (q.msg || q).mimetype || q.mediaType || ''
 
@@ -54,7 +52,7 @@ let handler = async (m, { conn, args }) => {
   const link = await uploadToCatbox(media, mime)
   global.banner = link
 
-  m.reply(`💥 Se ha actualizado el banner de *${config.namebot2}*!`)
+  m.reply(`🌿 Se ha actualizado el banner de *${global.botname}*!`)
 }
 
 handler.help = ['setbanner', 'setmenubanner']
