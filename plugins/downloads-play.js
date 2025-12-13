@@ -3,7 +3,7 @@ import yts from 'yt-search'
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
 try {
-if (!text.trim()) return conn.reply(m.chat, `❀ Por favor, ingresa el nombre de la música a descargar.`, m)
+if (!text.trim()) return conn.reply(m.chat, `*🪴 Por favor, ingresa el nombre de la música a descargar.*`, m)
 await m.react('🕒')
 const videoMatch = text.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/|v\/))([a-zA-Z0-9_-]{11})/)
 const query = videoMatch ? 'https://youtu.be/' + videoMatch[1] : text
@@ -13,7 +13,7 @@ if (!result) throw 'ꕥ No se encontraron resultados.'
 const { title, thumbnail, timestamp, views, ago, url, author, seconds } = result
 if (seconds > 1800) throw '⚠ El contenido supera el límite de duración (10 minutos).'
 const vistas = formatViews(views)
-const info = `「✦」Descargando *<${title}>*\n\n> ❑ Canal » *${author.name}*\n> ♡ Vistas » *${vistas}*\n> ✧︎ Duración » *${timestamp}*\n> ☁︎ Publicado » *${ago}*\n> ➪ Link » ${url}`
+const info = `「✦」Descargando `
 const thumb = (await conn.getFile(thumbnail)).data
 await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
 if (['play', 'mp3'].includes(command)) {
