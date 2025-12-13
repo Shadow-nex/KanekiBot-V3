@@ -12,7 +12,7 @@ async function uploadToCatbox(buffer, mime) {
   const res = await fetch('https://catbox.moe/user/api.php', {
     method: 'POST',
     body: form,
-    headers: form.getHeaders() // 🔥 CLAVE
+    headers: form.getHeaders()
   })
 
   const text = await res.text()
@@ -33,7 +33,7 @@ let handler = async (m, { conn, args }) => {
   const value = args.join(' ').trim()
 
   if (!value && !m.quoted && !m.message?.imageMessage && !m.message?.videoMessage) {
-    return m.reply('💣 Responde o envía una imagen o video.')
+    return m.reply('🍃 Responde o envía una imagen o video.')
   }
 
   // URL directa
