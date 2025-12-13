@@ -379,8 +379,8 @@ const rcanalx = {
       mediaUrl: null, 
       description: null, 
       previewType: "PHOTO", 
-      thumbnail: await (await fetch(global.icono)).buffer(),
-     // thumbnailUrl: global.icono,
+      //thumbnail: await (await fetch(global.icono)).buffer(),
+      thumbnailUrl: global.icono,
       sourceUrl: global.redes, 
       mediaType: 1, 
       renderLargerThumbnail: false 
@@ -416,7 +416,7 @@ global.dfail = (type, m, conn) => {
 🌾 𝚄𝚂𝙰 𝙴𝙻 𝚂𝙸𝙶𝚄𝙸𝙴𝙽𝚃𝙴 𝙲𝙾𝙼𝙰𝙽𝙳𝙾:
 > #ʀᴇɢ <ɴᴏᴍʙʀᴇ.ᴇᴅᴀᴅ>
 
-🌷 𝙴𝙹𝙴𝙼𝙿𝙻𝙾: 🍃"
+🌷 𝙴𝙹𝙴𝙼𝙿𝙻𝙾:
 > \`#${verifyaleatorio} ${user2}.${edadaleatoria}\``, 
 
    restrict: `*_ ׄ ☁️ ׅ  Esta caracteristica está desactivada._*`
