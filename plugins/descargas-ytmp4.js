@@ -267,7 +267,7 @@ let handler = async (m, { conn, text }) => {
 
     const waitMsg = await conn.sendMessage(
       m.chat,
-      { text: '> 🌾 Descargando video en 480p, espera...' },
+      { text: '> 🌾 Descargando video en calidad 480p, espera un momento...' },
       { quoted: m }
     )
 
