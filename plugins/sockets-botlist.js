@@ -39,7 +39,7 @@ const message = `╭────────────────────
 ${botsGroup}`
 const mentionList = groupBots.map(bot => bot.endsWith("@s.whatsapp.net") ? bot : `${bot}@s.whatsapp.net`)
 rcanal.contextInfo.mentionedJid = mentionList
-await conn.sendMessage(m.chat, { text: message, ...rcanal }, { quoted: fkontak })
+await conn.sendMessage(m.chat, { text: message, ...rcanal }, { quoted: m })
 } catch (error) {
 m.reply(`⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${error.message}`)
 }}
