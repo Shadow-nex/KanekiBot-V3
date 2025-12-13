@@ -13,7 +13,12 @@ if (!result) throw 'ꕥ No se encontraron resultados.'
 const { title, thumbnail, timestamp, views, ago, url, author, seconds } = result
 if (seconds > 1800) throw '⚠ El contenido supera el límite de duración (10 minutos).'
 const vistas = formatViews(views)
-const info = `「✦」Descargando `
+const info = `> 🥕 Título » *${title}*
+> 🌱 Canal » *${author.name}*
+> 🍋‍🟩 Vistas » *${vistas}*
+> 🧊 Duración » *${timestamp}*
+> 🌾 Publicado » *${ago}*
+> 🍃Link » ${url}`
 const thumb = (await conn.getFile(thumbnail)).data
 await conn.sendMessage(m.chat, { image: thumb, caption: info }, { quoted: m })
 if (['play', 'mp3'].includes(command)) {
