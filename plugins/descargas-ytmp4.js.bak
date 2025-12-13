@@ -274,13 +274,11 @@ let handler = async (m, { conn, text }) => {
     let { buffer, fileName } = await yt.download(v.url)
     buffer = await convertToFast(buffer)
 
-   /* await conn.sendMessage(
+    await conn.sendMessage(
       m.chat,
       { video: buffer, mimetype: 'video/mp4', fileName },
       { quoted: m }
-    )*/
-    
-    await conn.sendFile(m.chat, await (await fetch(buffer)).buffer(), `${v.title}.mp4`, caption: null, fkontak);
+    )
 
     await conn.sendMessage(m.chat, { delete: waitMsg.key })
     await m.react("✅")
