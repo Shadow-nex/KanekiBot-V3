@@ -369,9 +369,9 @@ const rcanalx = {
   contextInfo: { 
     isForwarded: true, 
     forwardedNewsletterMessageInfo: { 
-      newsletterJid: channelRD.id, 
+      newsletterJid: "120363422142340004@newsletter", 
       serverMessageId: 101, 
-      newsletterName: channelRD.name 
+      newsletterName: "test" 
     }, 
     externalAdReply: { 
       title: "🌱 кαиєкι вσт αι 🌾", 

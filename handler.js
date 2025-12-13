@@ -380,8 +380,8 @@ const rcanalx = {
       description: null, 
       previewType: "PHOTO", 
       //thumbnail: await (await fetch(icono)).buffer(),
-      thumbnailUrl: icono,
-      sourceUrl: redes, 
+      thumbnailUrl: global.icono,
+      sourceUrl: global.redes, 
       mediaType: 1, 
       renderLargerThumbnail: false 
     } 
