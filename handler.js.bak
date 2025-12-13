@@ -366,6 +366,7 @@ console.log(m.message)
 }}}
 
 const rcanalx = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: 101, newsletterName: channelRD.name }, externalAdReply: { title: "🌱 кαиєкι вσт αι 🌾", body: "▤🍃 !𝐀𝐂𝐂𝐄𝐒𝐎 𝐃𝐄𝐍𝐄𝐆𝐀𝐃𝐎¡ 🍀⿻𝅄", mediaUrl: null, description: null, previewType: "PHOTO", thumbnail: await (await fetch(icono)).buffer(), sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false } } }
+}
 
 global.dfail = (type, m, conn) => {
   let edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17', '25'].getRandom()
@@ -395,7 +396,7 @@ global.dfail = (type, m, conn) => {
 🌾 𝚄𝚂𝙰 𝙴𝙻 𝚂𝙸𝙶𝚄𝙸𝙴𝙽𝚃𝙴 𝙲𝙾𝙼𝙰𝙽𝙳𝙾:
 > #ʀᴇɢ <ɴᴏᴍʙʀᴇ.ᴇᴅᴀᴅ>
 
-🌷 𝙴𝙹𝙴𝙼𝙿𝙻𝙾:
+🌷 𝙴𝙹𝙴𝙼𝙿𝙻𝙾: 🍃"
 > \`#${verifyaleatorio} ${user2}.${edadaleatoria}\``, 
 
    restrict: `*_ ׄ ☁️ ׅ  Esta caracteristica está desactivada._*`
