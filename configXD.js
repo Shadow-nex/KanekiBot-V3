@@ -30,9 +30,9 @@ global.kanekiAIJadibts = true
 
 //*─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─⭒─ׄ─ׅ─ׄ─*
 
-global.botname = "ׁ෨ 🌾 𝙆𝙖𝙣𝙚𝙠𝙞𝘽𝙤𝙩-,𝘼𝙄 🌱. り"
+global.botname = " ۫  🌾͜੭  ׅ  𝐊𝐚𝐧𝐞𝐤𝐢𝐁𝐨𝐭 - 𝐌𝐃 ׁ ♡ ⸼"
 global.textbot = "₊˚🌱 ₊˚ кαиєкι вσт ν3 • мα∂є ву sһᥲძ᥆ᥕ.᥊ᥡz ✧𖥻ﾟ"
-global.dev = "© ⍴᥆ᥕᥱrᥱძ ᑲᥡ ׅ  ׄ 몽 ۪sһᥲძ᥆ᥕ.᥊ᥡz おịᰫ"
+global.dev = "© ⍴᥆ᥕᥱrᥱძ ᑲᥡ お sʜᴀᴅᴏᴡ's xʏᴢ 彡"
 global.author = "© mᥲძᥱ ᥕі𝗍һ ᑲᥡ shadow.xz"
 global.etiqueta = "✫ shadow.xyz "
 
