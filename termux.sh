@@ -1,7 +1,7 @@
-# ❄️ Código desarrollado por @gata_dios 
+# Código desarrollado por @gata_dios 
 
 #!/data/data/com.termux/files/usr/bin/bash 
-BOT_DIR="KanekiBot-V3"  
+BOT_DIR="KanekiBot-MD"  
 BOT_REPO="https://github.com/shadox-xyz/$BOT_DIR"
 DB_FILE="database.json"
 

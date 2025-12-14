@@ -17,23 +17,17 @@ resolve()
 export async function handler(chatUpdate) {
 this.msgqueque = this.msgqueque || []
 this.uptime = this.uptime || Date.now()
-if (!chatUpdate) {
-return
-}
+if (!chatUpdate) return
 this.pushMessage(chatUpdate.messages).catch(console.error)
 let m = chatUpdate.messages[chatUpdate.messages.length - 1]
-if (!m) {
-return
-}
+if (!m) return
 if (global.db.data == null) await global.loadDatabase()
 try {
 m = smsg(this, m) || m
-if (!m) {
-return
-}
+if (!m) return
 m.exp = 0
 try {
-const user = global.db.data.users[m.sender]
+let user = global.db.data.users[m.sender]
 if (typeof user !== "object") global.db.data.users[m.sender] = {}
 if (user) {
 if (!("name" in user)) user.name = m.name
@@ -48,17 +42,11 @@ if (!("marry" in user)) user.marry = ""
 if (!("description" in user)) user.description = ""
 if (!("packstickers" in user)) user.packstickers = null
 if (!("premium" in user)) user.premium = false
-if (!('registered' in user)) user.registered = false
 if (!("premiumTime" in user)) user.premiumTime = 0
 if (!("banned" in user)) user.banned = false
 if (!("bannedReason" in user)) user.bannedReason = ""
 if (!("commands" in user) || !isNumber(user.commands)) user.commands = 0
 if (!("afk" in user) || !isNumber(user.afk)) user.afk = -1
-if (!user.registered) {
-if (!('name' in user)) user.name = m.name
-if (!isNumber(user.age)) user.age = -1
-if (!isNumber(user.regTime)) user.regTime = -1
-}
 if (!("afkReason" in user)) user.afkReason = ""
 if (!("warn" in user) || !isNumber(user.warn)) user.warn = 0
 } else global.db.data.users[m.sender] = {
@@ -79,16 +67,15 @@ banned: false,
 bannedReason: "",
 commands: 0,
 afk: -1,
-registered: false,
 afkReason: "",
 warn: 0
 }
-const chat = global.db.data.chats[m.chat]
+let chat = global.db.data.chats[m.chat]
 if (typeof chat !== "object") global.db.data.chats[m.chat] = {}
 if (chat) {
 if (!("isBanned" in chat)) chat.isBanned = false
 if (!("isMute" in chat)) chat.isMute = false;
-if (!("welcome" in chat)) chat.welcome = true
+if (!("welcome" in chat)) chat.welcome = false
 if (!("sWelcome" in chat)) chat.sWelcome = ""
 if (!("sBye" in chat)) chat.sBye = ""
 if (!("detect" in chat)) chat.detect = true
@@ -101,7 +88,7 @@ if (!("gacha" in chat)) chat.gacha = true
 } else global.db.data.chats[m.chat] = {
 isBanned: false,
 isMute: false,
-welcome: true,
+welcome: false,
 sWelcome: "",
 sBye: "",
 detect: true,
@@ -112,7 +99,7 @@ nsfw: false,
 economy: true,
 gacha: true
 }
-const settings = global.db.data.settings[this.user.jid]
+let settings = global.db.data.settings[this.user.jid]
 if (typeof settings !== "object") global.db.data.settings[this.user.jid] = {}
 if (settings) {
 if (!("self" in settings)) settings.self = false
@@ -213,9 +200,9 @@ __filename,
 user,
 chat,
 settings
-})) {
+}))
 continue
-}}
+}
 if (typeof plugin !== "function") {
 continue
 }
@@ -291,19 +278,13 @@ continue
 if (plugin.group && !m.isGroup) {
 fail("group", m, this)
 continue
-} else if (plugin.botAdmin && !isBotAdmin) {
+} 
+if (plugin.botAdmin && !isBotAdmin) {
 fail("botAdmin", m, this)
 continue
-} else if (plugin.admin && !isAdmin) {
+} 
+if (plugin.admin && !isAdmin) {
 fail("admin", m, this)
-continue
-}
-if (plugin.private && m.isGroup) {
-fail("private", m, this)
-continue
-}
-if (plugin.register == true && user.registered == false) { 
-fail('unreg', m, this)
 continue
 }
 m.isCommand = true
@@ -353,9 +334,9 @@ const quequeIndex = this.msgqueque.indexOf(m.id || m.key.id)
 if (quequeIndex !== -1)
 this.msgqueque.splice(quequeIndex, 1)
 }
-let user, stats = global.db.data.stats
+let user = global.db.data.users[m.sender]
 if (m) {
-if (m.sender && (user = global.db.data.users[m.sender])) {
+if (m.sender && user) {
 user.exp += m.exp
 }}
 try {
@@ -389,27 +370,14 @@ const rcanalx = {
 }
 
 global.dfail = (type, m, conn) => {
-  let edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17', '25'].getRandom()
-  let user2 = m.pushName || 'Anónimo'
-  let verifyaleatorio = ['registrar', 'reg', 'verificar', 'verify', 'register'].getRandom()
- const msg = {
-   rowner: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴄʀᴇᴀᴅᴏʀᴇs ᴅᴇʟ ʙᴏᴛ.`,
-
-   owner: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴅᴇsᴀʀᴏʟʟᴀᴅᴏʀᴇs ᴅᴇʟ ʙᴏᴛ.`,
-
-   mods: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴍᴏᴅᴇʀᴀᴅᴏʀᴇs ᴅᴇʟ ʙᴏᴛ.`,
-
-   premium: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴜsᴜʀɪᴏs ᴘʀᴇᴍɪᴜᴍ.`,
-
-   group: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴇɴ ɢʀᴜᴘᴏs.`,
-
-   private: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴇɴ ᴇʟ ᴄʜᴀᴛ ᴘʀɪᴠᴀᴅᴏ ᴅᴇʟ ʙᴏᴛ.`,
-
-   admin: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴀᴅᴍɪɴs ᴅᴇʟ ɢʀᴜᴘᴏ.`,
-
-   botAdmin: `> ⿻ ׄ⬭ ᴘᴀʀᴀ ᴇᴊᴇᴄᴜᴛᴀʀ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* ᴅᴇʙᴏ sᴇʀ ᴀᴅᴍɪɴɪsᴛʀᴀᴅᴏʀ ᴅᴇʟ ɢʀᴜᴘᴏ.`,
-   
-   unreg: `🌱 𝙽𝙾 𝚃𝙴 𝙷𝙰𝚂 𝚁𝙴𝙶𝙸𝚂𝚃𝚁𝙰𝙳𝙾(𝙰)
+const msg = { 
+rowner: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴄʀᴇᴀᴅᴏʀᴇs ᴅᴇʟ ʙᴏᴛ.`,
+owner: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴅᴇsᴀʀᴏʟʟᴀᴅᴏʀᴇs ᴅᴇʟ ʙᴏᴛ.`,
+premium: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴜsᴜʀɪᴏs ᴘʀᴇᴍɪᴜᴍ.`,
+group: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴇɴ ɢʀᴜᴘᴏs.`,
+admin: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴀᴅᴍɪɴs ᴅᴇʟ ɢʀᴜᴘᴏ.`,
+botAdmin: `> ⿻ ׄ⬭ ᴘᴀʀᴀ ᴇᴊᴇᴄᴜᴛᴀʀ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* ᴅᴇʙᴏ sᴇʀ ᴀᴅᴍɪɴɪsᴛʀᴀᴅᴏʀ ᴅᴇʟ ɢʀᴜᴘᴏ.`,   
+unreg: `🌱 𝙽𝙾 𝚃𝙴 𝙷𝙰𝚂 𝚁𝙴𝙶𝙸𝚂𝚃𝚁𝙰𝙳𝙾(𝙰)
 𝙿𝙰𝚁𝙰 𝚄𝚂𝙰𝚁 𝙴𝚂𝚃𝙰 𝙵𝚄𝙽𝙲𝙸𝙾́𝙽,  
 𝙽𝙴𝙲𝙴𝚂𝙸𝚃𝙰𝚂 𝚁𝙴𝙶𝙸𝚂𝚃𝚁𝙰𝚁𝚃𝙴 𝙿𝚁𝙸𝙼𝙴𝚁𝙾.
 
@@ -417,11 +385,10 @@ global.dfail = (type, m, conn) => {
 > #ʀᴇɢ <ɴᴏᴍʙʀᴇ.ᴇᴅᴀᴅ>
 
 🌷 𝙴𝙹𝙴𝙼𝙿𝙻𝙾:
-> \`#${verifyaleatorio} ${user2}.${edadaleatoria}\``, 
+> \`#reg shadow.18\``, 
 
-   restrict: `*_ ׄ ☁️ ׅ  Esta caracteristica está desactivada._*`
 }[type]
-if (msg) return conn.reply(m.chat, msg, m, rcanalx).then(_ => m.react('✖️'))
+if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
 }
 let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
