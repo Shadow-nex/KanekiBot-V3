@@ -1,3 +1,12 @@
+# 🚨 AVISO 🚨
+
+Este proyecto **ya no va a recibir actualizaciones**.
+
+El repositorio queda disponible solo como referencia o archivo.  
+No se agregarán nuevas funciones, mejoras ni correcciones de errores.
+
+Gracias por el apoyo ✌️
+
 
 <h1 align="center">🌙💗 El Peor Bot de todo WhatsApp, UwU 🪻</h1>
 
