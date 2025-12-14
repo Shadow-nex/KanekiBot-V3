@@ -135,7 +135,7 @@ contextInfo: {
    newsletterName: channelRD.name
  },
  externalAdReply: {
-   title: " ۫  🌾͜੭  ׅ  𝐊𝐚𝐧𝐞𝐤𝐢𝐁𝐨𝐭 - 𝐌𝐃 ׁ ♡ ⸼",
+   title: botname,
    body: "＃お sʜᴀᴅᴏᴡ's xʏᴢ 彡",
    mediaType: 1,
    mediaUrl: null,
