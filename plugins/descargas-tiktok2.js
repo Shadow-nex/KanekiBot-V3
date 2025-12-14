@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+/*import fetch from 'node-fetch'
 
 let handler = async (m, { conn }) => {
   try {
@@ -84,4 +84,4 @@ let handler = async (m, { conn }) => {
 
 handler.customPrefix = /https?:\/\/(?:www\.|vm\.|vt\.)?tiktok\.com\/[^\s]+/i
 handler.command = new RegExp
-export default handler
+export default handler*/
