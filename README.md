@@ -1,13 +1,9 @@
-<h1 align="center" style="color:#ff4d4d;">🚨 AVISO 🚨</h1>
+<h1 style="color:#ff4d4d;">🚨 AVISO 🚨</h1>
 
-<p align="center">
-Este proyecto <b>ya no va a recibir actualizaciones</b>.
-</p>
+> Este proyecto **ya no va a recibir actualizaciones**.
 
-<p align="center">
-El repositorio queda solo como referencia.<br>
-No se agregarán nuevas funciones ni fixes.
-</p>
+> El repositorio queda disponible solo como referencia.  
+No se agregarán nuevas funciones, mejoras ni correcciones.
 
 
 <h1 align="center">🌙💗 El Peor Bot de todo WhatsApp, UwU 🪻</h1>
