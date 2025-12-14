@@ -138,7 +138,7 @@ contextInfo: {
    mediaType: 1,
    mediaUrl: redes,
    sourceUrl: redes,
-   thumbnail: await (await fetch('https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765558675009_50489.jpeg')).buffer(),
+   thumbnail: await (await fetch(banner)).buffer(),
    showAdAttribution: false,
    containsAutoReply: true,
    renderLargerThumbnail: true
