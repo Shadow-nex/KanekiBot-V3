@@ -26,8 +26,7 @@ const texto = `╭━━『 ᥫ᭡ 𝐈𝐧𝐟𝐨𝐫𝐦𝐚𝐜𝐢𝐨𝐧 
   await conn.sendMessage(m.chat, {
       image: { url: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764275511024_766404.jpeg' },
       caption: texto,
-      mentions: [who],
-      ...rcanal
+      mentions: [who]
  }, { quoted: fkontak })
 }
 
