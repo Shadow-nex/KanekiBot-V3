@@ -109,7 +109,7 @@ let handler = async (m, { conn, text, command }) => {
             title: '◁◁   ↻    ▐ ▌    ↺   ▷▷',
             body: `1:15 ━━━━━•───── 3:26`,
             sourceUrl: v.url,
-            thumbnailUrl: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765636133884_7501.jpeg',
+            thumbnailUrl: v.thumbnail,
             mediaType: 1,
             renderLargerThumbnail: true
           }
