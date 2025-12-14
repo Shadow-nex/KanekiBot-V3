@@ -73,7 +73,8 @@ ${comandos}\n`
       }
     }
 
-    const infoUser = `> ✰ *¡ʜᴏʟᴀ!* @${userIdNum}, sᴏʏ *${botname}*, ᴀǫᴜɪ ᴛɪᴇɴᴇs ʟᴀ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs.
+    //let date = `${hora}, ${dia}, ${fechaTxt}`
+    let infoUser = `> ✰ *¡ʜᴏʟᴀ!* @${userIdNum}, sᴏʏ *${botname}*, ᴀǫᴜɪ ᴛɪᴇɴᴇs ʟᴀ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs.
 > . ﹡ ﹟ 🌹 ׄ ⬭ ${ucapan()}  ִ ࣪ᗣ𓈒 
 
 ﹙🫛 ﹚੭੭ ─ 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐂𝐈𝐎𝐍  ﾟ･:𑇛
@@ -121,7 +122,7 @@ ${readMore}
       }
     }
   }
-await m.react('🍁')
+await m.react('🍃🍃')
 await conn.sendMessage(m.chat, { 
 text: infoUser + menuTexto,
 contextInfo: {
@@ -133,11 +134,11 @@ contextInfo: {
    newsletterName: channelRD.name
  },
  externalAdReply: {
-   title: botname,
-   body: `❂ ${hora}, ${dia}, ${fechaTxt} ♡`,
+   title: " ۫  🌾͜੭  ׅ  𝐊𝐚𝐧𝐞𝐤𝐢𝐁𝐨𝐭 - 𝐌𝐃 ׁ ♡ ⸼",
+   body: "＃お sʜᴀᴅᴏᴡ's xʏᴢ 彡",
    mediaType: 1,
-   mediaUrl: redes,
-   sourceUrl: redes,
+   mediaUrl: null,
+   sourceUrl: null,
    thumbnail: await (await fetch(banner)).buffer(),
    showAdAttribution: false,
    containsAutoReply: true,
