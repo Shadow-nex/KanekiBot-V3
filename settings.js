@@ -71,6 +71,6 @@ adonix: { url: "https://api-adonix.ultraplus.click", key: 'the.shadow' }
 let file = fileURLToPath(import.meta.url)
 watchFile(file, () => {
 unwatchFile(file)
-console.log(chalk.redBright("Update 'configXD.js'"))
+console.log(chalk.redBright("Update 'settings.js'"))
 import(`${file}?update=${Date.now()}`)
 })
