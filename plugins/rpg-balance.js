@@ -27,7 +27,7 @@ const texto = `╭━━『 ᥫ᭡ 𝐈𝐧𝐟𝐨𝐫𝐦𝐚𝐜𝐢𝐨𝐧 
       image: { url: 'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1764275511024_766404.jpeg' },
       caption: texto,
       mentions: [who]
- }, { quoted: fkontak })
+ }, { quoted: m })
 }
 
 handler.help = ['bal']
