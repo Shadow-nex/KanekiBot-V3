@@ -1,4 +1,4 @@
-> [!IMPORTANT]
+> [!AVISO]
 > **Este proyecto ya no recibirá actualizacion xD**
 
 <h1 align="center">🌙💗 El Peor Bot de todo WhatsApp, UwU 🪻</h1>
