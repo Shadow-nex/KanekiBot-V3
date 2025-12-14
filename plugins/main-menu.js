@@ -90,13 +90,14 @@ ${comandos}\n`
 ${readMore}
    *✎ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs ✰*`.trim()
 
-    const icon = [
-      'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911352440_131724.jpeg',
-      'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911305951_36243.jpeg',
-      'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911237754_990508.jpeg',
-      'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911566098_479123.jpeg'
-    ]
-    let icons = icon[Math.floor(Math.random() * icon.length)]
+/*
+   const icon = [
+     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911352440_131724.jpeg',
+     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911305951_36243.jpeg',
+     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911237754_990508.jpeg',
+     'https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763911566098_479123.jpeg'
+   ]
+   let icons = icon[Math.floor(Math.random() * icon.length)]
     
   const Shadow_url = await (await fetch(icons)).buffer()
   const fkontak = {
@@ -121,7 +122,7 @@ ${readMore}
         businessOwnerJid: "51919199620@s.whatsapp.net"
       }
     }
-  }
+  }*/
 await m.react('🍃🍃')
 await conn.sendMessage(m.chat, { 
 text: infoUser + menuTexto,
@@ -143,7 +144,7 @@ contextInfo: {
    showAdAttribution: false,
    containsAutoReply: true,
    renderLargerThumbnail: true
- }}}, { quoted: fkontak })
+ }}}, { quoted: m })
 
  } catch (e) {
    console.error(e)
