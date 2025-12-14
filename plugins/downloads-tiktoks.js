@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const handler = async (m, { conn, text, usedPrefix }) => {
-if (!text) return conn.reply(m.chat, '🍃 Por favor, ingresa un término de búsqueda o el enlace de TikTok.', m)
+if (!text) return conn.reply(m.chat, '🌾 Por favor, ingresa un término de búsqueda o el enlace de TikTok.', m)
 const isUrl = /(?:https:?\/{2})?(?:www\.|vm\.|vt\.|t\.)?tiktok\.com\/([^\s&]+)/gi.test(text)
 try {
 await m.react('🕒')
@@ -23,7 +23,7 @@ const res = await axios({ method: 'POST', url: 'https://tikwm.com/api/feed/searc
 const results = res.data?.data?.videos?.filter(v => v.play) || []
 if (results.length < 2) return conn.reply(m.chat, 'ꕥ Se requieren al menos 2 resultados válidos con contenido.', m)
 const medias = results.slice(0, 10).map(v => ({ type: 'video', data: { url: v.play }, caption: createSearchCaption(v) }))
-await conn.sendSylphy(m.chat, medias, { quoted: fkontak })
+await conn.sendSylphy(m.chat, medias, { quoted: m })
 }
 await m.react('✔️')
 } catch (e) {
@@ -31,14 +31,14 @@ await m.react('✖️')
 await conn.reply(m.chat, `⚠︎ Se ha producido un problema.\n> Usa *${usedPrefix}report* para informarlo.\n\n${e.message}`, m)
 }}
 function createCaption(title, author, duration, created_at = '') {
-  return `🍃 *Título ›* \`${title || 'No disponible'}\`\n> ✨ Autor › *${author?.nickname || author?.unique_id || 'No disponible'}*\n> 🍟 Duración › *${duration || 'No disponible'}s*${created_at ? `\n> 🌾 Creado » ${created_at}` : ''}\n> 🍓 Música » [${author?.nickname || author?.unique_id || 'No disponible'}] original sound - ${author?.unique_id || 'unknown'}`
+  return `❀ *Título ›* \`${title || 'No disponible'}\`\n> ☕︎ Autor › *${author?.nickname || author?.unique_id || 'No disponible'}*\n> ✰ Duración › *${duration || 'No disponible'}s*${created_at ? `\n> ☁︎ Creado » ${created_at}` : ''}\n> 𝅘𝅥𝅮 Música » [${author?.nickname || author?.unique_id || 'No disponible'}] original sound - ${author?.unique_id || 'unknown'}`
 }
 function createSearchCaption(data) {
-  return `🍃 Título › ${data.title || 'No disponible'}\n\n✨ Autor › ${data.author?.nickname || 'Desconocido'} ${data.author?.unique_id ? `@${data.author.unique_id}` : ''}\n🍟 Duración › ${data.duration || 'No disponible'}\n🍓 Música › ${data.music?.title || `[${data.author?.nickname || 'No disponible'}] original sound - ${data.author?.unique_id || 'unknown'}`}`
+  return `❀ Título › ${data.title || 'No disponible'}\n\n☕︎ Autor › ${data.author?.nickname || 'Desconocido'} ${data.author?.unique_id ? `@${data.author.unique_id}` : ''}\n✧︎ Duración › ${data.duration || 'No disponible'}\n𝅘𝅥𝅮 Música › ${data.music?.title || `[${data.author?.nickname || 'No disponible'}] original sound - ${data.author?.unique_id || 'unknown'}`}`
 }
 
 handler.help = ['tiktok', 'tt']
-handler.tags = ['download', 'search']
+handler.tags = ['downloader']
 handler.command = ['tiktok', 'tt', 'tiktoks', 'tts']
 handler.group = true
 
