@@ -10,7 +10,7 @@
   </a>
 </p>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1763304536979_365241.jpeg" width="300">
+  <img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1765684994004_758530.jpeg" width="300">
 </p>
 <p align="center">
   <a href="#">
