@@ -1,4 +1,4 @@
-/*import yts from "yt-search"
+import yts from "yt-search"
 import fetch from "node-fetch"
 
 function convertirDuracion(timestamp) {
@@ -121,7 +121,7 @@ handler.group = true
 handler.register = true
 
 export default handler
-*/
+/*
 
 import yts from "yt-search"
 import fetch from "node-fetch"
@@ -265,11 +265,11 @@ let handler = async (m, { conn, text }) => {
       { quoted: m }
     )
 
-   /* const waitMsg = await conn.sendMessage(
+    const waitMsg = await conn.sendMessage(
       m.chat,
       { text: '> 🌾 Descargando video en calidad 480p, espera un momento...' },
       { quoted: m }
-    )*/
+    )
 
     let { buffer, fileName } = await yt.download(v.url)
     buffer = await convertToFast(buffer)
@@ -280,7 +280,7 @@ let handler = async (m, { conn, text }) => {
       { quoted: m }
     )
 
-    //await conn.sendMessage(m.chat, { delete: waitMsg.key })
+    await conn.sendMessage(m.chat, { delete: waitMsg.key })
     await m.react("✅")
 
   } catch (e) {
@@ -295,4 +295,4 @@ handler.help = ['ytmp4 <texto o link>']
 handler.group = true
 handler.register = true
 
-export default handler
+export default handler*/
