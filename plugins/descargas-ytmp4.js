@@ -101,7 +101,7 @@ let handler = async (m, { conn, text, command }) => {
         [sendAs]: { url: downloadUrl },
         mimetype: "video/mp4",
         fileName: `${meta?.title || "video"}.mp4`,
-        caption: null
+        caption: `\`${v.title}\``
       },
       { quoted: m }
     )
