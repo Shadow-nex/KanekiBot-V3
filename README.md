@@ -1,3 +1,6 @@
+> `Aviso xD` 🌾
+> Este proyecto ya no recibirá más actualizaciónes x el creador, eso domas me faltan ideas pa escribir xd.
+
 
 <h1 align="center">🌙💗 El Peor Bot de todo WhatsApp, UwU 🪻</h1>
 
