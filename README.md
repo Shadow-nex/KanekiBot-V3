@@ -1,9 +1,7 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1767704977299_946356.jpeg" alt="YuzukiBot-AI" width="600"/>
+  <img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1767704977299_946356.jpeg" width="600"/>
 </p>
 
 <p align="center">
-  <span style="color:#ff69b4; font-size:18px;">
-    ´･ᴗ･` Bienvenido/a! a mi repositorio, soy <b>YuzukiBot-AI</b>
-  </span>
+  <img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=32&duration=3000&pause=800&color=FF69B4&center=true&vCenter=true&width=900&lines=´･ᴗ･`+Bienvenido/a!+a+mi+repositorio,+soy+YuzukiBot-AI" alt="YuzukiBot-AI"/>
 </p>
