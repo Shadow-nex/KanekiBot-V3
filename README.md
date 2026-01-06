@@ -214,6 +214,5 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 <b>shadox-xyz</b><br>
 <sub>Owner & Developer</sub>
 
-    </td>
   </tr>
 </table>
