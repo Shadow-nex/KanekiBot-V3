@@ -42,9 +42,8 @@ Este proyecto **no está afiliado de ninguna manera** con `WhatsApp`, `Inc. What
 </details>
 
 ---
-<summary><b>
 
-### **`✧ Click en la imagen para descargar termux ✧`**
+<summary><b>### **`✧ Click en la imagen para descargar termux ✧`**
 <a
 href="https://www.mediafire.com/file/wkinzgpb0tdx5qh/com.termux_1022.apk/file"><img src="https://qu.ax/finc.jpg" height="125px"></a> 
 
@@ -137,5 +136,4 @@ cd && cd YuzukiBot-MD && nano settings.js
 ```
 #### Para que no pierda su progreso en Yuzuki-Bot, estos comandos realizarán un respaldo de su `database.json` y se agregará a la versión más reciente.
 > *Estos comandos solo funcionan para TERMUX, REPLIT, LINUX*
-</details>
-</b></summary>
+</details></b></summary>
