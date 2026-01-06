@@ -148,5 +148,14 @@ cd && cd YuzukiBot-MD && npm start
 ```bash 
 cd && cd YuzukiBot-MD && rm -rf Sessions/Principal && npm start
 ```
+
+---
+
+### Volverte owner del Bot
+> *Si después de instalar el bot e iniciar la sesión (deseas poner tu número es la lista de owner pon este comando:*
+
+```bash
+cd && cd YuzukiBot-MD && nano settings.js
+```
 </details>
 
