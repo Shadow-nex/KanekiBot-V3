@@ -22,4 +22,23 @@
   </a>
 </p>
 
+### *`❕️ Información importante`*
+Este proyecto **no está afiliado de ninguna manera** con `WhatsApp`, `Inc. WhatsApp` es una marca registrada de `WhatsApp LLC`, y este bot es un **desarrollo independiente** que **no tiene ninguna relación oficial con la compañía**.
+
+<details>
+<summary><b> 🌱 Descripción</b></summary>
+
+> Yuzuki Bot es un bot de WhatsApp multifuncional basado en `baileys`. Este bot ofrece una variedad de características para mejorar tu experiencia en WhatsApp.
+
+#### Características
+Configuración avanzada de grupos 
+Bienvenidas personalizadas  
+Herramientas útiles  
+Juegos RPG (Gacha y Economía)  
+Funciones de Inteligencia Artificial  
+Descargas y búsquedas multi-plataforma  
+Sub-Bots (JadiBot)  
+Extensiones adicionales
+</details>
+
 ---
