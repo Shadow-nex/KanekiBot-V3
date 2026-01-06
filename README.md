@@ -181,7 +181,7 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
   <tr>
     <td>
 
-<h3>🌾 Colaboradores</h3>
+<h3>       🌾 Colaboradores</h3>
 
 <a href="https://github.com/shadox-xyz/YuzukiBot-MD/graphs/contributors">
   <img 
@@ -192,6 +192,5 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 
 <sub>💖 Gracias a todas las personas que aportan y hacen crecer este proyecto</sub>
 
-    </td>
   </tr>
 </table>
