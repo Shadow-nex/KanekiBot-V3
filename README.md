@@ -174,3 +174,10 @@ cd && cd YuzukiBot-MD && nano settings.js
 grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https://raw.githubusercontent.com/shadox-xyz/YuzukiBot-MD/main/termux.sh | bash 
 ```
 </details>
+
+---
+
+### **`🌾 Colaboradores`**
+<a href="https://github.com/shadox-xyz/YuzukiBot-MD/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=shadox-xyz/YuzukiBot-MD" /> 
+</a>
