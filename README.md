@@ -177,7 +177,13 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
 
 ---
 
-### **`🌾 Colaboradores`**
-<a href="https://github.com/shadox-xyz/YuzukiBot-MD/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=shadox-xyz/YuzukiBot-MD" /> 
-</a>
+<h2 align="center">🌾 Colaboradores</h2>
+
+<p align="center">
+  <a href="https://github.com/shadox-xyz/YuzukiBot-MD/graphs/contributors">
+    <img 
+      src="https://contrib.rocks/image?repo=shadox-xyz/YuzukiBot-MD&max=12" 
+      alt="Colaboradores del proyecto"
+    />
+  </a>
+</p>
