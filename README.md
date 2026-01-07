@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1767704977299_946356.jpeg" width="600"/>
+  <img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1767813687078_255712.jpeg" width="600"/>
 </p>
 
 <p align="center">
@@ -75,7 +75,7 @@ npm start
 
 ### **`✧ Click en la imagen para descargar termux ✧`**
 <a
-href="https://www.mediafire.com/file/wkinzgpb0tdx5qh/com.termux_1022.apk/file"><img src="https://qu.ax/finc.jpg" height="125px"></a> 
+href="https://www.mediafire.com/file/wkinzgpb0tdx5qh/com.termux_1022.apk/file"><img src="https://raw.githubusercontent.com/AkiraDevX/uploads/main/uploads/1767813695431_629349.jpeg" height="125px"></a> 
 
 ```bash
 termux-setup-storage
