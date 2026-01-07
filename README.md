@@ -195,28 +195,7 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
   </tr>
 </table>
 
-<table>
-  <tr>
-    <td align="center">
 
-### 🥦 Propietario
-
-<a href="https://github.com/shadox-xyz">
-  <img 
-    src="https://github.com/shadox-xyz.png"
-    width="130"
-    height="130"
-    alt="Propietario del proyecto"
-    style="border-radius: 50%;"
-  />
-</a>
-
-<b>
-  ׅ   ⿆  𝃤𝃤𓂂 ɪ'ᴍ sʜᴀᴅᴏᴡ's xʏᴢ 彡★
-</b><br>
-
-<sub>Owner & Developer</sub>
-
-    </td>
-  </tr>
-</table>
+### **`🥦 Propietario`**
+<a
+href="https://github.com/shadox-xyz"><img src="https://github.com/shadox-xyz.png" width="130" height="130" alt=" ׅ   ⿆  𝃤𝃤𓂂 ɪ'ᴍ sʜᴀᴅᴏᴡ's xʏᴢ 彡★"/></a>
