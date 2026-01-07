@@ -7,7 +7,7 @@ const handler = async (m, { conn }) => {
 
   let developer = {
     name: ' sһᥲძ᥆ᥕ.᥊ᥡz • ᥆𝖿𝖿іᥴіᥲᥣ',
-    numCreador: '51919199620',
+    numCreador: suittag,
     empresa: ' » ᴋᴀɴᴇᴋɪ ʙᴏᴛ ɪɴɪᴄ.',
     about: '☏ 2024 - 2026 ⎈',
     correo: 'shadowcore.xyz@gmail.com',
