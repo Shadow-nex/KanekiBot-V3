@@ -211,8 +211,12 @@ grep -q 'bash\|wget' <(dpkg -l) || apt install -y bash wget && wget -O - https:/
   />
 </a>
 
-<b>shadox-xyz</b><br>
+<b>
+  ׅ   ⿆  𝃤𝃤𓂂 ɪ'ᴍ sʜᴀᴅᴏᴡ's xʏᴢ 彡★
+</b><br>
+
 <sub>Owner & Developer</sub>
 
+    </td>
   </tr>
 </table>
