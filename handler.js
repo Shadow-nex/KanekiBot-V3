@@ -133,7 +133,7 @@ if (queque.indexOf(previousID) === -1) clearInterval(this)
 await delay(time)
 }, time)
 }
- 
+
 if (m.isBaileys) return
 m.exp += Math.ceil(Math.random() * 10)
 let usedPrefix
@@ -348,11 +348,11 @@ console.log(m.message)
 
 global.dfail = (type, m, conn) => {
 const msg = {
-rowner: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴄʀᴇᴀᴅᴏʀᴇs ᴅᴇʟ ʙᴏᴛ.`,
-premium: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴜsᴜʀɪᴏs ᴘʀᴇᴍɪᴜᴍ.`,
-group: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴇɴ ɢʀᴜᴘᴏs.`,
-admin: `> ⿻ ׄ⬭ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* sᴏʟᴏ ᴘᴜᴇᴅᴇ sᴇʀ ᴜsᴀᴅᴏ ᴘᴏʀ ʟᴏs ᴀᴅᴍɪɴs ᴅᴇʟ ɢʀᴜᴘᴏ.`,
-botAdmin: `> ⿻ ׄ⬭ ᴘᴀʀᴀ ᴇᴊᴇᴄᴜᴛᴀʀ ᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${comando}* ᴅᴇʙᴏ sᴇʀ ᴀᴅᴍɪɴɪsᴛʀᴀᴅᴏʀ ᴅᴇʟ ɢʀᴜᴘᴏ.`
+rowner: `『✦』El comando *${comando}* solo puede ser usado por los creadores del bot.`,
+premium: `『✦』El comando *${comando}* solo puede ser usado por los usuarios premium.`,
+group: `『✦』El comando *${comando}* solo puede ser usado en grupos.`,
+admin: `『✦』El comando *${comando}* solo puede ser usado por los administradores del grupo.`,
+botAdmin: `『✦』Para ejecutar el comando *${comando}* debo ser administrador del grupo.`
 }[type]
 if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
 }
